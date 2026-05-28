@@ -1309,7 +1309,7 @@
           <span class="tag-green">原料透明</span>
           <span class="tag-gold">全球精选</span>
         </div>
-        <div class="page-hint">上滑查看更多</div>
+        <div class="page-hint">上滑进入车间</div>
       </div>
     </div>
 
@@ -1327,7 +1327,7 @@
         <div class="slider-container">
           <input type="range" id="doughSlider" min="0" max="100" value="50" />
           <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--brown); opacity:0.6; margin-top:8px;">
-            <span>太软</span><span>刚刚好 ✔</span><span>太硬</span>
+            <span>太软</span><span>太硬</span>
           </div>
         </div>
         <div id="doughFeedback" style="margin-top:12px; font-size:var(--text-md); font-weight:bold; min-height:28px;"></div>
@@ -1370,12 +1370,12 @@
         <div class="slider-container">
           <input type="range" id="bakeSlider" min="0" max="100" value="50" />
           <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--brown); opacity:0.6; margin-top:8px;">
-            <span>太低 ❄️</span><span>220°C ✨</span><span>太高 🔥</span>
+            <span>低 ❄️</span><span>高 🔥</span>
           </div>
         </div>
         <div id="bakeFeedback" style="margin-top:12px; font-size:var(--text-md); font-weight:bold; min-height:28px;"></div>
       </div>
-      <div class="page-hint">上下滑动调节温度</div>
+      <div class="page-hint">拖动滑块调节烘烤温度</div>
     </div>
 
     <!-- ===== P8 切片包装 ===== -->
@@ -1454,8 +1454,11 @@
         <div class="divider-ornament"></div>
         <div class="page-title" style="font-size:var(--text-lg);">这就是你亲手监督出品的<br>藜麦吐司</div>
         <div class="product-rotate" id="productRotate">
-          <div class="product-3d" id="product3d" style="background:transparent;">
-            <div class="bread-product"><div class="bread-body"><div class="bread-pores"></div></div></div>
+          <div class="product-3d" id="product3d" style="background:transparent; overflow:hidden;">
+            <img src="./assets/images/brand/product-clear.jpg" alt="豪士藜麦吐司"
+                 style="width:100%;height:100%;object-fit:contain;border-radius:20px;"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+            <div class="bread-product" style="display:none;"><div class="bread-body"><div class="bread-pores"></div></div></div>
           </div>
         </div>
         <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:12px;">

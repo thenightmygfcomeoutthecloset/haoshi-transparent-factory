@@ -346,7 +346,12 @@ window.init_page09 = function () {
       onUpdate: ({ timeLeft }) => {
         if (timer) {
           timer.textContent = timeLeft;
-          if (timeLeft <= 3) timer.style.animation = 'pulse 0.5s infinite';
+          if (timeLeft <= 3) {
+            timer.style.animation = 'pulse 0.5s infinite';
+            timer.style.color = '#C9212B';
+          } else {
+            timer.style.color = '';
+          }
         }
       },
     });
