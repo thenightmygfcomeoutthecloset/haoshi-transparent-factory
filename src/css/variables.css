@@ -1,0 +1,64 @@
+/* === 豪士面包 品牌色体系 V3 === */
+:root {
+  /* 豪士品牌色 */
+  --haoshi-blue: #003B7A;
+  --haoshi-blue-dark: #002A5C;
+  --haoshi-blue-soft: #EAF3FF;
+
+  /* 暖色调 */
+  --cream-white: #FFF8EA;
+  --cream-soft: #FFF3D6;
+  --bread-yellow: #F5B84B;
+  --bread-light: #FFD98A;
+  --toast-brown: #B87435;
+  --brown: #5B3217;
+
+  /* 强调色 */
+  --brand-red: #C9212B;
+  --safe-green: #7FA36B;
+
+  /* 玻璃拟态 */
+  --glass-white: rgba(255, 255, 255, 0.78);
+  --glass-strong: rgba(255, 255, 255, 0.9);
+  --glass-dark: rgba(255, 255, 255, 0.12);
+  --shadow-soft: 0 18px 45px rgba(91, 50, 23, 0.12);
+
+  /* 兼容旧变量名 */
+  --color-red: #C9212B;
+  --color-red-dark: #A01A22;
+  --color-red-light: #E8445A;
+  --color-gold: #F5B84B;
+  --color-gold-light: #FFD98A;
+  --color-gold-dark: #B87435;
+  --color-dark: #1A2A3A;
+  --color-dark-soft: #263545;
+  --color-warm-white: #FFF8EA;
+  --color-cream: #FFF3D6;
+  --color-brown: #5B3217;
+  --color-brown-light: #8B7355;
+
+  /* 字体 — 系统字体栈，不依赖 Google Fonts */
+  --font-title: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-body: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-display: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+
+  /* 字号 */
+  --text-2xl: 52px;
+  --text-xl: 40px;
+  --text-lg: 26px;
+  --text-md: 17px;
+  --text-sm: 14px;
+  --text-xs: 12px;
+
+  /* 固定尺寸 */
+  --page-width: 640px;
+  --page-height: 1008px;
+
+  /* 动画 */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --dur-fast: 200ms;
+  --dur-normal: 400ms;
+  --dur-slow: 700ms;
+}

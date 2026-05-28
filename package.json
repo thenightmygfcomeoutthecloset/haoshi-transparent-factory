@@ -1,0 +1,14 @@
+{
+  "name": "haoshi-factory",
+  "private": true,
+  "version": "1.0.0",
+  "description": "大广赛互动类作品 - 面包工厂探秘日志",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

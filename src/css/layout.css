@@ -1,0 +1,69 @@
+/* === 640×1008 固定布局 + 翻页容器 V3 === */
+
+/* 全屏居中容器 */
+.app {
+  position: fixed;
+  inset: 0;
+  background: var(--cream-white);
+  overflow: hidden;
+}
+
+/* 固定尺寸画布，JS 动态缩放 */
+.viewport {
+  position: relative;
+  overflow: hidden;
+  background: var(--cream-white);
+}
+
+/* 全局静音按钮 */
+.mute-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0,59,122,0.2);
+  color: var(--haoshi-blue);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid rgba(0,59,122,0.2);
+  transition: all var(--dur-normal);
+}
+
+.mute-btn:hover {
+  background: rgba(0,59,122,0.35);
+  border-color: rgba(0,59,122,0.35);
+}
+
+.mute-btn.muted {
+  opacity: 0.4;
+}
+
+/* 页面指示器 */
+.page-indicator {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  gap: 8px;
+}
+
+.page-indicator .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0,59,122,0.15);
+  transition: all var(--dur-normal);
+}
+
+.page-indicator .dot.active {
+  background: var(--haoshi-blue);
+  transform: scale(1.3);
+}
