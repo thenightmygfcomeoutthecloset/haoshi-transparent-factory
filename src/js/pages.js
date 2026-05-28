@@ -5,24 +5,27 @@ import QuizGame from './quiz.js';
 import { generatePoster, downloadPoster } from './poster.js';
 
 // ============================================================
-// P1 品牌开屏页 — 点击按钮进入
+// P1 品牌邀请函 — 点击信封拆开
 // ============================================================
 window.init_page01 = function () {
-  const btn = document.getElementById('btnEnter');
+  const scene = document.getElementById('envelopeScene');
   const page = document.getElementById('page01');
-  if (!btn || btn.dataset.ready) return;
-  btn.dataset.ready = '1';
+  if (!scene || scene.dataset.ready) return;
+  scene.dataset.ready = '1';
 
-  btn.addEventListener('click', () => {
-    if (page.classList.contains('fade-out')) return;
+  scene.addEventListener('click', () => {
+    if (scene.classList.contains('opened')) return;
+    scene.classList.add('opened');
     audio.play('open');
-    page.classList.add('fade-out');
 
-    // 0.6s 后翻页
+    // 1.5s 后光芒散尽，翻页
     setTimeout(() => {
-      window.app && window.app.next();
-      page.classList.remove('fade-out');
-    }, 600);
+      page && page.classList.add('fade-out');
+      setTimeout(() => {
+        window.app && window.app.next();
+        page && page.classList.remove('fade-out');
+      }, 800);
+    }, 1200);
   });
 };
 

@@ -254,142 +254,215 @@
     .tag-green { background: rgba(127,163,107,0.15); color: var(--safe-green); }
     .tag-gold { background: rgba(245,184,75,0.15); color: var(--toast-brown); }
 
-    /* ===== P1 品牌开屏页 ===== */
+    /* ===== P1 邀请函 — 品牌蓝白信封 ===== */
     #page01 {
-      background: linear-gradient(180deg, #F4F8FD 0%, #FFF8EA 55%, #FFE8B8 100%);
+      background: linear-gradient(180deg, var(--haoshi-blue-dark) 0%, #001E40 40%, var(--haoshi-blue) 100%);
       overflow: hidden;
     }
 
-    .brand-top {
+    /* 背景星光粒子 */
+    .p1-ambient {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .p1-ambient::before {
+      content: '';
+      position: absolute;
+      top: 15%; left: 10%;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,217,138,0.12), transparent 70%);
+    }
+    .p1-ambient::after {
+      content: '';
+      position: absolute;
+      bottom: 20%; right: 15%;
+      width: 160px; height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(255,248,234,0.08), transparent 70%);
+    }
+
+    /* 信封场景 */
+    .envelope-scene {
       position: relative;
       z-index: 2;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: -20px;
     }
 
-    .brand-logo-text {
+    /* 信封主体 — 豪士蓝白包装风格 */
+    .env-wrap {
+      position: relative;
+      width: 300px;
+      height: 340px;
+      background: linear-gradient(160deg, #FFFFFF 0%, #F0F4FA 40%, #E2EAF5 100%);
+      border-radius: 6px;
+      box-shadow:
+        0 20px 60px rgba(0,30,60,0.5),
+        0 4px 16px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+      overflow: hidden;
+    }
+
+    /* 信封蓝顶条 — 豪士品牌标识区 */
+    .env-header {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      background: linear-gradient(180deg, var(--haoshi-blue), var(--haoshi-blue-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      z-index: 3;
+    }
+    .env-header .env-brand {
       font-family: var(--font-title);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
-      color: var(--haoshi-blue);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .brand-slogan-top {
-      font-family: var(--font-body);
-      font-size: var(--text-xs);
-      color: var(--brand-red);
+      color: #fff;
       letter-spacing: 0.08em;
-      background: rgba(201,33,43,0.08);
-      padding: 4px 16px;
-      border-radius: 50px;
-      margin-bottom: 36px;
+    }
+    .env-header .env-brand-small {
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.06em;
+      font-weight: 400;
     }
 
-    .main-title {
+    /* 信封装饰线 */
+    .env-border-inner {
+      position: absolute;
+      inset: 68px 16px 16px 16px;
+      border: 1px solid rgba(0,59,122,0.12);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* 信封内文字 */
+    .env-content {
+      position: absolute;
+      top: 52%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+      width: 80%;
+    }
+    .env-content .env-title {
       font-family: var(--font-title);
-      font-size: 44px;
+      font-size: 26px;
       font-weight: 900;
       color: var(--haoshi-blue);
-      line-height: 1.25;
+      line-height: 1.4;
       letter-spacing: 0.04em;
-      position: relative;
-      z-index: 2;
-      margin-bottom: 16px;
     }
-
-    .main-subtitle {
-      font-family: var(--font-body);
-      font-size: var(--text-md);
+    .env-content .env-sub {
+      font-size: 13px;
       color: var(--brown);
-      line-height: 1.7;
-      position: relative;
-      z-index: 2;
-      max-width: 380px;
-      margin-bottom: 32px;
+      margin-top: 10px;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
     }
 
-    /* 面包主视觉 */
-    .p1-bread-visual {
-      position: relative;
-      z-index: 1;
-      margin-bottom: 24px;
-      animation: float 4s ease-in-out infinite;
+    /* 信封封口三角 */
+    .env-flap {
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 60px;
+      background: linear-gradient(180deg, #F5F8FC, #E2EAF5);
+      clip-path: polygon(0 100%, 50% 0, 100% 100%);
+      z-index: 4;
+      box-shadow: 0 -2px 8px rgba(0,30,60,0.1);
+      transition: transform 0.7s var(--ease-smooth);
+      transform-origin: bottom center;
     }
 
-    .p1-bread-body {
-      width: 180px;
-      height: 110px;
-      background: linear-gradient(180deg, #E8C870 0%, #D4A040 40%, #C89230 80%, #B88028 100%);
-      border-radius: 14px 14px 8px 8px;
-      position: relative;
-      box-shadow: 0 8px 32px rgba(184,116,53,0.25);
-      margin: 0 auto;
+    /* 封口上的圆形印记（替代火漆） */
+    .env-seal {
+      position: absolute;
+      bottom: 28px; left: 50%;
+      transform: translateX(-50%);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--haoshi-blue);
+      z-index: 5;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 12px rgba(0,59,122,0.4);
+      animation: gentlePulse 2.5s ease-in-out infinite;
+      transition: all 0.5s;
     }
-
-    .p1-bread-body::before {
+    .env-seal-mark {
+      width: 22px; height: 22px;
+      border: 2px solid rgba(255,255,255,0.8);
+      border-radius: 50%;
+      position: relative;
+    }
+    .env-seal-mark::after {
       content: '';
       position: absolute;
-      top: 10px; left: 16px; right: 16px;
-      height: 32px;
-      background: linear-gradient(180deg, rgba(200,150,80,0.45), transparent);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 8px;
+      background: #FFD700;
       border-radius: 50%;
     }
 
-    .p1-bread-body::after {
-      content: '';
-      position: absolute;
-      inset: 10px 22px;
-      background-image:
-        radial-gradient(circle 3px, #F0E0B0 30%, transparent 70%),
-        radial-gradient(circle 2px, #F5E8C0 30%, transparent 70%),
-        radial-gradient(circle 2.5px, #E8D090 30%, transparent 70%),
-        radial-gradient(circle 2px, #F0E0B0 30%, transparent 70%),
-        radial-gradient(circle 3px, #F5E8C0 30%, transparent 70%),
-        radial-gradient(circle 2px, #E8D090 30%, transparent 70%);
-      background-size: 40px 30px, 35px 28px, 42px 32px, 38px 28px, 36px 30px, 40px 28px;
-      background-position: 5px 5px, 25px 12px, 10px 18px, 30px 25px, 15px 35px, 40px 8px;
-      opacity: 0.5;
+    /* 提示文字 */
+    .env-hint {
+      margin-top: 18px;
+      font-size: var(--text-sm);
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.06em;
+      animation: hintBreathe 2.5s ease-in-out infinite;
+      z-index: 3;
+      position: relative;
     }
 
-    /* 透明工厂线稿装饰 */
-    .factory-lineart {
+    /* 打开动画 */
+    .envelope-scene.opened .env-seal {
+      animation: none;
+      transform: translateX(-50%) scale(1.8);
+      opacity: 0;
+      transition: all 0.6s ease-out;
+    }
+    .envelope-scene.opened .env-flap {
+      transform: translateX(-50%) rotateX(180deg);
+    }
+
+    /* 光芒溢出效果 */
+    .env-light-burst {
       position: absolute;
-      z-index: 0;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0; height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,248,234,0.9), rgba(255,217,138,0.4), transparent);
       pointer-events: none;
-      opacity: 0.06;
+      z-index: 6;
+      transition: all 1s ease-out;
+    }
+    .envelope-scene.opened .env-light-burst {
+      width: 600px; height: 600px;
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+      transition: all 1.2s ease-out;
     }
 
-    .p1-deco-bottom {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 120px;
-      background: linear-gradient(0deg, rgba(0,59,122,0.05) 0%, transparent 100%);
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .p1-deco-bottom::before {
-      content: '';
-      position: absolute;
-      bottom: 40px;
-      left: 10%;
-      right: 10%;
-      height: 2px;
-      background: repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(0,59,122,0.08) 8px, rgba(0,59,122,0.08) 16px);
-    }
-
-    /* P1 打开动画过渡 */
+    /* P1 离开动画 */
     #page01.fade-out {
       opacity: 0;
-      transform: scale(1.05);
-      transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+      transform: scale(1.08);
+      transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
     }
 
     /* ===== P2 工厂大门 — 玻璃参观通道 ===== */
@@ -1091,40 +1164,36 @@
   <!-- 640×1008 画布 -->
   <div class="viewport">
 
-    <!-- ===== P1 品牌开屏页 ===== -->
+    <!-- ===== P1 品牌邀请函 ===== -->
     <div class="page active" id="page01" data-page="1">
-      <div class="p1-deco-bottom"></div>
+      <div class="p1-ambient"></div>
 
-      <!-- 品牌信息 -->
-      <div class="brand-top">
-        <div class="brand-logo-text">HORSH 豪士</div>
-        <div class="brand-slogan-top">豪士豪士，好吃好吃</div>
+      <!-- 信封场景 -->
+      <div class="envelope-scene" id="envelopeScene">
+        <div class="env-wrap">
+          <!-- 豪士品牌顶条 -->
+          <div class="env-header">
+            <span class="env-brand">HORSH</span>
+            <span class="env-brand-small">豪士</span>
+          </div>
+          <!-- 装饰线 -->
+          <div class="env-border-inner"></div>
+          <!-- 信封内文字 -->
+          <div class="env-content">
+            <div class="env-title">豪士透明工厂<br>开放日</div>
+            <div class="env-sub">一日厂长 · 邀请函</div>
+          </div>
+          <!-- 封口三角 -->
+          <div class="env-flap"></div>
+          <!-- 圆形印记 -->
+          <div class="env-seal">
+            <div class="env-seal-mark"></div>
+          </div>
+          <!-- 光芒 -->
+          <div class="env-light-burst"></div>
+        </div>
+        <div class="env-hint">点击印记，拆开邀请函</div>
       </div>
-
-      <!-- 主标题 -->
-      <div class="main-title">
-        豪士透明工厂<br>开放日
-      </div>
-
-      <!-- 副标题 -->
-      <div class="main-subtitle">
-        从原料到出炉，<br>每一口好事都看得见。
-      </div>
-
-      <!-- 面包主视觉 -->
-      <div class="p1-bread-visual">
-        <img src="./assets/images/brand/product-clear.jpg" alt="豪士藜麦吐司" 
-             style="width:200px; height:200px; object-fit:contain; border-radius:16px;"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-        <div class="p1-bread-body" style="display:none;"></div>
-      </div>
-
-      <!-- 按钮 -->
-      <button class="btn-warm" id="btnEnter" style="min-width:220px;">
-        开启透明参观
-      </button>
-
-      <div class="page-hint">点击上方按钮，进入豪士透明工厂</div>
     </div>
 
     <!-- ===== P2 工厂大门 ===== -->
@@ -1143,7 +1212,7 @@
         <div class="gate-left" id="gateLeft"></div>
         <div class="gate-right" id="gateRight"></div>
       </div>
-      <div class="page-hint" id="gateHint">👈 👉 滑动推开玻璃门</div>
+      <div class="page-hint" id="gateHint">👈 👉 推开玻璃门，进入你的工厂</div>
     </div>
 
     <!-- ===== P3 透明工厂参观地图 ===== -->
@@ -1402,9 +1471,9 @@
         <span class="slogan-char" style="animation-delay:1.35s;">见</span>
       </div>
       <p style="font-size:var(--text-sm); color:var(--brown); opacity:0.6; margin-top:30px; animation:fadeIn 0.6s 1.8s both;">
-        从原料到出炉，透明不只是承诺<br>是一次可以被看见的生产过程
+        从原料到出炉，透明不只是承诺<br>是你今日亲眼见证的每一道工序
       </p>
-      <div style="font-size:60px; margin-top:24px; animation:bounceIn 0.6s 2.2s var(--ease-bounce) both;">🍞</div>
+      <div style="font-size:60px; margin-top:24px; animation:bounceIn 0.6s 2.2s var(--ease-bounce) both;">🏅</div>
       <div class="page-hint" style="animation-delay:2.5s;">点击任意位置继续</div>
     </div>
 
@@ -1425,8 +1494,8 @@
       <div class="particles"></div>
       <div class="glass-card" style="background:rgba(255,255,255,0.85);">
         <div class="divider-ornament"></div>
-        <div class="page-title" style="font-size:var(--text-lg);">好事面包<br>把好事做透明</div>
-        <p class="page-subtitle" style="color:var(--brown);">从玻利维亚高原到你手上<br>一片吐司走了 18,000 公里<br>最后这一段，只需要你伸出手</p>
+        <div class="page-title" style="font-size:var(--text-lg);">一日厂长，感谢参观<br>好事面包，把好事做透明</div>
+        <p class="page-subtitle" style="color:var(--brown);">从玻利维亚高原到你手上<br>一片吐司走了 18,000 公里<br>而最后这一程，由你亲眼见证</p>
         <div class="bread-product" style="margin:10px 0;"><div class="bread-body"><div class="bread-pores"></div></div></div>
         <div class="action-buttons">
           <button class="action-btn buy" id="btnBuy">🛒 立即购买</button>
