@@ -90,10 +90,10 @@ window.init_page02 = function () {
 };
 
 // ============================================================
-// P3 全球原料地图 — 点击光点弹出卡片
+// P3 全球原料地图 — 点击像素地图上的光点
 // ============================================================
 window.init_page03 = function () {
-  const dots = document.querySelectorAll('#mapContainer .map-dot');
+  const dots = document.querySelectorAll('#pixelMap .pixel-dot');
   const cards = document.querySelectorAll('#mapContainer .map-card');
   const btnNext = document.getElementById('mapBtnNext');
   let clickedCount = 0;
@@ -106,14 +106,13 @@ window.init_page03 = function () {
       // 关闭其他卡片
       cards.forEach(c => c.classList.remove('show'));
       // 显示当前卡片
-      const card = document.querySelector(`[data-card="${i}"]`);
+      const card = document.querySelector(`[data-card="${dot.dataset.dot}"]`);
       if (card) {
         card.classList.add('show');
         audio.play('click');
       }
-      // 高亮当前光点
-      dot.style.background = '#D42026';
-      dot.style.boxShadow = '0 0 20px rgba(212,32,38,0.8)';
+      // 标记已点击
+      dot.classList.add('clicked');
       // 记录已点击
       if (!dot.dataset.clicked) {
         dot.dataset.clicked = '1';

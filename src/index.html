@@ -1079,15 +1079,18 @@
 
     /* ===== P3 像素点阵世界地图 (CSS box-shadow) ===== */
     .pixel-world-map {
+      position: relative;
+      width: 140px; height: 75px;
+      margin: 10px auto 0;
+      z-index: 2;
+    }
+    .pixel-dots-layer {
       width: 4px; height: 4px;
       background: rgba(0,59,122,0.08);
       border-radius: 0;
       position: absolute;
-      top: 8px; left: 50%;
-      transform: translateX(-50%);
-      z-index: 1;
+      top: 0; left: 0;
       pointer-events: none;
-      /* 24列×14行 @ 5px间距 = 120×70px区域 */
       box-shadow:
         /* R1 — 北美 + 欧洲 + 亚洲顶 */
         15px 5px, 20px 5px, 25px 5px, 30px 5px, 35px 5px, 40px 5px,
@@ -1135,6 +1138,33 @@
         90px 55px, 95px 55px, 100px 55px,
         /* R12 — 南极洲虚线 */
         30px 60px, 35px 60px, 40px 60px, 50px 60px, 55px 60px, 60px 60px, 65px 60px, 70px 60px, 75px 60px, 80px 60px, 85px 60px, 90px 60px;
+    }
+    /* 地图上的互动光点 — 与像素地图同一坐标系 */
+    .pixel-dot {
+      position: absolute;
+      width: 16px; height: 16px;
+      background: var(--bread-yellow);
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 5;
+      animation: gentlePulse 2s ease-in-out infinite;
+      box-shadow: 0 0 12px rgba(245,184,75,0.6), 0 0 24px rgba(245,184,75,0.3);
+      transform: translate(-50%, -50%);
+    }
+    .pixel-dot::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.8;
+    }
+    .pixel-dot.clicked {
+      background: var(--brand-red);
+      box-shadow: 0 0 16px rgba(201,33,43,0.7), 0 0 32px rgba(201,33,43,0.3);
+      animation: none;
     }
 
     /* 透明标签 — 原料/制作/质检可见 */
@@ -1221,28 +1251,31 @@
       <p class="page-subtitle">一片吐司的世界之旅<br>每一种原料，都有迹可循</p>
       <div class="map-container" id="mapContainer">
         <div class="map-grid"></div>
-        <div class="pixel-world-map"></div>
+        <div class="pixel-world-map" id="pixelMap">
+          <div class="pixel-dots-layer"></div>
+          <!-- 四个原料光点 — 像素地图坐标系 -->
+          <div class="pixel-dot" style="left:22px;top:8px;" data-dot="1" title="加拿大小麦"></div>
+          <div class="pixel-dot" style="left:22px;top:42px;" data-dot="0" title="玻利维亚藜麦"></div>
+          <div class="pixel-dot" style="left:105px;top:25px;" data-dot="3" title="中国漳州"></div>
+          <div class="pixel-dot" style="left:107px;top:72px;" data-dot="2" title="新西兰黄油"></div>
+        </div>
         <!-- 玻利维亚 -->
-        <div class="map-dot" style="left:28%;top:60%;" data-dot="0"></div>
-        <div class="map-card" style="left:10%;top:25%;" data-card="0">
+        <div class="map-card" style="left:20%;top:55%;" data-card="0">
           <h3>🌾 玻利维亚高原藜麦</h3>
           <p>海拔4000米的黄金谷物<br>蛋白质含量是大米的2倍</p>
         </div>
         <!-- 加拿大 -->
-        <div class="map-dot" style="left:20%;top:20%;" data-dot="1"></div>
-        <div class="map-card" style="left:35%;top:10%;" data-card="1">
+        <div class="map-card" style="left:20%;top:18%;" data-card="1">
           <h3>🌾 加拿大小麦</h3>
           <p>北纬49°的硬红春麦<br>筋道Q弹的秘密</p>
         </div>
         <!-- 新西兰 -->
-        <div class="map-dot" style="left:78%;top:65%;" data-dot="2"></div>
-        <div class="map-card" style="left:55%;top:30%;" data-card="2">
+        <div class="map-card" style="left:60%;top:65%;" data-card="2">
           <h3>🧈 新西兰黄油</h3>
           <p>南纬41°的纯净牧场<br>奶香浓郁的灵魂</p>
         </div>
         <!-- 漳州 -->
-        <div class="map-dot" style="left:72%;top:35%;" data-dot="3"></div>
-        <div class="map-card" style="left:45%;top:5%;" data-card="3">
+        <div class="map-card" style="left:50%;top:8%;" data-card="3">
           <img src="./assets/images/漳州工厂1.png" alt="漳州工厂" style="width:100%;border-radius:8px;margin-bottom:8px;" />
           <h3>🏭 中国漳州</h3>
           <p>所有原料汇聚于此<br>豪士430亩透明工厂</p>

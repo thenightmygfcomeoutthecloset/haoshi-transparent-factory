@@ -36,6 +36,8 @@ class App {
 
   next() {
     if (this.current >= this.total - 1 || this.isTransitioning) return;
+    // P1 禁止滑动手势，只能通过信封点击触发
+    if (this.current === 0) return;
     this.goTo(this.current + 1);
   }
 
