@@ -56,13 +56,22 @@ class App {
 
     // 离开旧页
     this._leavePage(this.current);
-    oldPage.classList.remove('active');
+    if (typeof gsap !== 'undefined' && oldPage) {
+      gsap.to(oldPage, { opacity: 0, scale: 0.97, duration: 0.35, ease: 'power2.in', onComplete: () => oldPage.classList.remove('active') });
+    } else {
+      oldPage && oldPage.classList.remove('active');
+    }
 
     // 进入新页
     newPage.classList.add('active');
     this.current = index;
     this._initPage(index);
     this._updateIndicator();
+
+    // GSAP 入场动画
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(newPage, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' });
+    }
 
     // 触发粒子效果
     this._spawnParticles(newPage);

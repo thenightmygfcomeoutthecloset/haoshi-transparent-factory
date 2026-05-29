@@ -93,18 +93,13 @@ window.init_page04 = function () {
   const cards = document.querySelectorAll('#ingredientCards .ingredient-card');
   if (cards.length === 0 || cards[0].dataset.ready) return;
 
-  // 触发轨迹线动画 — GSAP 增强
-  const trails = document.querySelectorAll('#worldMap .map-trail');
+  // 触发轨迹线动画 — GSAP
   if (typeof gsap !== 'undefined') {
-    trails.forEach((t, i) => {
-      gsap.fromTo(t, { width: 0, opacity: 0 }, { width: t.style.width, opacity: 0.7, duration: 0.8, delay: i * 0.3, ease: 'power2.out' });
-    });
-    const pins = document.querySelectorAll('#worldMap .map-pin');
-    pins.forEach((p, i) => {
-      gsap.fromTo(p, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, delay: i * 0.35 + 0.6, ease: 'back.out(1.7)' });
-      gsap.to(p.querySelector('.map-pin-label'), { opacity: 1, duration: 0.3, delay: i * 0.35 + 1 });
-    });
+    gsap.fromTo('#worldMap .map-trail', { width: 0, opacity: 0 }, { width: '+=0', opacity: 0.7, duration: 0.8, stagger: 0.3, ease: 'power2.out' });
+    gsap.fromTo('#worldMap .map-pin', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, stagger: 0.35, delay: 0.6, ease: 'back.out(1.7)' });
+    gsap.to('#worldMap .map-pin-label', { opacity: 1, duration: 0.3, stagger: 0.35, delay: 1, ease: 'power2.out' });
   } else {
+    const trails = document.querySelectorAll('#worldMap .map-trail');
     trails.forEach((t, i) => { setTimeout(() => t.classList.add('animate'), i * 250); });
     const pins = document.querySelectorAll('#worldMap .map-pin');
     pins.forEach((p, i) => { setTimeout(() => p.classList.add('show-label'), i * 350 + 500); });
