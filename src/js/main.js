@@ -8,7 +8,7 @@ class App {
   constructor() {
     this.pages = document.querySelectorAll('.page');
     this.total = this.pages.length;
-    this.current = 0;
+    this.current = -1; // 设为 -1，确保 goTo(0) 不会因为 current===0 被跳过
     this.isTransitioning = false;
 
     // 页面指示器
