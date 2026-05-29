@@ -157,17 +157,16 @@ window.init_page06 = function () {
     window._userData.doughSlider = val;
 
     if (val <= 30) {
-      feedback.textContent = '这口感，厂长不同意 🙅';
+      feedback.textContent = '太软了，厂长不批 👎';
       feedback.style.color = '#e88';
     } else if (val >= 70) {
-      feedback.textContent = '太硬了，重来一炉 🔄';
+      feedback.textContent = '硬了，重来一炉 🔄';
       feedback.style.color = '#D42026';
     } else {
-      feedback.textContent = '✅ 通过！松软和嚼劲都在线';
+      feedback.textContent = '✅ 就这个手感，松软又有嚼劲';
       feedback.style.color = '#4CAF50';
-      if (hint) hint.textContent = '手感刚好！进入烘烤线...';
+      if (hint) hint.textContent = '手感对了！进烘烤线...';
       slider.disabled = true;
-      // Slogan 节奏动效
       triggerSloganBeat();
       setTimeout(() => {
         window.app && window.app.next();
@@ -192,13 +191,13 @@ window.init_page07 = function () {
     window._userData.bakeSlider = val;
 
     if (val <= 25) {
-      feedback.textContent = '火小了，还差点香气 🔥';
+      feedback.textContent = '火小了，香气还没出来 🔥';
       feedback.style.color = '#8E8E93';
     } else if (val >= 75) {
-      feedback.textContent = '烤过头了，厂长叫停！🛑';
+      feedback.textContent = '烤过了！厂长喊停 🛑';
       feedback.style.color = '#D42026';
     } else {
-      feedback.textContent = '👑 火候刚刚好！豪士豪士，好吃好吃';
+      feedback.textContent = '👑 刚好，豪士豪士好吃好吃';
       feedback.style.color = '#4CAF50';
       slider.disabled = true;
       triggerSloganBeat();
@@ -259,13 +258,13 @@ window.init_page09 = function () {
       onPass: ({ found, timeUsed, mistakes }) => {
         let grade, gradeText, gradeTitle;
         if (mistakes === 0 && timeUsed <= 5) {
-          grade = 'S'; gradeText = '👑 天生厂长！零失误，豪士正式向你发放全职邀请';
+          grade = 'S'; gradeText = '👑 天生厂长！眼睛也太尖了';
           gradeTitle = '天生厂长';
         } else if (mistakes <= 1 && timeUsed <= 8) {
-          grade = 'A'; gradeText = '✅ 合格！每一片都经得起查岗';
+          grade = 'A'; gradeText = '✅ 合格，每一片都查到位了';
           gradeTitle = '合格厂长';
         } else {
-          grade = 'B'; gradeText = '🍞 实习厂长认证，下次查岗表现更好';
+          grade = 'B'; gradeText = '🍞 实习厂长，下次手速再快点';
           gradeTitle = '实习厂长';
         }
         if (result) result.innerHTML = gradeText;
@@ -276,7 +275,7 @@ window.init_page09 = function () {
       },
       onFail: ({ found, mistakes }) => {
         const missed = 2 - found;
-        if (result) result.textContent = `失误${mistakes}次，差${missed}片没找到，再试一次 😥`;
+        if (result) result.textContent = `漏了${missed}片，失误${mistakes}次 😅 再试一把？`;
         if (timer) { timer.textContent = '⏰'; timer.style.animation = ''; }
         if (retryBtn) retryBtn.style.display = 'inline-block';
         window._quizScore = { found, timeUsed: 10, mistakes, grade: 'F', gradeTitle: '学员' };
