@@ -1,52 +1,46 @@
-/* === pages.js — 各页面交互逻辑 === */
+/* === pages.js — 豪士透明工厂查岗日 12页交互 === */
 
 import audio from './audio.js';
 import QuizGame from './quiz.js';
 import { generatePoster, downloadPoster } from './poster.js';
+import { LIVE_URL, TMALL_URL, OFFICIAL_SITE_URL, TOPIC_TEXT } from './config.js';
 
 // ============================================================
-// P0 前置钩子 — 地球悬念页，点击进入邀请函
+// P1 首屏钩子 — 点击按钮进入
 // ============================================================
-window.init_page00 = function () {
-  const scene = document.getElementById('hookScene');
-  if (!scene || scene.dataset.ready) return;
-  scene.dataset.ready = '1';
+window.init_page01 = function () {
+  const btn = document.getElementById('btnEnter');
+  if (!btn || btn.dataset.ready) return;
+  btn.dataset.ready = '1';
 
-  scene.addEventListener('click', () => {
+  btn.addEventListener('click', () => {
     audio.play('click');
     window.app && window.app.next();
   });
 };
 
 // ============================================================
-// P1 品牌邀请函 — 点击信封拆开
+// P2 厂长身份确认 — 点击工牌继续
 // ============================================================
-window.init_page01 = function () {
-  const scene = document.getElementById('envelopeScene');
-  const page = document.getElementById('page01');
-  if (!scene || scene.dataset.ready) return;
-  scene.dataset.ready = '1';
+window.init_page02 = function () {
+  const card = document.getElementById('badgeCard');
+  if (!card || card.dataset.ready) return;
+  card.dataset.ready = '1';
 
-  scene.addEventListener('click', () => {
-    if (scene.classList.contains('opened')) return;
-    scene.classList.add('opened');
-    audio.play('open');
-
-    // 1.5s 后光芒散尽，翻页
-    setTimeout(() => {
-      page && page.classList.add('fade-out');
-      setTimeout(() => {
-        window.app && window.app.next();
-        page && page.classList.remove('fade-out');
-      }, 800);
-    }, 1200);
+  card.addEventListener('click', () => {
+    if (card.dataset.clicked) return;
+    card.dataset.clicked = '1';
+    card.style.animation = 'none';
+    card.style.boxShadow = '0 0 60px rgba(245,184,75,0.7), 0 0 120px rgba(0,59,122,0.4)';
+    audio.play('click');
+    setTimeout(() => window.app && window.app.next(), 800);
   });
 };
 
 // ============================================================
-// P2 工厂大门 — 手指导航滑开大门
+// P3 工厂大门 — 滑动开门
 // ============================================================
-window.init_page02 = function () {
+window.init_page03 = function () {
   const gateLeft = document.getElementById('gateLeft');
   const gateRight = document.getElementById('gateRight');
   const hint = document.getElementById('gateHint');
@@ -60,15 +54,12 @@ window.init_page02 = function () {
     if (opened) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     const dx = x - startX;
-
-    // 计算偏移比例
-    const maxOffset = 250; // px
+    const maxOffset = 250;
     const offset = Math.max(0, Math.min(maxOffset, Math.abs(dx) * 1.5));
 
     gateLeft.style.transform = `translateX(-${offset}px)`;
     gateRight.style.transform = `translateX(${offset}px)`;
 
-    // 门开到 80% 以上自动完成
     if (offset > maxOffset * 0.7) {
       opened = true;
       finishOpen();
@@ -82,115 +73,79 @@ window.init_page02 = function () {
     gateRight.style.opacity = '0';
     audio.play('open');
     if (hint) hint.style.display = 'none';
-
-    setTimeout(() => {
-      window.app && window.app.next();
-    }, 800);
+    setTimeout(() => window.app && window.app.next(), 800);
   };
 
-  // Touch
-  document.getElementById('page02').addEventListener('touchstart', (e) => {
+  document.getElementById('page03').addEventListener('touchstart', (e) => {
     startX = e.touches[0].clientX;
   });
-  document.getElementById('page02').addEventListener('touchmove', onMove);
-
-  // Mouse
-  document.getElementById('page02').addEventListener('mousedown', (e) => {
+  document.getElementById('page03').addEventListener('touchmove', onMove);
+  document.getElementById('page03').addEventListener('mousedown', (e) => {
     startX = e.clientX;
   });
-  document.getElementById('page02').addEventListener('mousemove', (e) => {
-    if (e.buttons === 1) onMove(e); // left button held
+  document.getElementById('page03').addEventListener('mousemove', (e) => {
+    if (e.buttons === 1) onMove(e);
   });
 };
 
 // ============================================================
-// P3 全球原料地图 — 点击像素地图上的光点
-// ============================================================
-window.init_page03 = function () {
-  const dots = document.querySelectorAll('#pixelMap .pixel-dot');
-  const cards = document.querySelectorAll('#mapContainer .map-card');
-  const btnNext = document.getElementById('mapBtnNext');
-  let clickedCount = 0;
-
-  if (dots.length === 0 || dots[0].dataset.ready) return;
-
-  // 触发轨迹线动画（按顺序逐条绘制）
-  const trajectories = document.querySelectorAll('#pixelMap .trajectory-line');
-  const labels = document.querySelectorAll('#pixelMap .trajectory-label');
-  const totalLabel = document.getElementById('trajectoryTotal');
-  trajectories.forEach((line, i) => {
-    setTimeout(() => { line.classList.add('animate'); }, i * 300);
-  });
-  labels.forEach((label, i) => {
-    setTimeout(() => { label.classList.add('show'); }, i * 400 + 300);
-  });
-  if (totalLabel) {
-    setTimeout(() => { totalLabel.classList.add('show'); }, 1800);
-  }
-
-  dots.forEach((dot, i) => {
-    dot.dataset.ready = '1';
-    dot.addEventListener('click', () => {
-      // 关闭其他卡片
-      cards.forEach(c => c.classList.remove('show'));
-      // 显示当前卡片
-      const card = document.querySelector(`[data-card="${dot.dataset.dot}"]`);
-      if (card) {
-        card.classList.add('show');
-        audio.play('click');
-      }
-      // 标记已点击
-      dot.classList.add('clicked');
-      // 记录已点击
-      if (!dot.dataset.clicked) {
-        dot.dataset.clicked = '1';
-        clickedCount++;
-      }
-      // 四个点完出现下一站按钮
-      if (clickedCount >= 4 && btnNext) {
-        btnNext.classList.add('show');
-      }
-    });
-  });
-
-  // 下一站按钮
-  if (btnNext) {
-    btnNext.addEventListener('click', () => {
-      audio.play('click');
-      window.app && window.app.next();
-    });
-  }
-};
-
-// ============================================================
-// P4 原料档案室 — 上滑推进
+// P4 原料查验 — 点击卡片翻开
 // ============================================================
 window.init_page04 = function () {
-  const page = document.getElementById('page04');
-  if (!page || page.dataset.ready) return;
-  page.dataset.ready = '1';
+  const cards = document.querySelectorAll('#ingredientCards .ingredient-card');
+  if (cards.length === 0 || cards[0].dataset.ready) return;
 
-  let startY = 0;
-
-  page.addEventListener('touchstart', (e) => {
-    startY = e.touches[0].clientY;
-  });
-
-  page.addEventListener('touchend', (e) => {
-    const dy = startY - e.changedTouches[0].clientY;
-    if (dy > 50) {
-      // 上滑超过阈值 → 翻页
-      window.app && window.app.next();
-    }
+  let revealed = 0;
+  cards.forEach((card) => {
+    card.dataset.ready = '1';
+    card.addEventListener('click', () => {
+      if (card.classList.contains('revealed')) return;
+      card.classList.add('revealed');
+      audio.play('click');
+      revealed++;
+      // 翻完3张后可滑动继续
+      if (revealed >= 3) {
+        const hint = document.querySelector('#page04 .page-hint');
+        if (hint) hint.textContent = '原料已查 ✓ 滑动继续';
+      }
+    });
   });
 };
 
 // ============================================================
-// P5 和面车间 — 拖拽滑块调筋度
+// P5 卖点标签 — 点击查看解释
 // ============================================================
 window.init_page05 = function () {
+  const tags = document.querySelectorAll('#uspTags .usp-tag');
+  const explain = document.getElementById('uspExplain');
+  if (tags.length === 0 || tags[0].dataset.ready) return;
+
+  const explanations = {
+    0: '不用撕边，打开就能吃。每一片都是柔软的吐司芯。',
+    1: '玻利维亚红藜麦带来的优质植物蛋白，吃得饱也吃得好。',
+    2: '不额外添加蔗糖，享受面包本身的自然微甜。',
+    3: '不添加人工色素，面包该有的颜色就是好颜色。',
+    4: '0反式脂肪酸，对身体的承诺跟面包一样实在。',
+    5: '经过近4年反复调试，才找到刚好松软又有嚼劲的口感。',
+  };
+
+  tags.forEach((tag) => {
+    tag.dataset.ready = '1';
+    tag.addEventListener('click', () => {
+      const idx = parseInt(tag.dataset.usp);
+      tags.forEach(t => t.classList.remove('active'));
+      tag.classList.add('active');
+      if (explain) explain.textContent = explanations[idx] || '';
+      audio.play('click');
+    });
+  });
+};
+
+// ============================================================
+// P6 和面工艺 — 拖动滑块调筋度
+// ============================================================
+window.init_page06 = function () {
   const slider = document.getElementById('doughSlider');
-  const state = document.getElementById('doughState');
   const feedback = document.getElementById('doughFeedback');
   const hint = document.getElementById('doughHint');
   if (!slider || slider.dataset.ready) return;
@@ -198,40 +153,22 @@ window.init_page05 = function () {
 
   slider.addEventListener('input', () => {
     const val = parseInt(slider.value);
-
-    // 追踪用户操作数据
     if (!window._userData) window._userData = {};
     window._userData.doughSlider = val;
 
-    if (val <= 35) {
-      // 太软
-      state.style.background = '#f0d8c0';
-      state.style.width = '240px';
-      state.style.height = '80px';
-      state.style.borderRadius = '30%';
-      feedback.textContent = '面团塌陷，成品发黏';
+    if (val <= 30) {
+      feedback.textContent = '这口感，厂长不同意 🙅';
       feedback.style.color = '#e88';
-    } else if (val >= 66) {
-      // 太硬
-      state.style.background = '#d4a860';
-      state.style.width = '160px';
-      state.style.height = '130px';
-      state.style.borderRadius = '20%';
-      feedback.textContent = '面团撑裂，口感发柴';
+    } else if (val >= 70) {
+      feedback.textContent = '太硬了，重来一炉 🔄';
       feedback.style.color = '#D42026';
     } else {
-      // 刚刚好！
-      state.style.background = '#F4D3A0';
-      state.style.width = '200px';
-      state.style.height = '120px';
-      state.style.borderRadius = '50%';
-      state.style.boxShadow = '0 0 30px rgba(244,169,64,0.5)';
-      feedback.textContent = '豪士4年找到的黄金比例，就是这里';
+      feedback.textContent = '✅ 通过！松软和嚼劲都在线';
       feedback.style.color = '#4CAF50';
-
-      // 1.5s 后自动翻页
-      if (hint) hint.textContent = '完美！面团正在进入发酵室...';
+      if (hint) hint.textContent = '手感刚好！进入烘烤线...';
       slider.disabled = true;
+      // Slogan 节奏动效
+      triggerSloganBeat();
       setTimeout(() => {
         window.app && window.app.next();
         slider.disabled = false;
@@ -241,87 +178,30 @@ window.init_page05 = function () {
 };
 
 // ============================================================
-// P6 发酵室 — 点击加速发酵
-// ============================================================
-window.init_page06 = function () {
-  const page = document.getElementById('page06');
-  const balls = document.querySelectorAll('#doughBalls .dough-ball');
-  const timer = document.getElementById('fermentTimer');
-  if (!page || page.dataset.ready) return;
-  page.dataset.ready = '1';
-
-  let fermented = false;
-  let clickCount = 0;
-
-  page.addEventListener('click', () => {
-    if (fermented) return;
-
-    clickCount++;
-    if (!window._userData) window._userData = {};
-    window._userData.fermentClicks = clickCount;
-
-    // 加速：缩小动画周期
-    balls.forEach(b => b.classList.add('fast'));
-    if (timer) timer.textContent = '⏩ 加速发酵中...';
-
-    // 2s 后完成
-    setTimeout(() => {
-      fermented = true;
-      balls.forEach(b => {
-        b.classList.remove('fast');
-        b.style.transform = 'scale(1.5)';
-        b.style.background = '#E8C06A';
-      });
-      if (timer) timer.textContent = '✅ 发酵完成！';
-      audio.play('click');
-
-      // Slogan 节奏感动效
-      triggerSloganBeat();
-
-      setTimeout(() => window.app && window.app.next(), 1200);
-    }, 2000);
-  });
-};
-
-// ============================================================
-// P7 烘烤线 — 拖拽滑块调温度
+// P7 烘烤火候 — 拖动滑块调温度
 // ============================================================
 window.init_page07 = function () {
   const slider = document.getElementById('bakeSlider');
-  const toast = document.getElementById('bakeToast');
   const feedback = document.getElementById('bakeFeedback');
   if (!slider || slider.dataset.ready) return;
   slider.dataset.ready = '1';
 
   slider.addEventListener('input', () => {
     const val = parseInt(slider.value);
-
-    // 追踪用户操作数据
     if (!window._userData) window._userData = {};
     window._userData.bakeSlider = val;
 
-    if (val <= 30) {
-      toast.style.background = '#f8e8d0';
-      feedback.textContent = '颜色苍白，内心未熟';
+    if (val <= 25) {
+      feedback.textContent = '火小了，还差点香气 🔥';
       feedback.style.color = '#8E8E93';
-    } else if (val >= 70) {
-      toast.style.background = '#5a3020';
-      feedback.textContent = '焦了，这批要重做';
+    } else if (val >= 75) {
+      feedback.textContent = '烤过头了，厂长叫停！🛑';
       feedback.style.color = '#D42026';
-      // 彩蛋动画
-      toast.style.animation = 'shake 0.5s';
-      setTimeout(() => { toast.style.animation = ''; }, 500);
     } else {
-      // 完美的金黄色
-      toast.style.background = 'linear-gradient(180deg, #E8C06A, #D4A850)';
-      toast.style.boxShadow = '0 0 30px rgba(244,169,64,0.4)';
-      feedback.textContent = '220°C，表皮微脆内心柔软，唯一正确答案';
+      feedback.textContent = '👑 火候刚刚好！豪士豪士，好吃好吃';
       feedback.style.color = '#4CAF50';
-
-      // Slogan 节奏感动效
-      triggerSloganBeat();
-
       slider.disabled = true;
+      triggerSloganBeat();
       setTimeout(() => {
         window.app && window.app.next();
         slider.disabled = false;
@@ -331,14 +211,13 @@ window.init_page07 = function () {
 };
 
 // ============================================================
-// P8 切片包装 — 横向滚动浏览流水线
+// P8 切片包装 — 横滑流水线
 // ============================================================
 window.init_page08 = function () {
   const wrap = document.getElementById('conveyorWrap');
   if (!wrap || wrap.dataset.ready) return;
   wrap.dataset.ready = '1';
 
-  // 滚动到末尾时自动翻页
   wrap.addEventListener('scroll', () => {
     const maxScroll = wrap.scrollWidth - wrap.clientWidth;
     if (wrap.scrollLeft >= maxScroll - 10) {
@@ -349,7 +228,7 @@ window.init_page08 = function () {
 };
 
 // ============================================================
-// P9 质检挑战 — 找不合格面包
+// P9 质检挑战 — 找瑕疵面包
 // ============================================================
 window.init_page09 = function () {
   const page = document.getElementById('page09');
@@ -364,14 +243,13 @@ window.init_page09 = function () {
   let quiz;
 
   const startQuiz = () => {
-    // 重置面包状态
     breads.forEach(b => {
       b.classList.remove('found', 'wrong');
       b.style.pointerEvents = 'auto';
     });
     if (result) result.textContent = '';
     if (retryBtn) retryBtn.style.display = 'none';
-    if (timer) timer.textContent = '10';
+    if (timer) { timer.textContent = '10'; timer.style.color = ''; timer.style.animation = ''; }
 
     quiz = new QuizGame({
       breads,
@@ -379,32 +257,29 @@ window.init_page09 = function () {
       timeLimit: 10,
       maxMistakes: 3,
       onPass: ({ found, timeUsed, mistakes }) => {
-        // 三档结果
-        let grade, gradeText;
+        let grade, gradeText, gradeTitle;
         if (mistakes === 0 && timeUsed <= 5) {
-          grade = 'S';
-          gradeText = '👑 眼力一流·天生厂长';
+          grade = 'S'; gradeText = '👑 天生厂长！零失误，豪士正式向你发放全职邀请';
+          gradeTitle = '天生厂长';
         } else if (mistakes <= 1 && timeUsed <= 8) {
-          grade = 'A';
-          gradeText = '✅ 合格·可以上岗';
+          grade = 'A'; gradeText = '✅ 合格！每一片都经得起查岗';
+          gradeTitle = '合格厂长';
         } else {
-          grade = 'B';
-          gradeText = '🍞 建议多吃几片豪士练练眼';
+          grade = 'B'; gradeText = '🍞 实习厂长认证，下次查岗表现更好';
+          gradeTitle = '实习厂长';
         }
         if (result) result.innerHTML = gradeText;
         if (timer) timer.textContent = '✅';
-        // 存储完整成绩供 P10 使用
-        window._quizScore = { found, timeUsed, mistakes, grade };
+        window._quizScore = { found, timeUsed, mistakes, grade, gradeTitle };
         audio.play('click');
         setTimeout(() => window.app && window.app.next(), 2000);
       },
       onFail: ({ found, mistakes }) => {
         const missed = 2 - found;
-        if (result) result.textContent = `失误${mistakes}次，差${missed}片没找到 😥`;
-        if (timer) timer.textContent = '⏰';
+        if (result) result.textContent = `失误${mistakes}次，差${missed}片没找到，再试一次 😥`;
+        if (timer) { timer.textContent = '⏰'; timer.style.animation = ''; }
         if (retryBtn) retryBtn.style.display = 'inline-block';
-        // 存储失败数据
-        window._quizScore = { found, timeUsed: 10, mistakes, grade: 'F' };
+        window._quizScore = { found, timeUsed: 10, mistakes, grade: 'F', gradeTitle: '学员' };
       },
       onUpdate: ({ timeLeft, mistakes }) => {
         if (timer) {
@@ -412,11 +287,8 @@ window.init_page09 = function () {
           if (timeLeft <= 3) {
             timer.style.animation = 'pulse 0.5s infinite';
             timer.style.color = '#C9212B';
-          } else {
-            timer.style.color = '';
           }
         }
-        // 显示剩余容错次数
         const remaining = 3 - (mistakes || 0);
         if (result && mistakes > 0) {
           result.textContent = `还剩 ${remaining} 次容错机会`;
@@ -424,87 +296,107 @@ window.init_page09 = function () {
         }
       },
     });
-
     quiz.start();
   };
 
-  // 重试按钮
-  if (retryBtn) {
-    retryBtn.addEventListener('click', startQuiz);
-  }
-
+  if (retryBtn) retryBtn.addEventListener('click', startQuiz);
   startQuiz();
 };
 
 window.leave_page09 = function () {
-  // 离开页面时清理计时器
   const timerEl = document.getElementById('quizTimer');
   if (timerEl) timerEl.style.animation = '';
 };
 
 // ============================================================
-// P10 质检结果 / 徽章
+// P10 厂长工牌 — 显示动态成绩
 // ============================================================
 window.init_page10 = function () {
-  const badge = document.getElementById('badgeElement');
-  const scoreEl = document.getElementById('badgeScore');
-  const subtitleEl = document.querySelector('#page10 .page-subtitle');
+  const badge = document.getElementById('badgeResult');
+  const gradeEl = document.getElementById('badgeGrade');
+  const titleEl = document.getElementById('badgeTitleText');
+  const personalEl = document.getElementById('badgePersonal');
   if (!badge || badge.dataset.ready) return;
   badge.dataset.ready = '1';
 
-  // 动态生成个性化文案
   const quiz = window._quizScore || {};
   const ud = window._userData || {};
-  let personalMsg = '';
 
+  // 显示评级
+  if (gradeEl) gradeEl.textContent = quiz.grade || 'B';
+  if (titleEl) titleEl.textContent = quiz.gradeTitle || '实习厂长';
+
+  // 个性化文案
   const bakeVal = ud.bakeSlider;
-  if (bakeVal && bakeVal >= 70) {
-    personalMsg = `你把温度调到了${Math.round(bakeVal * 2.2 + 20)}°C，还好不是你在开炉 😅`;
+  let personalMsg;
+  if (bakeVal && bakeVal >= 75) {
+    personalMsg = '火候调大了，还好不是真的在开炉 😅';
   } else if (quiz.grade === 'S') {
-    personalMsg = '零失误通关质检，豪士正式向你发放全职邀请 🎖️';
+    personalMsg = '零失误通关，豪士正式向你发放全职邀请 🎖️';
   } else if (quiz.grade === 'A') {
-    personalMsg = `${quiz.timeUsed}秒找出${quiz.found}片不合格品，合格厂长认证`;
+    personalMsg = `${quiz.timeUsed}秒找出${quiz.found}片，每一片都经得起查岗`;
   } else if (quiz.grade === 'B') {
-    personalMsg = '虽然慢了一点点，但诚意满分，豪士欢迎你随时回来 🍞';
-  } else if (quiz.grade === 'F') {
-    personalMsg = '厂长考核未通过...但豪士永远欢迎你再来品尝 😊';
+    personalMsg = '虽然慢了一点，但诚意满分 🍞';
   } else {
-    personalMsg = '质检通过 · 豪士认证厂长';
+    personalMsg = '豪士藜麦吐司，等你来查岗';
   }
-
-  if (scoreEl) {
-    scoreEl.textContent = quiz.grade === 'S' ? '资质等级 S · 天生厂长' :
-                          quiz.grade === 'A' ? '资质等级 A · 合格厂长' :
-                          quiz.grade === 'B' ? '资质等级 B · 实习厂长' : '资质等级 — · 学员';
-  }
-
-  // 插入个性化一句话
-  if (subtitleEl && personalMsg) {
-    const p = document.createElement('p');
-    p.style.cssText = 'font-size:13px; color:var(--brown); margin-top:6px; font-style:italic; opacity:0.8;';
-    p.textContent = personalMsg;
-    subtitleEl.appendChild(p);
-  }
-
-  // 添加话题标签到工牌底部
-  const tagEl = document.createElement('div');
-  tagEl.style.cssText = 'font-size:11px; color:var(--brown); opacity:0.6; margin-top:12px; letter-spacing:0.04em;';
-  tagEl.textContent = '#豪士豪士好吃好吃#';
-  badge.parentElement.appendChild(tagEl);
+  if (personalEl) personalEl.textContent = personalMsg;
 
   let clicked = false;
   badge.addEventListener('click', () => {
     if (clicked) return;
     clicked = true;
     badge.style.animation = 'none';
-    badge.style.boxShadow = '0 0 60px rgba(244,169,64,0.8), 0 0 120px rgba(212,32,38,0.3)';
+    badge.style.boxShadow = '0 0 60px rgba(245,184,75,0.8), 0 0 120px rgba(0,59,122,0.5)';
     audio.play('click');
-    setTimeout(() => window.app && window.app.next(), 1200);
+    setTimeout(() => window.app && window.app.next(), 1000);
   });
 };
 
 // ============================================================
-// Slogan 节奏感动效 — 依次弹出"豪士-豪士-好吃-好吃"
+// P11 透明工厂直播间
+// ============================================================
+window.init_page11 = function () {
+  const btn = document.getElementById('btnWatchLive');
+  if (!btn || btn.dataset.ready) return;
+  btn.dataset.ready = '1';
+
+  btn.addEventListener('click', () => {
+    audio.play('click');
+    window.open(LIVE_URL, '_blank');
+  });
+};
+
+// ============================================================
+// P12 转化页 — 购买/直播/分享
+// ============================================================
+window.init_page12 = function () {
+  const page = document.getElementById('page12');
+  if (!page || page.dataset.ready) return;
+  page.dataset.ready = '1';
+
+  document.getElementById('btnTmall')?.addEventListener('click', () => {
+    window.open(TMALL_URL, '_blank');
+  });
+  document.getElementById('btnLive2')?.addEventListener('click', () => {
+    window.open(LIVE_URL, '_blank');
+  });
+  document.getElementById('btnShare')?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(TOPIC_TEXT);
+      const btn = document.getElementById('btnShare');
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = '✅ 已复制！去微博/抖音/小红书发帖吧';
+        btn.style.background = 'linear-gradient(135deg, #4CAF50, #388E3C)';
+        setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2500);
+      }
+    } catch (e) { /* ignore */ }
+  });
+};
+
+// ============================================================
+// Slogan 节奏感动效
 // ============================================================
 function triggerSloganBeat() {
   const words = ['豪士', '豪士', '好吃', '好吃'];
@@ -514,152 +406,8 @@ function triggerSloganBeat() {
       el.className = 'slogan-beat';
       el.textContent = word;
       document.body.appendChild(el);
-      // 触发动画
       requestAnimationFrame(() => el.classList.add('pop'));
-      // 动画结束后移除
       setTimeout(() => el.remove(), 900);
     }, i * 350);
   });
 }
-
-// ============================================================
-// P11 360° 产品展示 — 拖拽旋转
-// ============================================================
-window.init_page11 = function () {
-  const product = document.getElementById('product3d');
-  const container = document.getElementById('productRotate');
-  if (!product || product.dataset.ready) return;
-  product.dataset.ready = '1';
-
-  let startX = 0;
-  let currentRotate = 0;
-
-  container.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-  });
-
-  container.addEventListener('touchmove', (e) => {
-    const dx = e.touches[0].clientX - startX;
-    currentRotate += dx * 0.5;
-    product.style.transform = `rotateY(${currentRotate}deg)`;
-    startX = e.touches[0].clientX;
-  });
-
-  // Mouse
-  container.addEventListener('mousedown', (e) => {
-    startX = e.clientX;
-    const onMove = (ev) => {
-      const dx = ev.clientX - startX;
-      currentRotate += dx * 0.5;
-      product.style.transform = `rotateY(${currentRotate}deg)`;
-      startX = ev.clientX;
-    };
-    const onUp = () => {
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
-    };
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
-  });
-};
-
-// ============================================================
-// P12 透明工厂直播间 — 点击跳转
-// ============================================================
-window.init_page12 = function () {
-  const page = document.getElementById('page12');
-  if (!page || page.dataset.ready) return;
-  page.dataset.ready = '1';
-
-  page.addEventListener('click', () => {
-    window.app && window.app.next();
-  });
-};
-
-// ============================================================
-// P13 Slogan 动画 — 点击任意位置继续
-// ============================================================
-window.init_page13 = function () {
-  const page = document.getElementById('page13');
-  if (!page || page.dataset.ready) return;
-  page.dataset.ready = '1';
-
-  // 动画是 CSS 自动播放的，只需要点击翻页
-  page.addEventListener('click', () => {
-    window.app && window.app.next();
-  });
-};
-
-// ============================================================
-// P14 专属海报 — Canvas 合成
-// ============================================================
-window.init_page14 = function () {
-  const btnGen = document.getElementById('btnGenerate');
-  const btnDl = document.getElementById('btnDownload');
-  const canvas = document.getElementById('posterCanvas');
-  if (!btnGen || btnGen.dataset.ready) return;
-  btnGen.dataset.ready = '1';
-
-  btnGen.addEventListener('click', async () => {
-    btnGen.textContent = '⏳ 生成中...';
-    btnGen.disabled = true;
-
-    const { found = 2, timeUsed = 0 } = window._quizScore || {};
-    const dataURL = await generatePoster({
-      canvas,
-      badgeSrc: '',
-      productSrc: '',
-      score: found,
-      timeUsed,
-    });
-
-    btnGen.style.display = 'none';
-    btnDl.style.display = 'inline-block';
-    audio.play('click');
-
-    // 把结果存下来供下载
-    btnDl._dataURL = dataURL;
-    btnGen.disabled = false;
-    btnGen.textContent = '📸 生成海报';
-  });
-
-  btnDl.addEventListener('click', () => {
-    if (btnDl._dataURL) {
-      downloadPoster(btnDl._dataURL);
-    }
-  });
-};
-
-// ============================================================
-// P15 尾页 — 行动号召按钮
-// ============================================================
-window.init_page15 = function () {
-  const page = document.getElementById('page15');
-  if (!page || page.dataset.ready) return;
-  page.dataset.ready = '1';
-
-  document.getElementById('btnBuy')?.addEventListener('click', () => {
-    window.open('https://www.haoshifood.com/buy', '_blank');
-  });
-
-  document.getElementById('btnLive2')?.addEventListener('click', () => {
-    window.open('https://www.haoshifood.com/live', '_blank');
-  });
-
-  document.getElementById('btnSite')?.addEventListener('click', () => {
-    window.open('https://www.haoshifood.com', '_blank');
-  });
-
-  // 话题复制
-  document.getElementById('actionTags')?.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText('#豪士豪士好吃好吃# @豪士官方旗舰店');
-      const el = document.getElementById('actionTags');
-      const orig = el.textContent;
-      el.textContent = '✅ 已复制！去微博/抖音/小红书发帖吧';
-      setTimeout(() => { el.textContent = orig; }, 2000);
-    } catch (e) {
-      // clipboard 不可用则忽略
-    }
-  });
-};
