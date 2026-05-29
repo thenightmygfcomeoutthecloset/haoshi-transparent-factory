@@ -8,7 +8,7 @@ class App {
   constructor() {
     this.pages = document.querySelectorAll('.page');
     this.total = this.pages.length;
-    this.current = -1; // 设为 -1，确保 goTo(0) 不会因为 current===0 被跳过
+    this.current = 0;
     this.isTransitioning = false;
 
     // 页面指示器
@@ -33,8 +33,9 @@ class App {
       });
     }
 
-    // 显示首页
-    this.goTo(0, false);
+    // 直接初始化首屏，不走 goTo 避免 index===current 拦截
+    this._initPage(0);
+    this._updateIndicator();
   }
 
   next() {
