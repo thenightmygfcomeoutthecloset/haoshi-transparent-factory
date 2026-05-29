@@ -169,63 +169,73 @@
       font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.04em;
     }
 
-    /* ===== P1 首屏钩子 — 直播监控感 ===== */
+    /* ===== P1 首屏 — 金色参观券（查理巧克力工厂风） ===== */
     #page01 {
-      background: linear-gradient(180deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%);
+      background: linear-gradient(180deg, #1A120B 0%, #3D2914 40%, #5C3D1E 100%);
       overflow: hidden;
     }
-    .p1-scanline {
-      position: absolute; inset: 0; z-index: 0; pointer-events: none;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px);
+    /* 金色光芒 */
+    .p1-golden-glow {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, rgba(245,184,75,0.06) 40%, transparent 70%);
+      z-index: 0; pointer-events: none;
+      animation: glowPulse 3s ease-in-out infinite;
     }
-    .p1-monitor-frame {
-      position: absolute; inset: 12px; z-index: 0; pointer-events: none;
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 4px;
-    }
-    .p1-monitor-frame::before {
-      content: '● REC'; position: absolute; top: 8px; left: 16px;
-      font-size: 10px; color: rgba(255,80,80,0.7); letter-spacing: 0.08em;
-      animation: gentlePulse 2s ease-in-out infinite;
-    }
-    .p1-badge {
-      display: inline-block; padding: 6px 18px; border-radius: 50px;
-      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6);
-      font-size: 12px; letter-spacing: 0.06em; margin-bottom: 24px;
+    /* 金色参观券 */
+    .golden-ticket {
       position: relative; z-index: 2;
+      width: 260px; filter: drop-shadow(0 8px 32px rgba(245,184,75,0.3));
+      animation: float 4s ease-in-out infinite;
     }
-    .p1-title {
-      font-family: var(--font-title); font-size: 34px; font-weight: 900;
-      color: #fff; line-height: 1.4; letter-spacing: 0.03em;
-      position: relative; z-index: 2; padding: 0 20px;
+    .ticket-body {
+      background: linear-gradient(160deg, #FFE8B0 0%, #F5C960 30%, #E8B840 60%, #D4A020 100%);
+      padding: 28px 20px; text-align: center;
+      position: relative;
+      border-left: 2px dashed rgba(180,120,40,0.4);
+      border-right: 2px dashed rgba(180,120,40,0.4);
     }
-    .p1-title em { font-style: normal; color: var(--bread-yellow); }
-    .p1-sub {
-      font-size: 15px; color: rgba(255,255,255,0.55);
-      margin-top: 16px; letter-spacing: 0.05em; position: relative; z-index: 2;
+    .ticket-edge {
+      height: 12px; position: relative;
     }
-    .p1-product-visual {
-      position: relative; z-index: 2; margin: 20px 0;
+    .ticket-edge-top {
+      background: linear-gradient(180deg, #E8C050, #D4A030);
+      border-radius: 4px 4px 0 0;
+      clip-path: polygon(0 0, 6% 0, 8% 100%, 14% 0, 18% 0, 20% 100%, 26% 0, 30% 0, 32% 100%, 38% 0, 42% 0, 44% 100%, 50% 0, 56% 0, 58% 100%, 64% 0, 68% 0, 70% 100%, 76% 0, 80% 0, 82% 100%, 88% 0, 92% 0, 94% 100%, 100% 0);
     }
-    .p1-product-visual img {
-      width: 200px; height: auto; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+    .ticket-edge-bottom {
+      background: linear-gradient(180deg, #D4A030, #C89020);
+      border-radius: 0 0 4px 4px;
+      clip-path: polygon(0 100%, 6% 100%, 8% 0, 14% 100%, 18% 100%, 20% 0, 26% 100%, 30% 100%, 32% 0, 38% 100%, 42% 100%, 44% 0, 50% 100%, 56% 100%, 58% 0, 64% 100%, 68% 100%, 70% 0, 76% 100%, 80% 100%, 82% 0, 88% 100%, 92% 100%, 94% 0, 100% 100%);
     }
-    /* 面包 CSS 降级 */
-    .p1-bread-css {
-      width: 180px; height: 110px;
-      background: linear-gradient(180deg, #F0D68A 0%, #E0B860 50%, #C89838 100%);
-      border-radius: 14px 14px 8px 8px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.3);
-      position: relative; margin: 0 auto;
+    .ticket-logo {
+      font-family: var(--font-title); font-size: 18px; font-weight: 900;
+      color: #5C3D1E; letter-spacing: 0.08em;
     }
-    .p1-bread-css::after {
-      content: ''; position: absolute; inset: 10px 20px 8px;
-      background-image:
-        radial-gradient(circle 3px, rgba(255,240,200,0.5) 30%, transparent 70%),
-        radial-gradient(circle 2px, rgba(255,240,200,0.4) 30%, transparent 70%),
-        radial-gradient(circle 2.5px, rgba(240,210,160,0.4) 30%, transparent 70%),
-        radial-gradient(circle 2px, rgba(255,240,200,0.5) 30%, transparent 70%);
-      background-size: 38px 28px, 32px 26px, 40px 30px, 36px 26px;
-      background-position: 5px 5px, 28px 15px, 10px 22px, 35px 8px;
+    .ticket-title {
+      font-family: var(--font-title); font-size: 32px; font-weight: 900;
+      color: #3D2914; line-height: 1.2; letter-spacing: 0.04em; margin: 8px 0;
+    }
+    .ticket-divider {
+      width: 40px; height: 2px; background: rgba(92,61,30,0.3);
+      margin: 10px auto; border-radius: 1px;
+    }
+    .ticket-no {
+      font-size: 12px; color: rgba(92,61,30,0.5); letter-spacing: 0.08em;
+      font-family: var(--font-title);
+    }
+    .p1-hook-text {
+      font-family: var(--font-title); font-size: 24px; font-weight: 900;
+      color: rgba(255,255,255,0.9); text-align: center;
+      line-height: 1.5; letter-spacing: 0.03em;
+      margin-top: 18px; z-index: 2; position: relative;
+    }
+    .p1-hook-text em { font-style: normal; color: var(--bread-yellow); }
+    .p1-hook-sub {
+      font-size: 13px; color: rgba(255,255,255,0.5);
+      margin-top: 6px; letter-spacing: 0.05em; z-index: 2; position: relative;
     }
 
     /* ===== P2 厂长身份确认 ===== */
@@ -620,19 +630,26 @@
 
   <div class="viewport">
 
-    <!-- ===== P1 首屏钩子 ===== -->
+    <!-- ===== P1 首屏 — 金色参观券 ===== -->
     <div class="page active" id="page01" data-page="1">
-      <div class="p1-monitor-frame"></div>
-      <div class="p1-scanline"></div>
       <div class="particles"></div>
-      <div class="p1-badge">豪士透明工厂 · 开放日</div>
-      <div class="p1-title">这届年轻人，<br>连面包都要<em>亲自查岗</em></div>
-      <div class="p1-sub">点一下，当一天厂长，看看面包怎么来的</div>
-      <div class="p1-product-visual">
-        <div class="p1-bread-css"></div>
+      <!-- 金色光芒背景 -->
+      <div class="p1-golden-glow"></div>
+      <!-- 金色参观券 -->
+      <div class="golden-ticket" id="goldenTicket">
+        <div class="ticket-edge ticket-edge-top"></div>
+        <div class="ticket-body">
+          <div class="ticket-logo">HORSH 豪士</div>
+          <div class="ticket-title">透明工厂<br>参观券</div>
+          <div class="ticket-divider"></div>
+          <div class="ticket-no">NO. 0001</div>
+        </div>
+        <div class="ticket-edge ticket-edge-bottom"></div>
       </div>
-      <div class="slogan-pill" style="margin-top:8px;">豪士豪士，好吃好吃</div>
-      <button class="btn-warm" id="btnEnter" style="margin-top:20px;">进入透明工厂</button>
+      <div class="p1-hook-text">这届年轻人<br>连面包都要<em>亲自查岗</em></div>
+      <div class="p1-hook-sub">恭喜你抽中豪士透明工厂参观资格</div>
+      <div class="slogan-pill" style="margin-top:8px;background:rgba(245,184,75,0.2);color:var(--toast-brown);">豪士豪士，好吃好吃</div>
+      <button class="btn-warm" id="btnEnter" style="margin-top:14px;">撕下参观券，进入工厂</button>
     </div>
 
     <!-- ===== P2 厂长身份确认 ===== -->
