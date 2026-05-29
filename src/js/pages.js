@@ -93,6 +93,17 @@ window.init_page04 = function () {
   const cards = document.querySelectorAll('#ingredientCards .ingredient-card');
   if (cards.length === 0 || cards[0].dataset.ready) return;
 
+  // 触发轨迹线动画
+  const trails = document.querySelectorAll('#worldMap .map-trail');
+  trails.forEach((t, i) => {
+    setTimeout(() => t.classList.add('animate'), i * 250);
+  });
+  // 显示地名标签
+  const pins = document.querySelectorAll('#worldMap .map-pin');
+  pins.forEach((p, i) => {
+    setTimeout(() => p.classList.add('show-label'), i * 350 + 500);
+  });
+
   let revealed = 0;
   cards.forEach((card) => {
     card.dataset.ready = '1';

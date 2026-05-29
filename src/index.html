@@ -283,6 +283,91 @@
       background: radial-gradient(ellipse at center, rgba(255,217,138,0.15), transparent);
     }
 
+    /* ===== P4 世界地图 ===== */
+    .world-map {
+      position: relative; width: 140px; height: 70px;
+      margin: 0 auto 0; z-index: 2;
+    }
+    /* 像素地图底层 */
+    .map-dots-layer {
+      width: 4px; height: 4px;
+      background: rgba(0,59,122,0.06);
+      border-radius: 0;
+      position: absolute; top: 0; left: 0;
+      pointer-events: none;
+      box-shadow:
+        15px 5px, 20px 5px, 25px 5px, 30px 5px, 35px 5px, 40px 5px,
+        60px 5px, 65px 5px, 70px 5px, 75px 5px, 80px 5px,
+        95px 5px, 100px 5px, 105px 5px, 110px 5px,
+        10px 10px, 15px 10px, 20px 10px, 25px 10px, 30px 10px, 35px 10px, 40px 10px, 45px 10px,
+        55px 10px, 60px 10px, 65px 10px, 70px 10px, 75px 10px, 80px 10px, 85px 10px,
+        95px 10px, 100px 10px, 105px 10px, 110px 10px, 115px 10px, 120px 10px,
+        5px 15px, 10px 15px, 15px 15px, 20px 15px, 25px 15px, 30px 15px, 35px 15px, 40px 15px, 45px 15px,
+        55px 15px, 60px 15px, 65px 15px, 70px 15px, 75px 15px, 80px 15px, 85px 15px,
+        90px 15px, 95px 15px, 100px 15px, 105px 15px, 110px 15px, 115px 15px, 130px 15px,
+        10px 20px, 15px 20px, 20px 20px, 25px 20px, 30px 20px, 35px 20px, 40px 20px,
+        60px 20px, 65px 20px, 70px 20px, 75px 20px, 80px 20px, 85px 20px,
+        90px 20px, 95px 20px, 100px 20px, 105px 20px, 110px 20px, 115px 20px,
+        15px 25px, 20px 25px, 25px 25px, 30px 25px, 35px 25px,
+        65px 25px, 70px 25px, 75px 25px, 80px 25px, 85px 25px, 95px 25px, 100px 25px, 105px 25px, 110px 25px,
+        20px 30px, 25px 30px, 30px 30px, 35px 30px,
+        65px 30px, 70px 30px, 75px 30px, 80px 30px, 85px 30px, 90px 30px, 100px 30px, 105px 30px,
+        20px 35px, 25px 35px, 30px 35px, 35px 35px,
+        65px 35px, 70px 35px, 75px 35px, 80px 35px, 85px 35px, 90px 35px, 100px 35px, 105px 35px,
+        20px 40px, 25px 40px, 30px 40px, 35px 40px, 40px 40px,
+        65px 40px, 70px 40px, 75px 40px, 80px 40px, 85px 40px, 90px 40px, 95px 40px, 100px 40px, 105px 40px, 110px 40px,
+        15px 45px, 20px 45px, 25px 45px, 30px 45px, 35px 45px,
+        65px 45px, 70px 45px, 75px 45px, 80px 45px, 85px 45px, 90px 45px, 95px 45px, 100px 45px, 105px 45px,
+        15px 50px, 20px 50px, 25px 50px, 30px 50px,
+        70px 50px, 75px 50px, 80px 50px, 90px 50px, 95px 50px, 100px 50px, 105px 50px,
+        65px 55px, 70px 55px, 75px 55px, 90px 55px, 95px 55px, 100px 55px,
+        30px 60px, 35px 60px, 40px 60px, 50px 60px, 55px 60px, 60px 60px, 65px 60px, 70px 60px, 75px 60px, 80px 60px, 85px 60px, 90px 60px;
+    }
+    /* 地图标记点 */
+    .map-pin {
+      position: absolute; width: 12px; height: 12px;
+      background: var(--bread-yellow); border-radius: 50%;
+      cursor: pointer; z-index: 5;
+      animation: gentlePulse 2s ease-in-out infinite;
+      box-shadow: 0 0 10px rgba(245,184,75,0.6);
+      transform: translate(-50%, -50%);
+    }
+    .map-pin::after {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #fff; opacity: 0.8;
+    }
+    .map-pin.zhangzhou {
+      background: var(--haoshi-red);
+      width: 16px; height: 16px;
+      box-shadow: 0 0 16px rgba(201,33,43,0.7);
+    }
+    .map-pin-label {
+      position: absolute; top: -20px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px; color: var(--haoshi-blue); font-weight: 700;
+      white-space: nowrap; pointer-events: none;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .map-pin:hover .map-pin-label,
+    .map-pin.show-label .map-pin-label { opacity: 1; }
+    /* 轨迹线 */
+    .map-trail {
+      position: absolute; height: 1.5px;
+      background: var(--bread-yellow);
+      z-index: 4; opacity: 0; pointer-events: none;
+      transform-origin: left center;
+      border-radius: 1px;
+    }
+    .map-trail.animate {
+      animation: trailDraw 0.8s ease-out forwards;
+    }
+    @keyframes trailDraw {
+      from { opacity: 0; width: 0; }
+      to   { opacity: 0.7; }
+    }
+
     /* ===== P4 原料查验卡片 ===== */
     .ingredient-cards { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin: 20px 0; position: relative; z-index: 2; }
     .ingredient-card {
@@ -589,16 +674,43 @@
       <div class="page-hint" id="gateHint">👈 👉 推开玻璃门，开始查岗</div>
     </div>
 
-    <!-- ===== P4 原料查验 ===== -->
+    <!-- ===== P4 原料查验 + 世界地图 ===== -->
     <div class="page" id="page04" data-page="4" style="background:linear-gradient(180deg,#F4F8FD,#FFF8EA);">
-      <div class="transparency-badge" style="margin-bottom:12px;">第一站 · 查原料</div>
-      <div class="page-title" style="font-size:var(--text-lg);">原料来自哪儿，你得亲眼看看</div>
-      <p class="page-subtitle">真材实料，不藏着掖着</p>
-      <div class="ingredient-cards" id="ingredientCards">
+      <div class="transparency-badge" style="margin-bottom:8px;">第一站 · 查原料</div>
+      <div class="page-title" style="font-size:var(--text-lg);">原料从地球另一端来</div>
+      <p class="page-subtitle" style="margin-bottom:16px;">真材实料，不藏着掖着</p>
+
+      <!-- 像素世界地图 -->
+      <div class="world-map" id="worldMap">
+        <div class="map-dots-layer"></div>
+        <!-- 加拿大 -->
+        <div class="map-pin" style="left:25px;top:8px;" data-pin="canada">
+          <span class="map-pin-label">加拿大</span>
+        </div>
+        <!-- 玻利维亚 -->
+        <div class="map-pin" style="left:28px;top:38px;" data-pin="bolivia">
+          <span class="map-pin-label">玻利维亚</span>
+        </div>
+        <!-- 新西兰 -->
+        <div class="map-pin" style="left:112px;top:52px;" data-pin="nz">
+          <span class="map-pin-label">新西兰</span>
+        </div>
+        <!-- 漳州 -->
+        <div class="map-pin zhangzhou" style="left:95px;top:22px;" data-pin="zhangzhou">
+          <span class="map-pin-label">漳州</span>
+        </div>
+        <!-- 轨迹线 -->
+        <div class="map-trail" data-trail="0" style="left:25px;top:8px;width:70px;transform:rotate(12deg);"></div>
+        <div class="map-trail" data-trail="1" style="left:28px;top:38px;width:67px;transform:rotate(-13deg);"></div>
+        <div class="map-trail" data-trail="2" style="left:112px;top:52px;width:28px;transform:rotate(-60deg);"></div>
+      </div>
+
+      <!-- 原料卡片 -->
+      <div class="ingredient-cards" id="ingredientCards" style="margin-top:12px;">
         <div class="ingredient-card" data-ingredient="0">
           <div class="card-icon">🌾</div>
           <div class="card-name">玻利维亚红藜麦</div>
-          <div class="card-detail">进口黄金谷物<br>高蛋白、高营养</div>
+          <div class="card-detail">海拔4000米黄金谷物<br>高蛋白、高营养</div>
         </div>
         <div class="ingredient-card" data-ingredient="1">
           <div class="card-icon">🧈</div>
@@ -611,7 +723,7 @@
           <div class="card-detail">每一批原料<br>都有来路、有记录</div>
         </div>
       </div>
-      <div class="slogan-pill" style="margin-top:16px;">豪士豪士，好吃好吃</div>
+      <div class="slogan-pill" style="margin-top:10px;">豪士豪士，好吃好吃</div>
       <div class="page-hint">点开看看原料从哪来的</div>
     </div>
 
