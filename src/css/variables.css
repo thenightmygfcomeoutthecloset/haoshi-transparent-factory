@@ -1,31 +1,37 @@
-/* === 豪士面包 品牌色体系 V3 === */
+/* === 豪士面包 品牌色体系 V4 — Stripe×Airbnb 融合 === */
 :root {
   /* 豪士品牌色 */
   --haoshi-blue: #003B7A;
   --haoshi-blue-dark: #002A5C;
   --haoshi-blue-soft: #EAF3FF;
+  --haoshi-red: #C9212B;
+  --haoshi-red-dark: #A01822;
+  --haoshi-gold: #FFD700;
 
-  /* 暖色调 */
+  /* 暖色调 — 面包/奶油系 */
   --cream-white: #FFF8EA;
   --cream-soft: #FFF3D6;
   --bread-yellow: #F5B84B;
   --bread-light: #FFD98A;
   --toast-brown: #B87435;
+
+  /* 文字色 — Airbnb 式暖黑 */
+  --text-primary: #1A1A1A;
+  --text-secondary: #6A6A6A;
   --brown: #5B3217;
 
   /* 强调色 */
-  --brand-red: #C9212B;
   --safe-green: #7FA36B;
 
   /* 玻璃拟态 */
   --glass-white: rgba(255, 255, 255, 0.78);
-  --glass-strong: rgba(255, 255, 255, 0.9);
-  --glass-dark: rgba(255, 255, 255, 0.12);
-  --shadow-soft: 0 18px 45px rgba(91, 50, 23, 0.12);
+  --shadow-soft: rgba(91,50,23,0.06) 0px 2px 6px, rgba(91,50,23,0.1) 0px 8px 24px;
+  --shadow-elevated: rgba(0,59,122,0.08) 0px 4px 12px, rgba(0,59,122,0.15) 0px 12px 32px;
+  --shadow-button: rgba(91,50,23,0.12) 0px 4px 16px;
 
   /* 兼容旧变量名 */
   --color-red: #C9212B;
-  --color-red-dark: #A01A22;
+  --color-red-dark: #A01822;
   --color-red-light: #E8445A;
   --color-gold: #F5B84B;
   --color-gold-light: #FFD98A;
@@ -37,15 +43,14 @@
   --color-brown: #5B3217;
   --color-brown-light: #8B7355;
 
-  /* 字体 — 系统字体栈，不依赖 Google Fonts */
+  /* 字体 — 系统字体栈 */
   --font-title: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   --font-body: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --font-display: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 
-  /* 字号 */
-  --text-2xl: 52px;
-  --text-xl: 40px;
-  --text-lg: 26px;
+  /* 字号 — Stripe 式渐进字阶 */
+  --text-display: 36px;
+  --text-xl: 30px;
+  --text-lg: 24px;
   --text-md: 17px;
   --text-sm: 14px;
   --text-xs: 12px;
@@ -53,6 +58,12 @@
   /* 固定尺寸 */
   --page-width: 640px;
   --page-height: 1008px;
+
+  /* 圆角系统 — Airbnb 式温暖圆角 */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 50px;
 
   /* 动画 */
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
