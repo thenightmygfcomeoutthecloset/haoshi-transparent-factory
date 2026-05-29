@@ -15,9 +15,12 @@ class App {
     this.indicator = document.querySelector('.page-indicator');
     this._initIndicator();
 
-    // 手势
+    // 手势 — P1/P2 禁止滑动翻页，必须点按钮
     this.gesture = new Gesture(document.querySelector('.app'), { threshold: 50 });
-    this.gesture.onSwipeLeft(() => this.next());
+    this.gesture.onSwipeLeft(() => {
+      if (this.current <= 1) return; // P1/P2 禁止滑动
+      this.next();
+    });
     this.gesture.onSwipeRight(() => this.prev());
 
     // 静音按钮
@@ -36,8 +39,6 @@ class App {
 
   next() {
     if (this.current >= this.total - 1 || this.isTransitioning) return;
-    // P1（首屏钩子）和 P2（厂长工牌）禁止滑动手势，只能通过点击按钮触发
-    if (this.current <= 1) return;
     this.goTo(this.current + 1);
   }
 
