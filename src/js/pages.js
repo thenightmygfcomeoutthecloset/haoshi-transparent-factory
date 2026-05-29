@@ -28,8 +28,6 @@ window.init_page02 = function () {
   card.dataset.ready = '1';
 
   card.addEventListener('click', () => {
-    if (card.dataset.clicked) return;
-    card.dataset.clicked = '1';
     card.style.animation = 'none';
     card.style.boxShadow = '0 0 60px rgba(245,184,75,0.7), 0 0 120px rgba(0,59,122,0.4)';
     audio.play('click');
@@ -341,10 +339,7 @@ window.init_page10 = function () {
   }
   if (personalEl) personalEl.textContent = personalMsg;
 
-  let clicked = false;
   badge.addEventListener('click', () => {
-    if (clicked) return;
-    clicked = true;
     badge.style.animation = 'none';
     badge.style.boxShadow = '0 0 60px rgba(245,184,75,0.8), 0 0 120px rgba(0,59,122,0.5)';
     audio.play('click');
