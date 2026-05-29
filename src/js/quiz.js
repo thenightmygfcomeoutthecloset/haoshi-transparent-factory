@@ -15,12 +15,14 @@ class QuizGame {
     this.breads = options.breads || [];
     this.badIndices = options.badIndices || [];
     this.timeLimit = options.timeLimit || 10;
+    this.maxMistakes = options.maxMistakes || 3;
     this.onPass = options.onPass || (() => {});
     this.onFail = options.onFail || (() => {});
     this.onUpdate = options.onUpdate || (() => {});
 
     this.found = 0;          // 已找到的坏面包数
     this.totalBad = this.badIndices.length;
+    this.mistakes = 0;        // 错误点击次数
     this.timeLeft = this.timeLimit;
     this.running = false;
     this.timer = null;
@@ -31,6 +33,7 @@ class QuizGame {
 
   start() {
     this.found = 0;
+    this.mistakes = 0;
     this.timeLeft = this.timeLimit;
     this._clicked.clear();
     this.running = true;
@@ -67,10 +70,16 @@ class QuizGame {
         this._end(true);
       }
     } else {
+      this.mistakes++;
       e.currentTarget.classList.add('wrong');
+      // 错误次数达到上限直接失败
+      if (this.mistakes >= this.maxMistakes) {
+        this._end(false);
+        return;
+      }
     }
 
-    this.onUpdate({ found: this.found, total: this.totalBad, timeLeft: this.timeLeft });
+    this.onUpdate({ found: this.found, total: this.totalBad, timeLeft: this.timeLeft, mistakes: this.mistakes });
   }
 
   _end(passed) {
@@ -83,9 +92,9 @@ class QuizGame {
     });
 
     if (passed) {
-      this.onPass({ found: this.found, timeUsed: this.timeLimit - this.timeLeft });
+      this.onPass({ found: this.found, timeUsed: this.timeLimit - this.timeLeft, mistakes: this.mistakes });
     } else {
-      this.onFail({ found: this.found, timeUsed: this.timeLimit - this.timeLeft });
+      this.onFail({ found: this.found, timeUsed: this.timeLimit - this.timeLeft, mistakes: this.mistakes });
     }
   }
 

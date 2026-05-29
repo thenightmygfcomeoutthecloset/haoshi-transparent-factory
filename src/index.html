@@ -254,6 +254,109 @@
     .tag-green { background: rgba(127,163,107,0.15); color: var(--safe-green); }
     .tag-gold { background: rgba(245,184,75,0.15); color: var(--toast-brown); }
 
+    /* ===== P0 前置钩子 — 地球 Zoom ===== */
+    #page00 {
+      background: linear-gradient(180deg, #000B1A 0%, #001A3A 40%, #002855 100%);
+      overflow: hidden;
+    }
+    .hook-earth-scene {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .hook-earth {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #4A90D9, #1A5C9E 50%, #0A3060 100%);
+      box-shadow: 0 0 80px rgba(74,144,217,0.4), 0 0 160px rgba(74,144,217,0.15);
+      position: relative;
+      animation: earthPulse 3s ease-in-out infinite;
+    }
+    .hook-earth::before {
+      content: '';
+      position: absolute;
+      inset: 15px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    /* 大陆轮廓 — 用 box-shadow 模拟 */
+    .hook-earth::after {
+      content: '';
+      position: absolute;
+      top: 30%; left: 25%;
+      width: 50px; height: 60px;
+      background: radial-gradient(ellipse at 40% 30%, rgba(100,180,100,0.5), transparent 70%);
+      border-radius: 50%;
+      transform: rotate(-20deg);
+    }
+    .hook-star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0;
+      animation: starTwinkle 2s ease-in-out infinite;
+    }
+    .hook-text {
+      font-family: var(--font-title);
+      font-size: 22px;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      line-height: 1.7;
+      letter-spacing: 0.05em;
+      margin-top: 32px;
+      z-index: 3;
+      padding: 0 30px;
+    }
+    .hook-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 20px;
+      letter-spacing: 0.08em;
+      animation: hintBreathe 2.5s ease-in-out infinite;
+      z-index: 3;
+    }
+
+    /* Slogan 节奏感动效 */
+    .slogan-beat {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-family: var(--font-title);
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--haoshi-blue);
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0;
+      text-shadow: 0 0 40px rgba(0,59,122,0.4);
+    }
+    .slogan-beat.pop {
+      animation: sloganPop 0.8s var(--ease-bounce) forwards;
+    }
+    @keyframes sloganPop {
+      0%   { transform: translate(-50%,-50%) scale(0); opacity: 0; }
+      15%  { transform: translate(-50%,-50%) scale(1.3); opacity: 1; }
+      30%  { transform: translate(-50%,-50%) scale(0.9); opacity: 1; }
+      50%  { transform: translate(-50%,-50%) scale(1.05); opacity: 1; }
+      100% { transform: translate(-50%,-50%) scale(1.2); opacity: 0; }
+    }
+    @keyframes earthPulse {
+      0%, 100% { box-shadow: 0 0 80px rgba(74,144,217,0.4), 0 0 160px rgba(74,144,217,0.15); }
+      50% { box-shadow: 0 0 120px rgba(74,144,217,0.6), 0 0 200px rgba(74,144,217,0.25); }
+    }
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.8; }
+    }
+
     /* ===== P1 邀请函 — 品牌蓝白信封 ===== */
     #page01 {
       background: linear-gradient(180deg, var(--haoshi-blue-dark) 0%, #001E40 40%, var(--haoshi-blue) 100%);
@@ -678,6 +781,33 @@
     .quiz-bread.wrong {
       background: linear-gradient(180deg, #e88, var(--brand-red));
       animation: shake 0.5s;
+    }
+
+    /* 坏面包视觉标记 */
+    .quiz-bread.bad {
+      background: linear-gradient(180deg, #C89560, #A87838);
+    }
+    .quiz-bread.bad::before {
+      content: '';
+      position: absolute;
+      inset: 8px 10px;
+      background-image:
+        radial-gradient(circle 5px, rgba(80,40,10,0.3) 30%, transparent 70%),
+        radial-gradient(circle 4px, rgba(80,40,10,0.25) 30%, transparent 70%),
+        radial-gradient(circle 6px, rgba(80,40,10,0.2) 30%, transparent 70%);
+      background-size: 28px 22px, 32px 24px, 25px 20px;
+      background-position: 5px 30px, 35px 15px, 20px 5px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+    .quiz-bread.bad::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 45%;
+      width: 12px; height: 3px;
+      background: rgba(80,40,10,0.4);
+      border-radius: 2px;
+      transform: rotate(-8deg);
     }
 
     .quiz-timer {
@@ -1167,6 +1297,39 @@
       animation: none;
     }
 
+    /* 轨迹线 */
+    .trajectory-line {
+      position: absolute;
+      height: 2px;
+      background: var(--bread-yellow);
+      z-index: 4;
+      opacity: 0;
+      transform-origin: left center;
+      pointer-events: none;
+      border-radius: 1px;
+    }
+    .trajectory-line.animate {
+      animation: trajectoryDraw 0.6s ease-out forwards;
+    }
+    .trajectory-label {
+      position: absolute;
+      font-size: 9px;
+      color: var(--bread-yellow);
+      font-weight: 700;
+      z-index: 5;
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+      text-shadow: 0 0 6px rgba(245,184,75,0.6);
+    }
+    .trajectory-label.show {
+      animation: fadeIn 0.4s ease-out 0.5s forwards;
+    }
+    @keyframes trajectoryDraw {
+      from { opacity: 0; clip-path: inset(0 100% 0 0); }
+      to   { opacity: 0.8; clip-path: inset(0 0 0 0); }
+    }
+
     /* 透明标签 — 原料/制作/质检可见 */
     .transparency-badge {
       display: inline-flex;
@@ -1194,8 +1357,26 @@
   <!-- 640×1008 画布 -->
   <div class="viewport">
 
+    <!-- ===== P0 前置钩子 — 地球 Zoom ===== -->
+    <div class="page active" id="page00" data-page="0">
+      <div class="hook-earth-scene" id="hookScene">
+        <!-- 星空 -->
+        <div class="hook-star" style="top:10%;left:15%;animation-delay:0s;"></div>
+        <div class="hook-star" style="top:20%;left:75%;animation-delay:0.5s;"></div>
+        <div class="hook-star" style="top:8%;left:50%;animation-delay:1s;"></div>
+        <div class="hook-star" style="top:15%;left:85%;animation-delay:0.3s;"></div>
+        <div class="hook-star" style="top:25%;left:10%;animation-delay:1.2s;"></div>
+        <div class="hook-star" style="top:12%;left:35%;animation-delay:0.7s;"></div>
+        <!-- 地球 -->
+        <div class="hook-earth"></div>
+        <!-- 悬念文字 -->
+        <div class="hook-text">有一家面包工厂<br>敢把生产全程向你直播</div>
+        <div class="hook-sub">点击任意位置 · 进入工厂</div>
+      </div>
+    </div>
+
     <!-- ===== P1 品牌邀请函 ===== -->
-    <div class="page active" id="page01" data-page="1">
+    <div class="page" id="page01" data-page="1">
       <div class="p1-ambient"></div>
 
       <!-- 信封场景 -->
@@ -1258,6 +1439,15 @@
           <div class="pixel-dot" style="left:22px;top:42px;" data-dot="0" title="玻利维亚藜麦"></div>
           <div class="pixel-dot" style="left:105px;top:25px;" data-dot="3" title="中国漳州"></div>
           <div class="pixel-dot" style="left:107px;top:72px;" data-dot="2" title="新西兰黄油"></div>
+          <!-- 轨迹线 -->
+          <div class="trajectory-line" data-trajectory="0" style="left:22px;top:42px;width:83px;transform:rotate(-12deg);"></div>
+          <div class="trajectory-line" data-trajectory="1" style="left:22px;top:8px;width:82px;transform:rotate(12deg);"></div>
+          <div class="trajectory-line" data-trajectory="2" style="left:107px;top:72px;width:47px;transform:rotate(-88deg);"></div>
+          <div class="trajectory-label" data-label="0" style="left:55px;top:33px;">≈16,000km</div>
+          <div class="trajectory-label" data-label="1" style="left:55px;top:0;">≈10,000km</div>
+          <div class="trajectory-label" data-label="2" style="left:105px;top:50px;">≈9,000km</div>
+          <!-- 合计 -->
+          <div class="trajectory-label" id="trajectoryTotal" style="left:50%;top:55px;transform:translateX(-50%);font-size:10px;color:#FFD700;">合计 18,000+公里</div>
         </div>
         <!-- 玻利维亚 -->
         <div class="map-card" style="left:20%;top:55%;" data-card="0">
@@ -1419,9 +1609,9 @@
         <div class="quiz-breads" id="quizBreads">
           <div class="quiz-bread" data-idx="0"></div>
           <div class="quiz-bread" data-idx="1"></div>
-          <div class="quiz-bread" data-idx="2" data-bad="true" style="background:linear-gradient(180deg,#C8A060,#B08840);"></div>
+          <div class="quiz-bread bad" data-idx="2" data-bad="true"></div>
           <div class="quiz-bread" data-idx="3"></div>
-          <div class="quiz-bread" data-idx="4" data-bad="true" style="background:linear-gradient(180deg,#C8A060,#B08840);"></div>
+          <div class="quiz-bread bad" data-idx="4" data-bad="true"></div>
           <div class="quiz-bread" data-idx="5"></div>
         </div>
         <div id="quizResult" style="font-size:var(--text-md); font-weight:bold; min-height:28px;"></div>
@@ -1470,25 +1660,19 @@
       <div class="page-hint">拖拽旋转查看</div>
     </div>
 
-    <!-- ===== P12 透明工厂直播间 ===== -->
+    <!-- ===== P12 透明工厂直播间 → 扫码预约参观 ===== -->
     <div class="page" id="page12" data-page="12" style="background:linear-gradient(180deg,#F4F8FD,#FFF8EA);">
       <div class="page-title" style="font-size:var(--text-lg);">还没看够？</div>
-      <p class="page-subtitle">7×24小时在线透明工厂<br>任何时候推开这扇玻璃门<br>都会发现面包正在诞生</p>
-      <div class="live-phone" id="livePhone">
-        <div class="live-screen">
-          <img src="./assets/images/漳州工厂2.png" alt="透明工厂直播" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:22px;opacity:0.85;" />
-          <div class="live-badge">🔴 LIVE</div>
-          <div style="font-size:36px; margin:16px 0;">🏭</div>
-          <div style="font-size:13px; color:var(--brown); font-weight:700;">豪士透明工厂</div>
-          <div style="font-size:11px; color:var(--brown); opacity:0.5; margin-top:8px;">正在直播：烘烤线出炉中...</div>
-          <div style="margin-top:auto; padding:8px; font-size:10px; color:var(--brown); opacity:0.3; overflow:hidden; max-height:50px;">
-            <div>第3876位厂长打卡</div>
-            <div>刚刚有人在看和面车间</div>
-            <div>烘烤线正在出炉</div>
-          </div>
-        </div>
+      <p class="page-subtitle">想看看面包正在从烤炉里出来的样子吗？<br>豪士透明工厂，随时欢迎你来</p>
+      <!-- 二维码占位 -->
+      <div style="width:200px;height:200px;background:#fff;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);margin:20px 0;position:relative;z-index:2;">
+        <div style="font-size:80px;line-height:1;">📱</div>
+        <div style="font-size:12px;color:#999;margin-top:8px;">扫码看真实工厂直播</div>
       </div>
-      <div class="page-hint">点击屏幕看直播</div>
+      <p style="font-size:13px;color:var(--brown);opacity:0.7;position:relative;z-index:2;">
+        或访问 haoshifood.com<br>预约线下参观 · 430亩透明工厂等你来
+      </p>
+      <div class="page-hint">点击任意位置继续</div>
     </div>
 
     <!-- ===== P13 Slogan ===== -->
