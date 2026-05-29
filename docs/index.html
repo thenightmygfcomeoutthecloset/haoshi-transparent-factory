@@ -6,6 +6,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>豪士透明工厂查岗日 — 这届年轻人，连面包都要亲自查岗</title>
 
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
   <style>
     /* ===== 页面通用 ===== */
@@ -291,7 +293,7 @@
 
     /* ===== P4 世界地图 ===== */
     .world-map {
-      position: relative; width: 280px; height: 140px;
+      position: relative; width: 320px; height: 160px;
       margin: 0 auto 0; z-index: 2;
     }
     /* 像素地图底层 */
@@ -377,7 +379,7 @@
     /* ===== P4 原料查验卡片 ===== */
     .ingredient-cards { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin: 20px 0; position: relative; z-index: 2; }
     .ingredient-card {
-      width: 130px; height: 150px; border-radius: var(--radius-md);
+      width: 100px; height: 110px; border-radius: var(--radius-md);
       background: var(--glass-white); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255,255,255,0.6);
       cursor: pointer; transition: all 0.3s;
@@ -386,9 +388,9 @@
     }
     .ingredient-card:active { transform: scale(0.95); }
     .ingredient-card.revealed { background: rgba(0,59,122,0.06); border-color: var(--haoshi-blue); }
-    .ingredient-card .card-icon { font-size: 36px; margin-bottom: 8px; }
-    .ingredient-card .card-name { font-size: 14px; font-weight: 700; color: var(--haoshi-blue); }
-    .ingredient-card .card-detail { font-size: 11px; color: var(--brown); margin-top: 6px; opacity: 0; transition: opacity 0.3s; text-align: center; line-height: 1.5; }
+    .ingredient-card .card-icon { font-size: 28px; margin-bottom: 4px; }
+    .ingredient-card .card-name { font-size: 12px; font-weight: 700; color: var(--haoshi-blue); }
+    .ingredient-card .card-detail { font-size: 10px; color: var(--brown); margin-top: 4px; opacity: 0; transition: opacity 0.3s; text-align: center; line-height: 1.4; }
     .ingredient-card.revealed .card-detail { opacity: 0.8; }
 
     /* ===== P5 卖点标签 ===== */
@@ -619,7 +621,7 @@
       100% { transform: translate(-50%,-50%) scale(1.2); opacity:0; }
     }
   </style>
-  <script type="module" crossorigin src="./assets/index-Nb6mViQX.js"></script>
+  <script type="module" crossorigin src="./assets/index-XnR2aSa8.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-DzsGjehU.css">
 </head>
 <body>
