@@ -420,7 +420,7 @@
     }
 
     /* ===== P6/P7 滑块 ===== */
-    .slider-container { width: 80%; margin: 20px 0; position: relative; z-index: 2; }
+    .slider-container { width: 80%; margin: 20px auto; position: relative; z-index: 2; }
     .slider-container input[type="range"] {
       width: 100%; height: 8px; border-radius: 4px;
       background: linear-gradient(90deg, #E8D5B0, var(--bread-yellow), #C06040);
@@ -811,20 +811,28 @@
         <p class="page-subtitle" style="margin-bottom:0;">不用撕边，打开就吃<br>产品包装出现，才叫查岗完成</p>
       </div>
       <div class="conveyor-wrap" id="conveyorWrap">
-        <div class="conveyor-section" style="background:rgba(255,248,234,0.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
-          <div style="font-size:48px;">🍞</div>
-          <span class="tag-pill">完整吐司</span>
+        <!-- Step 1 -->
+        <div class="conveyor-section" style="background:rgba(255,248,234,0.85);display:inline-flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
+          <div style="font-size:56px;line-height:1;">🍞</div>
+          <span class="tag-pill" style="margin-top:4px;">Step 1 · 整条吐司</span>
+          <p style="font-size:13px;color:var(--brown);opacity:0.75;margin:0;max-width:200px;line-height:1.6;text-align:center;">四周都有吐司边<br>切掉浪费，吃掉将就</p>
+          <div style="font-size:12px;color:rgba(91,50,23,0.35);margin-top:6px;">← 滑动看下一步 →</div>
         </div>
-        <div class="conveyor-section" style="background:rgba(255,248,234,0.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
-          <div style="font-size:48px;">🔪</div>
-          <span class="tag-pill">精准切片</span>
+        <!-- Step 2 -->
+        <div class="conveyor-section" style="background:rgba(234,243,255,0.85);display:inline-flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
+          <div style="font-size:56px;line-height:1;">✂️</div>
+          <span class="tag-pill" style="margin-top:4px;">Step 2 · 精准切边</span>
+          <p style="font-size:13px;color:var(--brown);opacity:0.75;margin:0;max-width:200px;line-height:1.6;text-align:center;">自动化流水线<br>四边精准去除，只留软芯</p>
         </div>
-        <div class="conveyor-section" style="background:rgba(255,248,234,0.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
-          <div style="font-size:40px;width:70px;height:60px;background:linear-gradient(135deg,#C9212B,#A01822);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#FFD700;font-weight:900;font-size:14px;">豪士</div>
-          <span class="tag-red">新鲜包装</span>
+        <!-- Step 3 -->
+        <div class="conveyor-section" style="background:rgba(255,232,184,0.85);display:inline-flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
+          <div style="width:72px;height:64px;background:linear-gradient(135deg,#C9212B,#A01822);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#FFD700;font-weight:900;font-size:16px;letter-spacing:0.06em;box-shadow:0 4px 16px rgba(201,33,43,0.3);">豪士</div>
+          <span class="tag-pill tag-red" style="margin-top:4px;">Step 3 · 无边入袋</span>
+          <p style="font-size:13px;color:var(--brown);opacity:0.75;margin:0;max-width:200px;line-height:1.6;text-align:center;">每一片都是纯芯<br>打开即食，不用再撕边</p>
+          <span class="transparency-badge" style="margin-top:6px;">✓ 查包装完成</span>
         </div>
       </div>
-      <div class="page-hint">← → 滑动查看流水线</div>
+      <div class="page-hint">← 左右滑动，查看切片流程 →</div>
     </div>
 
     <!-- ===== P9 质检挑战 ===== -->

@@ -2,7 +2,7 @@
 /* 提交比赛前请替换为真实链接 */
 
 export const TMALL_URL = 'https://haoshi.tmall.com';
-export const LIVE_URL = 'https://www.haoshifood.com/live';
+export const LIVE_URL = 'https://v.douyin.com/W_5x-RAUnG8/';
 export const OFFICIAL_SITE_URL = 'https://www.haoshifood.com';
 export const TOPIC_TEXT = '#豪士豪士好吃好吃#';
 
