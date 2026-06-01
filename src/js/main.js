@@ -48,8 +48,9 @@ class App {
     this.goTo(this.current - 1);
   }
 
-  goTo(index, animate = true) {
-    if (index === this.current || index < 0 || index >= this.total) return;
+  goTo(index) {
+    if (index === this.current || index < 0 || index >= this.total || this.isTransitioning) return;
+    this.isTransitioning = true;
 
     const oldPage = this.pages[this.current];
     const newPage = this.pages[index];
@@ -70,7 +71,9 @@ class App {
 
     // GSAP 入场动画
     if (typeof gsap !== 'undefined') {
-      gsap.fromTo(newPage, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' });
+      gsap.fromTo(newPage, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out', onComplete: () => { this.isTransitioning = false; } });
+    } else {
+      this.isTransitioning = false;
     }
 
     // 触发粒子效果

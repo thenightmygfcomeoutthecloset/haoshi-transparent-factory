@@ -15,6 +15,7 @@ class Gesture {
     this._startX = 0;
     this._startY = 0;
     this._moved = false;
+    this._active = false;
 
     this._onStart = this._onStart.bind(this);
     this._onMove = this._onMove.bind(this);
@@ -47,10 +48,11 @@ class Gesture {
     this._startX = pos.x;
     this._startY = pos.y;
     this._moved = false;
+    this._active = true;
   }
 
   _onMove(e) {
-    if (this._startX === 0 && this._startY === 0) return;
+    if (!this._active) return;
     const pos = this._getPos(e);
     const dx = pos.x - this._startX;
     const dy = pos.y - this._startY;
@@ -60,7 +62,8 @@ class Gesture {
   }
 
   _onEnd(e) {
-    if (this._startX === 0 && this._startY === 0) return;
+    if (!this._active) return;
+    this._active = false;
     const pos = e.changedTouches ? e.changedTouches[0] : e;
     const dx = (pos.clientX || pos.x) - this._startX;
     const dy = (pos.clientY || pos.y) - this._startY;
@@ -74,9 +77,6 @@ class Gesture {
     } else if (absDy > absDx && absDy >= this.threshold) {
       this._fire(dy > 0 ? 'swipeDown' : 'swipeUp');
     }
-
-    this._startX = 0;
-    this._startY = 0;
   }
 
   _fire(type) {

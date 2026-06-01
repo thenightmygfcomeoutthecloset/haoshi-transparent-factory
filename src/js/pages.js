@@ -5,13 +5,8 @@ import QuizGame from './quiz.js';
 import { generatePoster, downloadPoster } from './poster.js';
 import { LIVE_URL, TMALL_URL, OFFICIAL_SITE_URL, TOPIC_TEXT } from './config.js';
 
-// 全局 GSAP fallback
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
-const tween = (fn, targets, from, to, opts) => {
-  if (typeof gsap !== 'undefined') return gsap[fn](targets, from, to || {}, opts);
-  if (fn === 'fromTo' && opts && opts.onComplete) setTimeout(opts.onComplete, 500);
-};
 
 // ============================================================
 // P1 首屏 — 金色参观券入场
@@ -182,33 +177,29 @@ window.init_page05 = function () {
 };
 
 // ============================================================
-// P6 和面工艺 — GSAP 反馈
+// 滑块页通用逻辑（P6 / P7 共用）
 // ============================================================
-window.init_page06 = function () {
-  const slider = document.getElementById('doughSlider');
-  const feedback = document.getElementById('doughFeedback');
-  const hint = document.getElementById('doughHint');
+function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
+  const slider = document.getElementById(sliderId);
+  const feedback = document.getElementById(feedbackId);
+  const hint = hintId ? document.getElementById(hintId) : null;
   if (!slider || slider.dataset.ready) return;
   slider.dataset.ready = '1';
 
   slider.addEventListener('input', () => {
     const val = parseInt(slider.value);
     if (!window._userData) window._userData = {};
-    window._userData.doughSlider = val;
-
-    if (val <= 30) {
-      setFeedback(feedback, '太软了，厂长不批 👎', '#e88');
-    } else if (val >= 70) {
-      setFeedback(feedback, '硬了，重来一炉 🔄', '#D42026');
-    } else {
-      setFeedback(feedback, '✅ 就这个手感，松软又有嚼劲', '#4CAF50');
-      if (hint) hint.textContent = '手感对了！进烘烤线...';
+    window._userData[sliderId] = val;
+    const { text, color, advance, hintText } = getMsg(val);
+    setFeedback(feedback, text, color);
+    if (advance) {
+      if (hint && hintText) hint.textContent = hintText;
       slider.disabled = true;
       triggerSloganBeat();
       setTimeout(() => { window.app && window.app.next(); slider.disabled = false; }, 1500);
     }
   });
-};
+}
 
 function setFeedback(el, text, color) {
   el.textContent = text;
@@ -219,29 +210,30 @@ function setFeedback(el, text, color) {
 }
 
 // ============================================================
+// P6 和面工艺 — GSAP 反馈
+// ============================================================
+window.init_page06 = function () {
+  initSliderPage({
+    sliderId: 'doughSlider', feedbackId: 'doughFeedback', hintId: 'doughHint',
+    getMsg: (val) => {
+      if (val <= 30) return { text: '太软了，厂长不批 👎', color: '#e88' };
+      if (val >= 70) return { text: '硬了，重来一炉 🔄', color: '#D42026' };
+      return { text: '✅ 就这个手感，松软又有嚼劲', color: '#4CAF50', advance: true, hintText: '手感对了！进烘烤线...' };
+    },
+  });
+};
+
+// ============================================================
 // P7 烘烤火候 — GSAP 反馈
 // ============================================================
 window.init_page07 = function () {
-  const slider = document.getElementById('bakeSlider');
-  const feedback = document.getElementById('bakeFeedback');
-  if (!slider || slider.dataset.ready) return;
-  slider.dataset.ready = '1';
-
-  slider.addEventListener('input', () => {
-    const val = parseInt(slider.value);
-    if (!window._userData) window._userData = {};
-    window._userData.bakeSlider = val;
-
-    if (val <= 25) {
-      setFeedback(feedback, '火小了，香气还没出来 🔥', '#8E8E93');
-    } else if (val >= 75) {
-      setFeedback(feedback, '烤过了！厂长喊停 🛑', '#D42026');
-    } else {
-      setFeedback(feedback, '👑 刚好，豪士豪士好吃好吃', '#4CAF50');
-      slider.disabled = true;
-      triggerSloganBeat();
-      setTimeout(() => { window.app && window.app.next(); slider.disabled = false; }, 1500);
-    }
+  initSliderPage({
+    sliderId: 'bakeSlider', feedbackId: 'bakeFeedback', hintId: null,
+    getMsg: (val) => {
+      if (val <= 25) return { text: '火小了，香气还没出来 🔥', color: '#8E8E93' };
+      if (val >= 75) return { text: '烤过了！厂长喊停 🛑', color: '#D42026' };
+      return { text: '👑 刚好，豪士豪士好吃好吃', color: '#4CAF50', advance: true };
+    },
   });
 };
 
@@ -252,8 +244,11 @@ window.init_page08 = function () {
   const wrap = document.getElementById('conveyorWrap');
   if (!wrap || wrap.dataset.ready) return;
   wrap.dataset.ready = '1';
+  let scrollDone = false;
   wrap.addEventListener('scroll', () => {
+    if (scrollDone) return;
     if (wrap.scrollLeft >= wrap.scrollWidth - wrap.clientWidth - 10) {
+      scrollDone = true;
       audio.play('click');
       setTimeout(() => window.app && window.app.next(), 800);
     }
@@ -402,17 +397,18 @@ window.init_page12 = function () {
   document.getElementById('btnTmall')?.addEventListener('click', () => { window.open(TMALL_URL, '_blank'); });
   document.getElementById('btnLive2')?.addEventListener('click', () => { window.open(LIVE_URL, '_blank'); });
   document.getElementById('btnShare')?.addEventListener('click', async () => {
+    const btn = document.getElementById('btnShare');
+    if (!btn) return;
+    const orig = btn.textContent;
     try {
       await navigator.clipboard.writeText(TOPIC_TEXT);
-      const btn = document.getElementById('btnShare');
-      if (btn) {
-        const orig = btn.textContent;
-        btn.textContent = '✅ 已复制！去微博/抖音/小红书发帖吧';
-        btn.style.background = 'linear-gradient(135deg, #4CAF50, #388E3C)';
-        if (typeof gsap !== 'undefined') gsap.fromTo(btn, { scale: 1 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' });
-        setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2500);
-      }
-    } catch (e) {}
+      btn.textContent = '✅ 已复制！去微博/抖音/小红书发帖吧';
+      btn.style.background = 'linear-gradient(135deg, #4CAF50, #388E3C)';
+      if (typeof gsap !== 'undefined') gsap.fromTo(btn, { scale: 1 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' });
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2500);
+    } catch {
+      window.prompt('复制话题标签：', TOPIC_TEXT);
+    }
   });
 };
 
