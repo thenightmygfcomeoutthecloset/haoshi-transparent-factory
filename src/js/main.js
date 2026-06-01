@@ -19,6 +19,7 @@ class App {
     this.gesture = new Gesture(document.querySelector('.app'), { threshold: 50 });
     this.gesture.onSwipeLeft(() => {
       if (this.current <= 1) return; // P1/P2 禁止滑动
+      if (this.current === 7) return; // P8 传送带页，禁止手势翻页
       this.next();
     });
     this.gesture.onSwipeRight(() => this.prev());
