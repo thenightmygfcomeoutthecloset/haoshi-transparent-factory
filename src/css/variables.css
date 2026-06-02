@@ -51,13 +51,13 @@
   --font-title: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   --font-body: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 
-  /* 字号 — Stripe 式渐进字阶 */
-  --text-display: 36px;
-  --text-xl: 30px;
-  --text-lg: 24px;
-  --text-md: 17px;
-  --text-sm: 14px;
-  --text-xs: 12px;
+  /* 字号 — Stripe 式渐进字阶（手机适配放大） */
+  --text-display: 44px;
+  --text-xl: 36px;
+  --text-lg: 28px;
+  --text-md: 20px;
+  --text-sm: 16px;
+  --text-xs: 14px;
 
   /* 固定尺寸 */
   --page-width: 640px;
