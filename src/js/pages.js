@@ -61,39 +61,29 @@ window.init_page02 = function () {
 };
 
 // ============================================================
-// P3 工厂大门
+// P3 工厂大门 — 推门（拖拽 / 点击均可）
 // ============================================================
 window.init_page03 = function () {
   const gateLeft = document.getElementById('gateLeft');
   const gateRight = document.getElementById('gateRight');
+  const gateScene = document.getElementById('gateScene');
   const hint = document.getElementById('gateHint');
   if (!gateLeft || gateLeft.dataset.ready) return;
   gateLeft.dataset.ready = '1';
 
-  let startX = 0, opened = false;
-
-  const onMove = (e) => {
-    if (opened) return;
-    const x = e.touches ? e.touches[0].clientX : e.clientX;
-    const dx = x - startX;
-    const maxOffset = 250;
-    const offset = Math.max(0, Math.min(maxOffset, Math.abs(dx) * 1.5));
-    if (typeof gsap !== 'undefined') {
-      gsap.set(gateLeft, { x: -offset });
-      gsap.set(gateRight, { x: offset });
-    } else {
-      gateLeft.style.transform = `translateX(-${offset}px)`;
-      gateRight.style.transform = `translateX(${offset}px)`;
-    }
-    if (offset > maxOffset * 0.7) { opened = true; finishOpen(); }
-  };
+  let startX = 0, opened = false, dragged = false;
 
   const finishOpen = () => {
+    if (opened) return;
+    opened = true;
+    // 关掉提示
+    if (hint) { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.3s'; }
+    // 大门动画
     if (typeof gsap !== 'undefined') {
+      gsap.killTweensOf(gateLeft); gsap.killTweensOf(gateRight);
       gsap.to(gateLeft, { x: -320, opacity: 0, duration: 0.5, ease: 'power2.in' });
       gsap.to(gateRight, { x: 320, opacity: 0, duration: 0.5, ease: 'power2.in', onComplete: () => {
         audio.play('open');
-        if (hint) hint.style.display = 'none';
         setTimeout(() => window.app && window.app.next(), 400);
       }});
     } else {
@@ -101,15 +91,70 @@ window.init_page03 = function () {
       gateRight.style.transform = 'translateX(320px)';
       gateLeft.style.opacity = gateRight.style.opacity = '0';
       audio.play('open');
-      if (hint) hint.style.display = 'none';
       setTimeout(() => window.app && window.app.next(), 800);
     }
   };
 
-  document.getElementById('page03').addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; });
-  document.getElementById('page03').addEventListener('touchmove', onMove);
-  document.getElementById('page03').addEventListener('mousedown', (e) => { startX = e.clientX; });
-  document.getElementById('page03').addEventListener('mousemove', (e) => { if (e.buttons === 1) onMove(e); });
+  // ---- 方式一：拖拽推开大门 ----
+  const onMove = (e) => {
+    if (opened) return;
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const dx = x - startX;
+    const maxOffset = 250;
+    const offset = Math.max(0, Math.min(maxOffset, Math.abs(dx) * 1.5));
+    if (offset > 10) dragged = true;
+    if (typeof gsap !== 'undefined') {
+      gsap.set(gateLeft, { x: -offset });
+      gsap.set(gateRight, { x: offset });
+    } else {
+      gateLeft.style.transform = `translateX(-${offset}px)`;
+      gateRight.style.transform = `translateX(${offset}px)`;
+    }
+    if (offset > maxOffset * 0.5) finishOpen();
+  };
+
+  const page03 = document.getElementById('page03');
+  page03.addEventListener('touchstart', (e) => { if (!opened) { startX = e.touches[0].clientX; dragged = false; } }, { passive: true });
+  page03.addEventListener('touchmove', onMove, { passive: true });
+  page03.addEventListener('mousedown', (e) => { if (!opened) { startX = e.clientX; dragged = false; } });
+  page03.addEventListener('mousemove', (e) => { if (e.buttons === 1) onMove(e); });
+
+  // ---- 方式二：点击大门直接推开（fallback，拖拽不成功也能过）----
+  const onClickOpen = (e) => {
+    if (opened) return;
+    // 如果用户已经拖拽过一段距离，说明想拖拽，不再用点击触发（等 touchend/mouseup 后的判断）
+    // 不判断：任何点击都直接开门，简单粗暴
+  };
+
+  // 点击/触摸结束时，只要没拖拽过，就当"推门"按钮
+  page03.addEventListener('touchend', (e) => {
+    if (opened || dragged) return;
+    finishOpen();
+  });
+  page03.addEventListener('mouseup', (e) => {
+    if (opened || dragged || e.button !== 0) return;
+    finishOpen();
+  });
+
+  // 也给大门本身加点击（防止事件冒泡问题导致 page03 收不到）
+  if (gateScene) {
+    gateScene.style.pointerEvents = 'auto';
+    gateScene.addEventListener('click', (e) => {
+      if (opened) return;
+      e.stopPropagation();
+      finishOpen();
+    });
+  }
+
+  // 提示文字也可以点
+  if (hint) {
+    hint.style.cursor = 'pointer';
+    hint.addEventListener('click', (e) => {
+      if (opened) return;
+      e.stopPropagation();
+      finishOpen();
+    });
+  }
 };
 
 // ============================================================
