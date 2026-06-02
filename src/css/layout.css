@@ -44,26 +44,3 @@
   opacity: 0.4;
 }
 
-/* 页面指示器 */
-.page-indicator {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
-  display: flex;
-  gap: 8px;
-}
-
-.page-indicator .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(0,59,122,0.15);
-  transition: all var(--dur-normal);
-}
-
-.page-indicator .dot.active {
-  background: var(--haoshi-blue);
-  transform: scale(1.3);
-}

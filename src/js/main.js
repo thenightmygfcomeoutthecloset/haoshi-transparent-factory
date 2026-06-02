@@ -42,10 +42,6 @@ class App {
     this.isTransitioning = false;
     this._slideNext = false; // 标记下一次 goTo 用左滑过渡
 
-    // 页面指示器
-    this.indicator = document.querySelector('.page-indicator');
-    this._initIndicator();
-
     // 手势 — P1/P2 禁止滑动翻页，必须点按钮
     this.gesture = new Gesture(document.querySelector('.app'), { threshold: 50 });
     this.gesture.onSwipeLeft(() => {
@@ -72,7 +68,6 @@ class App {
 
     // 直接初始化首屏，不走 goTo 避免 index===current 拦截
     this._initPage(0);
-    this._updateIndicator();
   }
 
   next() {
@@ -99,7 +94,6 @@ class App {
     newPage.classList.add('active');
     this.current = index;
     this._initPage(index);
-    this._updateIndicator();
 
     if (typeof gsap !== 'undefined') {
       if (slide) {
@@ -158,23 +152,6 @@ class App {
       // 动画结束后移除
       setTimeout(() => p.remove(), 8000);
     }
-  }
-
-  // ========== 指示器 ==========
-  _initIndicator() {
-    if (!this.indicator) return;
-    this.indicator.innerHTML = '';
-    for (let i = 0; i < this.total; i++) {
-      const dot = document.createElement('span');
-      dot.className = 'dot';
-      this.indicator.appendChild(dot);
-    }
-  }
-
-  _updateIndicator() {
-    if (!this.indicator) return;
-    const dots = this.indicator.querySelectorAll('.dot');
-    dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
   }
 
   // ========== 静音 UI ==========
