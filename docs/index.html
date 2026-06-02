@@ -244,7 +244,7 @@
     #page02 { background: linear-gradient(180deg, #F4F8FD, #FFF8EA); }
     .badge-card {
       width: 220px; height: 240px; border-radius: var(--radius-lg);
-      background: linear-gradient(160deg, #003B7A, #002A5C);
+      background: linear-gradient(160deg, #003087, #001A52);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       cursor: pointer; box-shadow: var(--shadow-elevated);
       position: relative; z-index: 2; overflow: hidden;
@@ -484,7 +484,7 @@
     /* ===== P10 厂长工牌 ===== */
     .badge-result {
       width: 200px; height: 220px; border-radius: var(--radius-lg);
-      background: linear-gradient(160deg, #003B7A, #001E40);
+      background: linear-gradient(160deg, #003087, #001A52);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       cursor: pointer; box-shadow: var(--shadow-elevated);
       position: relative; z-index: 2; overflow: hidden;
@@ -624,8 +624,8 @@
       100% { transform: translate(-50%,-50%) scale(1.2); opacity:0; }
     }
   </style>
-  <script type="module" crossorigin src="./assets/index-B-0FDFQn.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-Cw2Ik6oN.css">
+  <script type="module" crossorigin src="./assets/index-q-wsubmB.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CrAYXrfo.css">
 </head>
 <body>
 
@@ -647,13 +647,13 @@
           <div class="ticket-logo">HORSH 豪士</div>
           <div class="ticket-title">透明工厂<br>参观券</div>
           <div class="ticket-divider"></div>
-          <div class="ticket-no">NO. 0001</div>
+          <div class="ticket-no" id="ticketNo">NO. 0001</div>
         </div>
         <div class="ticket-edge ticket-edge-bottom"></div>
       </div>
       <div class="p1-hook-text">这届年轻人<br>连面包都要<em>亲自查岗</em></div>
       <div class="p1-hook-sub">恭喜你抽中豪士透明工厂参观资格</div>
-      <div class="slogan-pill" style="margin-top:8px;background:rgba(245,184,75,0.2);color:var(--toast-brown);">豪士豪士，好吃好吃</div>
+      <div class="slogan-pill" style="margin-top:8px;background:rgba(198,168,75,0.2);color:var(--toast-brown);">豪士豪士，好吃好吃</div>
       <button class="btn-warm" id="btnEnter" style="margin-top:14px;">撕下参观券，进入工厂</button>
     </div>
 
@@ -765,7 +765,7 @@
       <img class="page-bg" src="./assets/%E8%BD%A6%E9%97%B4-CWOnpDtR.png" alt="和面车间" />
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
-      <div class="glass-card" style="background:rgba(255,255,255,0.85);">
+      <div class="glass-card" id="doughState" style="background:rgba(255,255,255,0.85);">
         <div class="transparency-badge" style="margin-bottom:10px;">第二站 · 查工艺</div>
         <div class="divider-ornament"></div>
         <div class="page-title" style="font-size:var(--text-xl);">手感刚刚好<br>口感才刚刚好</div>
@@ -785,7 +785,7 @@
       <img class="page-bg" src="./assets/%E7%94%9F%E4%BA%A7%E5%8C%BA%E5%9F%9F2-B3eKhvpz.png" alt="烘烤生产线" />
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
-      <div class="glass-card" style="background:rgba(255,255,255,0.85);">
+      <div class="glass-card" id="bakeToast" style="background:rgba(255,255,255,0.85);">
         <div class="transparency-badge" style="margin-bottom:10px;">第三站 · 查火候</div>
         <div class="divider-ornament"></div>
         <div class="page-title" style="font-size:var(--text-xl);">火候这关<br>也得你点头</div>
@@ -865,6 +865,7 @@
       <div class="page-title" style="font-size:var(--text-lg);">你的透明厂长认证<br>已生成</div>
       <div class="badge-result" id="badgeResult">
         <div class="badge-grade" id="badgeGrade">S</div>
+        <div id="badgeRank" style="font-size:36px;font-weight:900;color:#FFD700;">S</div>
         <div class="badge-title-text" id="badgeTitleText">天生厂长</div>
         <div class="badge-slogan">HORSH · 豪士面包</div>
       </div>
@@ -878,13 +879,13 @@
       <div class="page-title" style="font-size:var(--text-lg);color:#fff;">查岗还没结束<br>工厂探秘视频来了</div>
       <div class="live-mock">
         <div class="live-header">
-          <div class="live-dot" style="background:#F5B84B;"></div>
+          <div class="live-dot" style="background:var(--brand-gold);"></div>
           <span class="live-title-bar">豪士透明工厂探秘</span>
           <span class="live-viewers">94.5万次播放</span>
         </div>
         <div class="live-content">
           <img src="./assets/%E6%BC%B3%E5%B7%9E%E5%B7%A5%E5%8E%822-Bbrdk6cN.png" alt="豪士透明工厂探秘视频" />
-          <div class="live-badge" style="background:rgba(245,184,75,0.92);">VIDEO</div>
+          <div class="live-badge" style="background:rgba(198,168,75,0.92);">VIDEO</div>
           <div class="live-danmaku">
             <div class="danmaku-msg" style="top:20%;animation-delay:0s;">这车间也太亮了</div>
             <div class="danmaku-msg" style="top:40%;animation-delay:2.5s;">原来吐司是这样出来的</div>
@@ -909,7 +910,6 @@
         <div class="coupon-card" style="margin:16px auto;">
           <div class="coupon-title">透明厂长试吃券</div>
           <div class="coupon-desc">豪士藜麦吐司 · 你的查岗成果</div>
-          <div class="coupon-notice">互动试吃券 · 提交前请替换为官方活动链接</div>
         </div>
         <div class="action-buttons">
           <button class="action-btn red" id="btnTmall">🛒 去官方商城</button>
