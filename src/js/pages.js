@@ -61,7 +61,7 @@ window.init_page02 = function () {
 };
 
 // ============================================================
-// P3 工厂大门 — 开门后左滑进入P4
+// P3 工厂大门 — 点击开门，左滑进入P4
 // ============================================================
 window.init_page03 = function () {
   const gateLeft = document.getElementById('gateLeft');
@@ -71,12 +71,10 @@ window.init_page03 = function () {
   gateLeft.dataset.ready = '1';
 
   let opened = false;
-  let autoTimer = null;
 
   const finishOpen = () => {
     if (opened) return;
     opened = true;
-    clearTimeout(autoTimer);
     if (hint) { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.3s'; }
 
     if (typeof gsap !== 'undefined') {
@@ -103,15 +101,12 @@ window.init_page03 = function () {
     }
   };
 
-  // 点击任意位置立刻开门
+  // 点击任意位置开门
   const page03 = document.getElementById('page03');
   page03.addEventListener('click', (e) => {
     if (opened) return;
     finishOpen();
   });
-
-  // 1.2 秒后自动开门
-  autoTimer = setTimeout(finishOpen, 1200);
 };
 
 // ============================================================
