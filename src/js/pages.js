@@ -12,7 +12,7 @@ const $$ = (sel) => document.querySelectorAll(sel);
 // P1 首屏 — 金色参观券入场 + 手势引导
 // ============================================================
 window.init_page01 = function () {
-  updateProgress(0, '第1/12页 · 豪士透明工厂', 0);
+  hideProgress();
   const btn = document.getElementById('btnEnter');
   if (!btn || btn.dataset.ready) return;
   btn.dataset.ready = '1';
@@ -37,13 +37,14 @@ window.init_page01 = function () {
     audio.play('click');
     window.app && window.app.next();
   });
+  mountGestureHint(document.getElementById('page01'), 'tap', '点击撕下参观券');
 };
 
 // ============================================================
 // P2 厂长身份 — Loading → 验证成功 → 戴上工牌
 // ============================================================
 window.init_page02 = function () {
-  updateProgress(0, '第2/12页 · 身份验证中...', 0);
+  hideProgress();
   const card = document.getElementById('badgeCard');
   const verifyBadge = document.getElementById('verifyBadge');
   const verifyTitle = document.getElementById('verifyTitle');
@@ -53,7 +54,6 @@ window.init_page02 = function () {
 
   setTimeout(() => {
     if (verifyBadge) verifyBadge.innerHTML = '✓ 验证成功，你已被任命为一日透明厂长';
-    updateProgress(0, '第2/12页 · 身份已验证', 20);
     setTimeout(() => {
       if (verifyTitle) verifyTitle.style.display = '';
       card.style.display = '';
@@ -116,6 +116,7 @@ window.init_page03 = function () {
 
   // 点击或滑动都触发开门
   page03.addEventListener('click', openGate);
+  mountGestureHint(page03, 'swipe-right', '滑动推开工厂大门');
 };
 
 // ============================================================
@@ -146,6 +147,7 @@ window.init_page04 = function () {
       if (revealed >= 3 && $('#page04 .page-hint')) $('#page04 .page-hint').textContent = '✓ 原料已查 👈 滑动继续';
     });
   });
+  mountGestureHint(document.getElementById('page04'), 'tap', '点击卡片查看原料来源');
 };
 
 // ============================================================
@@ -182,6 +184,7 @@ window.init_page05 = function () {
       audio.play('click');
     });
   });
+  mountGestureHint(document.getElementById('page05'), 'tap', '点击标签查看卖点');
 };
 
 // ============================================================
@@ -250,6 +253,7 @@ window.init_page06 = function () {
       return { text: '✓ 豪士4年找到的黄金比例，就是这里！', color: '#5C8A3C', bgEl: 'doughState', bgColor: '#E8C870' };
     },
   });
+  mountGestureHint(document.getElementById('page06'), 'drag', '拖动滑块找到最佳筋度');
 };
 
 // ============================================================
@@ -265,25 +269,44 @@ window.init_page07 = function () {
       return { text: '✓ 220°C，表皮微脆内心柔软，这就是豪士的温度', color: '#5C8A3C', bgEl: 'bakeToast', bgColor: '#C89030' };
     },
   });
+  mountGestureHint(document.getElementById('page07'), 'drag', '拖动滑块调到最佳火候');
 };
 
 // ============================================================
-// P8 切片包装 — 第四站
+// P8 切片包装 — Step 卡片滑动 + 完成提示
 // ============================================================
 window.init_page08 = function () {
   updateProgress(4, '第8/12页 · 第4站 查包装', 80);
-  const wrap = document.getElementById('conveyorWrap');
-  if (!wrap || wrap.dataset.ready) return;
-  wrap.dataset.ready = '1';
-  let scrollDone = false;
-  wrap.addEventListener('scroll', () => {
-    if (scrollDone) return;
-    if (wrap.scrollLeft >= wrap.scrollWidth - wrap.clientWidth - 10) {
-      scrollDone = true;
-      audio.play('click');
-      setTimeout(() => window.app && window.app.next(), 800);
+  const container = document.getElementById('stepCardsContainer');
+  const dots = document.querySelectorAll('#cardDots .dot');
+  const complete = document.getElementById('pkgComplete');
+  const hint = document.getElementById('pkgHint');
+  const nextBtn = document.getElementById('pkgNextBtn');
+  if (!container || container.dataset.ready) return;
+  container.dataset.ready = '1';
+
+  let lastStep = 0;
+  container.addEventListener('scroll', () => {
+    const idx = Math.round(container.scrollLeft / (container.clientWidth * 0.8));
+    if (idx !== lastStep) {
+      lastStep = idx;
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      if (idx >= 2) {
+        setTimeout(() => {
+          if (complete) complete.classList.add('show');
+          if (hint) hint.style.display = 'none';
+        }, 600);
+      }
     }
   });
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      audio.play('click');
+      window.app && window.app.next();
+    });
+  }
+  mountGestureHint(document.getElementById('page08'), 'swipe-lr', '左右滑动查看切片流程');
 };
 
 // ============================================================
@@ -363,6 +386,7 @@ window.init_page09 = function () {
 
   if (retryBtn) retryBtn.addEventListener('click', startQuiz);
   startQuiz();
+  mountGestureHint(document.getElementById('page09'), 'tap', '点击选出瑕疵面包');
 };
 
 window.leave_page09 = function () {};
@@ -425,6 +449,7 @@ window.init_page10 = function () {
       setTimeout(() => window.app && window.app.next(), 1000);
     }
   });
+  mountGestureHint(document.getElementById('page10'), 'tap', '点击工牌查看认证');
 };
 
 // ============================================================
@@ -433,12 +458,15 @@ window.init_page10 = function () {
 window.init_page11 = function () {
   updateProgress(5, '第11/12页 · 工厂探秘视频', 100);
   const btn = document.getElementById('btnWatchLive');
+  const card = document.getElementById('videoCard');
   if (!btn || btn.dataset.ready) return;
   btn.dataset.ready = '1';
   if (typeof gsap !== 'undefined') {
     gsap.fromTo(btn, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, delay: 1.5, ease: 'back.out(2)' });
   }
-  btn.addEventListener('click', () => { audio.play('click'); window.open(LIVE_URL, '_blank'); });
+  const openVideo = () => { audio.play('click'); window.open(LIVE_URL, '_blank'); };
+  btn.addEventListener('click', openVideo);
+  if (card) card.addEventListener('click', openVideo);
 };
 
 // ============================================================

@@ -10,6 +10,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
   <style>
+    /* ===== 全局响应式 ===== */
+    * { box-sizing: border-box; }
+    html, body {
+      width: 100%; overflow-x: hidden;
+      font-size: var(--font-base);
+      -webkit-text-size-adjust: 100%;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    button, .btn, [role="button"] {
+      min-height: var(--touch-min); min-width: var(--touch-min);
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+
     /* ===== 页面通用 ===== */
     .page {
       position: absolute; inset: 0;
@@ -953,8 +966,8 @@
       100% { transform: translate(-50%,-50%) scale(1.2); opacity:0; }
     }
   </style>
-  <script src="./assets/index-NTwcwKt1.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BDMAOhqN.css">
+  <script src="./assets/index-Co15rIbV.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-MPNawJOL.css">
 </head>
 <body>
 
@@ -1130,35 +1143,35 @@
       <img class="page-bg" src="./assets/%E8%BD%A6%E9%97%B4%E6%9C%BA%E6%A2%B0%E6%89%8B-T0JoMsxw.png" alt="切片包装机械手" />
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
-      <div class="glass-card" style="background:rgba(255,255,255,0.85);max-width:540px;padding:22px 18px;margin-bottom:8px;">
-        <div class="transparency-badge" style="margin-bottom:8px;">第四站 · 查包装</div>
-        <div class="divider-ornament"></div>
-        <div class="page-title" style="font-size:var(--text-lg);">没有吐司边<br>每一口都是芯</div>
-        <p class="page-subtitle" style="margin-bottom:0;">不用撕边，打开就吃<br>产品包装出现，才叫查岗完成</p>
-      </div>
-      <div class="conveyor-wrap" id="conveyorWrap">
-        <!-- Step 1 -->
-        <div class="conveyor-section" style="background:rgba(255,248,234,0.85);display:inline-flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
-          <div style="font-size:56px;line-height:1;">🍞</div>
-          <span class="tag-pill" style="margin-top:4px;">Step 1 · 整条吐司</span>
-          <p style="font-size:13px;color:var(--brown);opacity:0.75;margin:0;max-width:200px;line-height:1.6;text-align:center;">四周都有吐司边<br>切掉浪费，吃掉将就</p>
-          <div style="font-size:12px;color:rgba(91,50,23,0.35);margin-top:6px;">← 滑动看下一步 →</div>
+      <p class="page-title" style="font-size:var(--font-lg);color:#fff;z-index:3;text-shadow:0 2px 8px rgba(0,0,0,0.4);margin-bottom:4px;">没有吐司边 · 每一口都是芯</p>
+      <div class="step-cards-container" id="stepCardsContainer">
+        <div class="step-card" data-step="0">
+          <div class="step-icon">🍞</div><div class="step-num">Step 1 / 3</div>
+          <div class="step-title">整条吐司</div>
+          <div class="step-desc">四周都有吐司边<br>切掉浪费，吃掉将就</div>
         </div>
-        <!-- Step 2 -->
-        <div class="conveyor-section" style="background:rgba(234,243,255,0.85);display:inline-flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
-          <div style="font-size:56px;line-height:1;">✂️</div>
-          <span class="tag-pill" style="margin-top:4px;">Step 2 · 精准切边</span>
-          <p style="font-size:13px;color:var(--brown);opacity:0.75;margin:0;max-width:200px;line-height:1.6;text-align:center;">自动化流水线<br>四边精准去除，只留软芯</p>
+        <div class="step-card" data-step="1">
+          <div class="step-icon">✂️</div><div class="step-num">Step 2 / 3</div>
+          <div class="step-title">精准切边</div>
+          <div class="step-desc">自动化流水线<br>四边精准去除，只留软芯</div>
         </div>
-        <!-- Step 3 -->
-        <div class="conveyor-section" style="background:rgba(255,232,184,0.85);display:inline-flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;">
-          <div style="width:72px;height:64px;background:linear-gradient(135deg,#C9212B,#A01822);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#FFD700;font-weight:900;font-size:16px;letter-spacing:0.06em;box-shadow:0 4px 16px rgba(201,33,43,0.3);">豪士</div>
-          <span class="tag-pill tag-red" style="margin-top:4px;">Step 3 · 无边入袋</span>
-          <p style="font-size:13px;color:var(--brown);opacity:0.75;margin:0;max-width:200px;line-height:1.6;text-align:center;">每一片都是纯芯<br>打开即食，不用再撕边</p>
-          <span class="transparency-badge" style="margin-top:6px;">✓ 查包装完成</span>
+        <div class="step-card" data-step="2">
+          <div class="step-icon" style="width:72px;height:64px;background:linear-gradient(135deg,#C9212B,#A01822);border-radius:10px;color:#FFD700;font-weight:900;font-size:16px;letter-spacing:0.06em;box-shadow:0 4px 16px rgba(201,33,43,0.3);line-height:64px;">豪士</div>
+          <div class="step-num">Step 3 / 3</div>
+          <div class="step-title">无边入袋</div>
+          <div class="step-desc">每一片都是纯芯<br>打开即食，不用再撕边</div>
         </div>
       </div>
-      <div class="page-hint">👈 滑动传送带，或左滑翻页</div>
+      <div class="card-dots" id="cardDots">
+        <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <div class="packaging-complete" id="pkgComplete">
+        <div class="complete-icon">✓</div>
+        <p style="font-size:var(--font-lg);font-weight:700;color:var(--text-primary);margin:0;">查包装完成</p>
+        <p style="font-size:var(--font-sm);color:var(--brown);opacity:0.7;margin:0;">不用撕边，打开就吃</p>
+        <button class="btn-warm" id="pkgNextBtn">继续查岗 →</button>
+      </div>
+      <div class="page-hint" id="pkgHint">👈 滑动卡片查看流程</div>
     </div>
 
     <!-- ===== P9 质检挑战 ===== -->
@@ -1200,27 +1213,25 @@
       <div class="page-hint">🎬 解锁工厂探秘视频</div>
     </div>
 
-    <!-- ===== P11 透明工厂直播间 ===== -->
+    <!-- ===== P11 工厂探秘视频 ===== -->
     <div class="page" id="page11" data-page="11" style="background:linear-gradient(180deg,#1A1A2E,#16213E);">
-      <div class="page-title" style="font-size:var(--text-lg);color:#fff;">查岗还没结束<br>工厂探秘视频来了</div>
-      <div class="live-mock">
-        <div class="live-header">
-          <div class="live-dot" style="background:var(--brand-gold);"></div>
-          <span class="live-title-bar">豪士透明工厂探秘</span>
-          <span class="live-viewers">94.5万次播放</span>
-        </div>
-        <div class="live-content">
-          <img src="./assets/%E6%BC%B3%E5%B7%9E%E5%B7%A5%E5%8E%822-Bbrdk6cN.png" alt="豪士透明工厂探秘视频" />
-          <div class="live-badge" style="background:rgba(198,168,75,0.92);">VIDEO</div>
-          <div class="live-danmaku">
-            <div class="danmaku-msg" style="top:20%;animation-delay:0s;">这车间也太亮了</div>
-            <div class="danmaku-msg" style="top:40%;animation-delay:2.5s;">原来吐司是这样出来的</div>
-            <div class="danmaku-msg" style="top:55%;animation-delay:5s;">厂长查岗中 👀</div>
+      <div class="page-title" style="font-size:var(--font-lg);color:#fff;">查岗还没结束<br>工厂探秘视频来了</div>
+      <div class="video-cover-card" id="videoCard">
+        <div class="video-thumb">
+          <img src="./assets/%E6%BC%B3%E5%B7%9E%E5%B7%A5%E5%8E%822-Bbrdk6cN.png" alt="豪士透明工厂探秘视频封面" />
+          <div class="video-play-overlay">
+            <div class="play-btn-circle">
+              <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+          <div class="video-info-overlay">
+            <span class="video-title">豪士透明工厂探秘</span>
+            <span class="video-meta">👁 94.5万次播放</span>
           </div>
         </div>
       </div>
-      <button class="btn-warm" id="btnWatchLive" style="margin-top:20px;">去看工厂探秘视频</button>
-      <div class="page-hint" style="color:rgba(255,255,255,0.35);">或滑动继续</div>
+      <button class="btn-warm" id="btnWatchLive" style="margin-top:16px;">去看工厂探秘视频</button>
+      <div class="page-hint" style="color:rgba(255,255,255,0.5);">或左滑继续</div>
     </div>
 
     <!-- ===== P12 转化页 ===== -->

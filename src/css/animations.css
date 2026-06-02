@@ -153,19 +153,22 @@
 
 /* ===== 进度条 ===== */
 .progress-bar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  background: rgba(255,255,255,0.95); padding: 8px 16px 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(4px);
+  padding: 8px var(--section-pad) 6px;
+  display: flex; flex-direction: column; gap: 4px;
+  transition: opacity 0.3s, transform 0.3s;
 }
+.progress-bar.hidden { opacity: 0; pointer-events: none; transform: translateY(-100%); }
 #progress-label {
-  font-size: 13px; color: var(--brown); font-weight: 700;
-  display: block; margin-bottom: 4px; text-align: center;
+  font-size: var(--font-sm); color: #666; font-weight: 600;
+  text-align: left;
 }
 .progress-track {
-  width: 100%; height: 3px; background: rgba(0,59,122,0.1); border-radius: 2px;
+  width: 100%; height: 3px; background: #eee; border-radius: 2px; overflow: hidden;
 }
 #progress-fill {
-  height: 100%; width: 0%; background: var(--haoshi-blue);
+  height: 100%; width: 0%; background: var(--brand-color);
   border-radius: 2px; transition: width 0.4s ease;
 }
 
@@ -187,6 +190,127 @@
 .quiz-timer-bg { stroke: rgba(0,59,122,0.1); }
 .quiz-timer-fg { stroke: var(--haoshi-blue); stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.3s; }
 .quiz-timer-fg.urgent { stroke: var(--brand-red); }
+
+/* ===== 手势提示组件 ===== */
+.gesture-hint {
+  position: absolute; bottom: 80px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  z-index: 100; pointer-events: none;
+  animation: hintFadeIn 0.5s ease forwards;
+}
+.gesture-label {
+  font-size: var(--font-sm); color: rgba(255,255,255,0.9);
+  background: rgba(0,0,0,0.4); padding: 6px 14px;
+  border-radius: 20px; white-space: nowrap;
+}
+.gesture-hint--swipe-right .gesture-icon::before {
+  content: '👉'; font-size: 28px; display: block;
+  animation: swipeRightLoop 1.6s ease-in-out infinite;
+}
+@keyframes swipeRightLoop {
+  0% { transform: translateX(-8px); opacity: 0.4; }
+  50% { transform: translateX(8px); opacity: 1; }
+  100% { transform: translateX(-8px); opacity: 0.4; }
+}
+.gesture-hint--swipe-lr .gesture-icon::before {
+  content: '👈 👉'; font-size: 22px; display: block;
+  animation: swipeLrLoop 1.8s ease-in-out infinite;
+}
+@keyframes swipeLrLoop {
+  0%, 100% { transform: scaleX(1); opacity: 0.6; }
+  50% { transform: scaleX(1.15); opacity: 1; }
+}
+.gesture-hint--tap .gesture-icon {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  animation: tapPulse 1.4s ease-in-out infinite;
+}
+@keyframes tapPulse {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  60% { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(0.8); opacity: 0; }
+}
+.gesture-hint--drag .gesture-icon::before {
+  content: '↔️'; font-size: 26px; display: block;
+  animation: dragLoop 1.6s ease-in-out infinite;
+}
+@keyframes dragLoop {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(-10px); }
+  70% { transform: translateX(10px); }
+}
+@keyframes hintFadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.gesture-hint.dismissing {
+  animation: hintFadeOut 0.3s ease forwards;
+}
+@keyframes hintFadeOut {
+  to { opacity: 0; transform: translateX(-50%) translateY(6px); }
+}
+
+/* ===== 视频封面卡片 ===== */
+.video-cover-card {
+  width: min(340px, 92%); border-radius: 12px; overflow: hidden;
+  cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  position: relative; z-index: 2; -webkit-tap-highlight-color: transparent;
+}
+.video-thumb { position: relative; width: 100%; aspect-ratio: 16/9; }
+.video-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.video-play-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.25); display: flex;
+  align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.video-cover-card:active .video-play-overlay { background: rgba(0,0,0,0.4); }
+.play-btn-circle {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(255,255,255,0.9); display: flex;
+  align-items: center; justify-content: center;
+  transition: transform 0.2s;
+}
+.video-cover-card:active .play-btn-circle { transform: scale(0.92); }
+.video-info-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 12px; background: linear-gradient(transparent, rgba(0,0,0,0.65));
+  display: flex; flex-direction: column; gap: 2px;
+}
+.video-title { color: #fff; font-size: var(--font-base); font-weight: 600; }
+.video-meta { color: rgba(255,255,255,0.75); font-size: var(--font-sm); }
+
+/* ===== P8 卡片 peek ===== */
+.step-cards-container {
+  width: 100%; overflow-x: scroll; overflow-y: hidden;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  display: flex; gap: 8px; padding: 0 10%;
+  scrollbar-width: none;
+}
+.step-cards-container::-webkit-scrollbar { display: none; }
+.step-card {
+  min-width: 80%; scroll-snap-align: center;
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 20px 16px; text-align: center;
+  box-shadow: var(--shadow-soft); flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.step-card .step-icon { font-size: 40px; }
+.step-card .step-num { font-size: var(--font-sm); color: #999; }
+.step-card .step-title { font-size: var(--font-lg); font-weight: 700; color: var(--text-primary); }
+.step-card .step-desc { font-size: var(--font-sm); color: var(--brown); opacity: 0.7; line-height: 1.5; }
+.card-dots { display: flex; gap: 6px; justify-content: center; margin-top: 12px; position: relative; z-index: 2; }
+.card-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,48,135,0.2); transition: all 0.3s; }
+.card-dots .dot.active { background: var(--haoshi-blue); width: 18px; border-radius: 3px; }
+.packaging-complete { display: none; flex-direction: column; align-items: center; gap: 10px; position: relative; z-index: 2; }
+.packaging-complete.show { display: flex; }
+.packaging-complete .complete-icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--safe-green); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 700;
+}
 
 /* ===== 工牌评分标签 ===== */
 .rating-label {

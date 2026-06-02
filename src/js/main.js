@@ -22,17 +22,36 @@ export function updateProgress(stationIndex, stationName, pct) {
   const bar = document.getElementById('progress-bar');
   const label = document.getElementById('progress-label');
   const fill = document.getElementById('progress-fill');
-  if (bar) bar.style.display = 'block';
+  if (bar) bar.classList.remove('hidden');
   if (label) label.textContent = stationName;
   if (fill) fill.style.width = `${pct != null ? pct : (stationIndex / 5) * 100}%`;
 }
 export function hideProgress() {
   const bar = document.getElementById('progress-bar');
-  if (bar) bar.style.display = 'none';
+  if (bar) bar.classList.add('hidden');
 }
 window.showToast = showToast;
 window.updateProgress = updateProgress;
 window.hideProgress = hideProgress;
+
+/** 手势提示组件 */
+export function mountGestureHint(el, type, label) {
+  if (!el || !el.id) return;
+  const key = `hint-${el.id}`;
+  if (sessionStorage.getItem(key)) return;
+  const hint = document.createElement('div');
+  hint.className = `gesture-hint gesture-hint--${type}`;
+  hint.innerHTML = `<div class="gesture-icon"></div><span class="gesture-label">${label}</span>`;
+  el.appendChild(hint);
+  const dismiss = () => {
+    hint.classList.add('dismissing');
+    hint.addEventListener('animationend', () => hint.remove(), { once: true });
+    sessionStorage.setItem(key, '1');
+  };
+  el.addEventListener('touchstart', dismiss, { once: true, passive: true });
+  el.addEventListener('mousedown', dismiss, { once: true });
+}
+window.mountGestureHint = mountGestureHint;
 
 class App {
   constructor() {

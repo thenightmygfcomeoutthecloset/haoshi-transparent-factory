@@ -1,39 +1,76 @@
-/* === 豪士面包 品牌色体系 V4 — Stripe×Airbnb 融合 === */
+/* === 豪士面包 品牌色体系 + 移动端适配变量 === */
 :root {
-  /* 豪士品牌色 */
+  /* 品牌色 */
   --haoshi-blue: #003087;
   --haoshi-blue-dark: #001A52;
   --haoshi-blue-soft: #EAF3FF;
   --haoshi-red: #C9212B;
   --haoshi-red-dark: #A01822;
-  --haoshi-gold: #FFD700;
+  --brand-color: #E8380D;
+  --brand-bg: #FFF8F0;
   --brand-gold: #C6A84B;
-  --brand-gold-light: #D4BB6E;
-  --brand-gold-dark: #A8892E;
-  --brand-red: #C9212B;
 
-  /* 暖色调 — 面包/奶油系 */
+  /* 暖色调 */
   --cream-white: #FFF8EA;
   --cream-soft: #FFF3D6;
   --bread-yellow: #F5B84B;
   --bread-light: #FFD98A;
   --toast-brown: #B87435;
 
-  /* 文字色 — Airbnb 式暖黑 */
+  /* 文字色 */
   --text-primary: #1A1A1A;
   --text-secondary: #6A6A6A;
   --brown: #5B3217;
-
-  /* 强调色 */
   --safe-green: #7FA36B;
 
   /* 玻璃拟态 */
   --glass-white: rgba(255, 255, 255, 0.78);
-  --shadow-soft: rgba(91,50,23,0.06) 0px 2px 6px, rgba(91,50,23,0.1) 0px 8px 24px;
-  --shadow-elevated: rgba(0,59,122,0.08) 0px 4px 12px, rgba(0,59,122,0.15) 0px 12px 32px;
-  --shadow-button: rgba(91,50,23,0.12) 0px 4px 16px;
+  --shadow-soft: 0 2px 6px rgba(91,50,23,0.06), 0 8px 24px rgba(91,50,23,0.1);
+  --shadow-elevated: 0 4px 12px rgba(0,59,122,0.08), 0 12px 32px rgba(0,59,122,0.15);
 
-  /* 兼容旧变量名 */
+  /* 移动端适配变量 */
+  --screen-width: 100vw;
+  --screen-height: 100dvh;
+  --font-base: clamp(14px, 3.8vw, 17px);
+  --font-sm: clamp(12px, 3.2vw, 14px);
+  --font-lg: clamp(18px, 4.8vw, 22px);
+  --font-xl: clamp(22px, 6vw, 28px);
+  --font-hero: clamp(28px, 8vw, 40px);
+  --section-pad: clamp(16px, 5vw, 32px);
+  --touch-min: 44px;
+
+  /* 字体 */
+  --font-title: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-body: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+
+  /* 字号 */
+  --text-display: 44px;
+  --text-xl: 36px;
+  --text-lg: 28px;
+  --text-md: 20px;
+  --text-sm: 16px;
+  --text-xs: 14px;
+
+  /* 其他 */
+  --page-width: 640px;
+  --page-height: 1008px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 50px;
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --dur-fast: 200ms;
+  --dur-normal: 400ms;
+  --dur-slow: 700ms;
+
+  /* 兼容旧变量 */
+  --haoshi-gold: #FFD700;
+  --brand-gold-light: #D4BB6E;
+  --brand-gold-dark: #A8892E;
+  --brand-red: #C9212B;
+  --shadow-button: 0 4px 16px rgba(91,50,23,0.12);
   --color-red: #C9212B;
   --color-red-dark: #A01822;
   --color-red-light: #E8445A;
@@ -46,34 +83,4 @@
   --color-cream: #FFF3D6;
   --color-brown: #5B3217;
   --color-brown-light: #8B7355;
-
-  /* 字体 — 系统字体栈 */
-  --font-title: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --font-body: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-
-  /* 字号 — Stripe 式渐进字阶（手机适配放大） */
-  --text-display: 44px;
-  --text-xl: 36px;
-  --text-lg: 28px;
-  --text-md: 20px;
-  --text-sm: 16px;
-  --text-xs: 14px;
-
-  /* 固定尺寸 */
-  --page-width: 640px;
-  --page-height: 1008px;
-
-  /* 圆角系统 — Airbnb 式温暖圆角 */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-pill: 50px;
-
-  /* 动画 */
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-  --dur-fast: 200ms;
-  --dur-normal: 400ms;
-  --dur-slow: 700ms;
 }
