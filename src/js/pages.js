@@ -12,7 +12,7 @@ const $$ = (sel) => document.querySelectorAll(sel);
 // P1 首屏 — 金色参观券入场 + 手势引导
 // ============================================================
 window.init_page01 = function () {
-  updateProgress(0, '豪士透明工厂', 0);
+  updateProgress(0, '第1/12页 · 豪士透明工厂', 0);
   const btn = document.getElementById('btnEnter');
   if (!btn || btn.dataset.ready) return;
   btn.dataset.ready = '1';
@@ -43,7 +43,7 @@ window.init_page01 = function () {
 // P2 厂长身份 — Loading → 验证成功 → 戴上工牌
 // ============================================================
 window.init_page02 = function () {
-  updateProgress(0, '身份验证中...', 0);
+  updateProgress(0, '第2/12页 · 身份验证中...', 0);
   const card = document.getElementById('badgeCard');
   const verifyBadge = document.getElementById('verifyBadge');
   const verifyTitle = document.getElementById('verifyTitle');
@@ -53,7 +53,7 @@ window.init_page02 = function () {
 
   setTimeout(() => {
     if (verifyBadge) verifyBadge.innerHTML = '✓ 验证成功，你已被任命为一日透明厂长';
-    updateProgress(0, '身份已验证', 20);
+    updateProgress(0, '第2/12页 · 身份已验证', 20);
     setTimeout(() => {
       if (verifyTitle) verifyTitle.style.display = '';
       card.style.display = '';
@@ -85,7 +85,7 @@ window.init_page02 = function () {
 // P3 工厂大门 — 点击开门 → 左滑进入P4
 // ============================================================
 window.init_page03 = function () {
-  updateProgress(0, '工厂大门', 0);
+  updateProgress(0, '第3/12页 · 工厂大门', 0);
   const gateLeft = document.getElementById('gateLeft');
   const gateRight = document.getElementById('gateRight');
   const hint = document.getElementById('gateHint');
@@ -120,7 +120,7 @@ window.init_page03 = function () {
 // P4 原料查验 + 世界地图 GSAP
 // ============================================================
 window.init_page04 = function () {
-  updateProgress(1, '第1站 · 查原料', 20);
+  updateProgress(1, '第4/12页 · 第1站 查原料', 20);
   const cards = $$('#ingredientCards .ingredient-card');
   if (cards.length === 0 || cards[0].dataset.ready) return;
 
@@ -150,7 +150,7 @@ window.init_page04 = function () {
 // P5 卖点标签 — GSAP stagger
 // ============================================================
 window.init_page05 = function () {
-  updateProgress(1, '王牌产品 · 藜麦吐司', 25);
+  updateProgress(1, '第5/12页 · 王牌产品', 25);
   const tags = $$('#uspTags .usp-tag');
   const explain = document.getElementById('uspExplain');
   if (tags.length === 0 || tags[0].dataset.ready) return;
@@ -239,7 +239,7 @@ function setFeedback(el, text, color) {
 // P6 和面工艺 — 第二站
 // ============================================================
 window.init_page06 = function () {
-  updateProgress(2, '第2站 · 查工艺', 40);
+  updateProgress(2, '第6/12页 · 第2站 查工艺', 40);
   initSliderPage({
     sliderId: 'doughSlider', feedbackId: 'doughFeedback', hintId: 'doughHint',
     getMsg: (val) => {
@@ -254,7 +254,7 @@ window.init_page06 = function () {
 // P7 烘烤火候 — 第三站
 // ============================================================
 window.init_page07 = function () {
-  updateProgress(3, '第3站 · 查火候', 60);
+  updateProgress(3, '第7/12页 · 第3站 查火候', 60);
   initSliderPage({
     sliderId: 'bakeSlider', feedbackId: 'bakeFeedback', hintId: null,
     getMsg: (val) => {
@@ -269,7 +269,7 @@ window.init_page07 = function () {
 // P8 切片包装 — 第四站
 // ============================================================
 window.init_page08 = function () {
-  updateProgress(4, '第4站 · 查包装', 80);
+  updateProgress(4, '第8/12页 · 第4站 查包装', 80);
   const wrap = document.getElementById('conveyorWrap');
   if (!wrap || wrap.dataset.ready) return;
   wrap.dataset.ready = '1';
@@ -291,7 +291,7 @@ window.init_page09 = function () {
   const page = document.getElementById('page09');
   if (!page || page.dataset.ready) return;
   page.dataset.ready = '1';
-  updateProgress(5, '第5站 · 查质检', 100);
+  updateProgress(5, '第9/12页 · 第5站 查质检', 100);
 
   const breads = Array.from($$('#quizBreads .quiz-bread'));
   const timerEl = document.getElementById('quizTimer');
@@ -375,7 +375,7 @@ function gsapPop(el) {
 // P10 厂长工牌
 // ============================================================
 window.init_page10 = function () {
-  updateProgress(5, '认证结果', 100);
+  updateProgress(5, '第10/12页 · 认证结果', 100);
   const badge = document.getElementById('badgeResult');
   const gradeEl = document.getElementById('badgeGrade');
   const rankEl = document.getElementById('badgeRank');
@@ -429,7 +429,7 @@ window.init_page10 = function () {
 // P11 工厂探秘视频
 // ============================================================
 window.init_page11 = function () {
-  updateProgress(5, '工厂探秘视频', 100);
+  updateProgress(5, '第11/12页 · 工厂探秘视频', 100);
   const btn = document.getElementById('btnWatchLive');
   if (!btn || btn.dataset.ready) return;
   btn.dataset.ready = '1';
@@ -443,7 +443,7 @@ window.init_page11 = function () {
 // P12 转化页 — GSAP 级联
 // ============================================================
 window.init_page12 = function () {
-  updateProgress(5, '尝一口你的成果', 100);
+  updateProgress(5, '第12/12页 · 尝一口你的成果', 100);
   const page = document.getElementById('page12');
   if (!page || page.dataset.ready) return;
   page.dataset.ready = '1';
