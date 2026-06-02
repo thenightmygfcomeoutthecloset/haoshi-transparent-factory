@@ -1,12 +1,15 @@
 /* === 豪士面包 品牌色体系 V4 — Stripe×Airbnb 融合 === */
 :root {
   /* 豪士品牌色 */
-  --haoshi-blue: #003B7A;
-  --haoshi-blue-dark: #002A5C;
+  --haoshi-blue: #003087;
+  --haoshi-blue-dark: #001A52;
   --haoshi-blue-soft: #EAF3FF;
   --haoshi-red: #C9212B;
   --haoshi-red-dark: #A01822;
   --haoshi-gold: #FFD700;
+  --brand-gold: #C6A84B;
+  --brand-gold-light: #D4BB6E;
+  --brand-gold-dark: #A8892E;
   --brand-red: #C9212B;
 
   /* 暖色调 — 面包/奶油系 */

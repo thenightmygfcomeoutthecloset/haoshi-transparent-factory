@@ -190,8 +190,12 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
     const val = parseInt(slider.value);
     if (!window._userData) window._userData = {};
     window._userData[sliderId] = val;
-    const { text, color, advance, hintText } = getMsg(val);
+    const { text, color, advance, hintText, bgEl, bgColor } = getMsg(val);
     setFeedback(feedback, text, color);
+    if (bgEl && bgColor) {
+      const bgElement = document.getElementById(bgEl);
+      if (bgElement) bgElement.style.background = bgColor;
+    }
     if (advance) {
       if (hint && hintText) hint.textContent = hintText;
       slider.disabled = true;
@@ -216,9 +220,9 @@ window.init_page06 = function () {
   initSliderPage({
     sliderId: 'doughSlider', feedbackId: 'doughFeedback', hintId: 'doughHint',
     getMsg: (val) => {
-      if (val <= 30) return { text: '太软了，厂长不批 👎', color: '#e88' };
-      if (val >= 70) return { text: '硬了，重来一炉 🔄', color: '#D42026' };
-      return { text: '✅ 就这个手感，松软又有嚼劲', color: '#4CAF50', advance: true, hintText: '手感对了！进烘烤线...' };
+      if (val < 33) return { text: '面团太软，成品会发黏——再加点力', color: '#B07820', bgEl: 'doughState', bgColor: '#F8E8C0' };
+      if (val > 66) return { text: '筋度过强，面包会发柴——松一点', color: '#C03030', bgEl: 'doughState', bgColor: '#C8A060' };
+      return { text: '✓ 豪士4年找到的黄金比例，就是这里！', color: '#5C8A3C', bgEl: 'doughState', bgColor: '#E8C870', advance: true, hintText: '手感对了！进烘烤线...' };
     },
   });
 };
@@ -230,9 +234,9 @@ window.init_page07 = function () {
   initSliderPage({
     sliderId: 'bakeSlider', feedbackId: 'bakeFeedback', hintId: null,
     getMsg: (val) => {
-      if (val <= 25) return { text: '火小了，香气还没出来 🔥', color: '#8E8E93' };
-      if (val >= 75) return { text: '烤过了！厂长喊停 🛑', color: '#D42026' };
-      return { text: '👑 刚好，豪士豪士好吃好吃', color: '#4CAF50', advance: true };
+      if (val < 35) return { text: '温度太低，颜色苍白，内心未熟', color: '#B07820', bgEl: 'bakeToast', bgColor: '#F8EDD0' };
+      if (val > 65) return { text: '太高了，焦了——这批要重做！', color: '#C03030', bgEl: 'bakeToast', bgColor: '#5C3010' };
+      return { text: '✓ 220°C，表皮微脆内心柔软，这就是豪士的温度', color: '#5C8A3C', bgEl: 'bakeToast', bgColor: '#C89030', advance: true };
     },
   });
 };
@@ -284,6 +288,7 @@ window.init_page09 = function () {
         else { grade = 'B'; gradeText = '🍞 实习厂长，下次手速再快点'; gradeTitle = '实习厂长'; }
         if (result) { result.innerHTML = gradeText; gsapPop(result); }
         if (timer) timer.textContent = '✅';
+        if (retryBtn) retryBtn.style.display = 'inline-block';
         window._quizScore = { found, timeUsed, mistakes, grade, gradeTitle };
         audio.play('click');
         setTimeout(() => window.app && window.app.next(), 2000);
@@ -329,6 +334,7 @@ function gsapPop(el) {
 window.init_page10 = function () {
   const badge = document.getElementById('badgeResult');
   const gradeEl = document.getElementById('badgeGrade');
+  const rankEl = document.getElementById('badgeRank');
   const titleEl = document.getElementById('badgeTitleText');
   const personalEl = document.getElementById('badgePersonal');
   if (!badge || badge.dataset.ready) return;
@@ -342,6 +348,13 @@ window.init_page10 = function () {
   const ud = window._userData || {};
   if (gradeEl) gradeEl.textContent = quiz.grade || 'B';
   if (titleEl) titleEl.textContent = quiz.gradeTitle || '实习厂长';
+
+  const quizErrors = quiz.mistakes || 0;
+  let rankGrade, rankColor;
+  if (quizErrors === 0) { rankGrade = 'S'; rankColor = '#FFD700'; }
+  else if (quizErrors === 1) { rankGrade = 'A'; rankColor = '#C0C0C0'; }
+  else { rankGrade = 'B'; rankColor = '#CD7F32'; }
+  if (rankEl) { rankEl.textContent = rankGrade; rankEl.style.color = rankColor; }
 
   const bakeVal = ud.bakeSlider;
   let personalMsg;

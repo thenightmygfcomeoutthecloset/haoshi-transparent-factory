@@ -170,6 +170,8 @@ function boot() {
   window.app = new App();
   window.app._resize();
   window.addEventListener('resize', () => window.app._resize());
+  const ticketEl = document.getElementById('ticketNo');
+  if (ticketEl) ticketEl.textContent = 'NO. ' + String(Math.floor(Math.random() * 9000) + 1000);
 }
 
 if (document.readyState === 'loading') {
