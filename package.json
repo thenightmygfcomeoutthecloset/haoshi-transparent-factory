@@ -5,7 +5,8 @@
   "description": "大广赛互动类作品 - 面包工厂探秘日志",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run postbuild",
+    "postbuild": "node -e \"const c=require('fs').readFileSync('docs/index.html','utf8');require('fs').writeFileSync('docs/index.html',c.replace(/type=\\\"module\\\" crossorigin /g,''))\"",
     "preview": "vite preview"
   },
   "devDependencies": {
