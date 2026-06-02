@@ -439,51 +439,81 @@
       position: relative; z-index: 2;
     }
 
-    /* ===== 单框页面全局放大 — P4第一站 / P6第二站 / P7第三站 / P9第五站 ===== */
-    #page04, #page06, #page07, #page09 {
+    /* ===== 单框页面全局放大 ===== */
+    /* P4第一站 / P6第二站 / P7第三站 / P9第五站 — glass-card */
+    #page03, #page04, #page06, #page07, #page09, #page12 {
       padding: 16px 8px;
       justify-content: center;
     }
+    #page03 .glass-card,
     #page04 .glass-card,
     #page06 .glass-card,
     #page07 .glass-card,
-    #page09 .glass-card {
+    #page09 .glass-card,
+    #page12 .glass-card {
       max-width: 628px;
       width: 98%;
       padding: 40px 24px;
       border-radius: 24px;
     }
+    #page03 .page-title,
     #page04 .page-title,
     #page06 .page-title,
     #page07 .page-title,
-    #page09 .page-title {
+    #page09 .page-title,
+    #page12 .page-title {
       font-size: var(--text-display) !important;
       margin-bottom: 18px;
       line-height: 1.25;
     }
+    #page03 .page-subtitle,
     #page04 .page-subtitle,
     #page06 .page-subtitle,
     #page07 .page-subtitle,
-    #page09 .page-subtitle {
+    #page09 .page-subtitle,
+    #page12 .page-subtitle {
       font-size: var(--text-md);
       margin-bottom: 22px;
       line-height: 1.6;
     }
+    #page03 .transparency-badge,
     #page04 .transparency-badge,
     #page06 .transparency-badge,
     #page07 .transparency-badge,
-    #page09 .transparency-badge {
+    #page09 .transparency-badge,
+    #page12 .transparency-badge {
       font-size: var(--text-sm);
       padding: 10px 24px;
       margin-bottom: 16px;
     }
+    #page03 .divider-ornament,
     #page04 .divider-ornament,
     #page06 .divider-ornament,
     #page07 .divider-ornament,
-    #page09 .divider-ornament {
+    #page09 .divider-ornament,
+    #page12 .divider-ornament {
       margin-bottom: 18px;
       width: 56px;
     }
+    #page03 .slogan-pill,
+    #page04 .slogan-pill,
+    #page06 .slogan-pill,
+    #page07 .slogan-pill,
+    #page09 .slogan-pill,
+    #page12 .slogan-pill {
+      font-size: var(--text-sm);
+      padding: 8px 20px;
+    }
+    #page03 .page-hint,
+    #page04 .page-hint,
+    #page06 .page-hint,
+    #page07 .page-hint,
+    #page09 .page-hint,
+    #page12 .page-hint {
+      font-size: var(--text-sm);
+      bottom: 24px;
+    }
+
     /* P6/P7 滑块加大 */
     #page06 .slider-container,
     #page07 .slider-container {
@@ -511,36 +541,222 @@
     #page07 .slider-container > div {
       font-size: var(--text-md);
     }
+
     /* P4 原料卡片加大 */
     #page04 .ingredient-card {
-      width: 130px;
-      height: 140px;
+      width: 150px;
+      height: 160px;
     }
     #page04 .ingredient-card .card-icon {
-      font-size: 36px;
+      font-size: 40px;
     }
     #page04 .ingredient-card .card-name {
       font-size: var(--text-sm);
     }
     /* P4 世界地图加大 */
     #page04 .world-map {
-      transform: scale(1.8);
-      margin-bottom: 100px;
+      transform: scale(2);
+      margin-bottom: 108px;
     }
+
     /* P9 质检加大 */
     #page09 .quiz-timer {
-      font-size: 56px;
+      font-size: 64px;
     }
     #page09 .quiz-breads {
       gap: 20px;
       margin: 28px 0;
     }
     #page09 .quiz-bread {
-      width: 130px;
-      height: 106px;
+      width: 140px;
+      height: 114px;
     }
     #page09 #quizResult {
       font-size: var(--text-lg);
+    }
+    #page09 .btn-outline {
+      font-size: var(--text-md);
+      padding: 14px 40px;
+    }
+
+    /* ===== P1 金色参观券加大 ===== */
+    #page01 {
+      padding: 30px 16px;
+    }
+    #page01 .golden-ticket {
+      width: 320px;
+    }
+    #page01 .ticket-title {
+      font-size: 38px;
+    }
+    #page01 .ticket-logo {
+      font-size: 22px;
+    }
+    #page01 .p1-hook-text {
+      font-size: 28px;
+      margin-top: 22px;
+    }
+    #page01 .p1-hook-sub {
+      font-size: 16px;
+      margin-top: 8px;
+    }
+    #page01 .slogan-pill {
+      font-size: var(--text-sm);
+      padding: 8px 20px;
+    }
+    #page01 .btn-warm {
+      font-size: var(--text-md);
+      padding: 16px 48px;
+    }
+
+    /* ===== P2 厂长工牌加大 ===== */
+    #page02 {
+      padding: 24px 12px;
+    }
+    #page02 .badge-card {
+      width: 300px;
+      height: 320px;
+    }
+    #page02 .badge-card img {
+      height: 56px !important;
+    }
+    #page02 .badge-card .badge-role {
+      font-size: 20px;
+      margin-top: 12px;
+    }
+    #page02 .badge-card .badge-hint {
+      font-size: 14px;
+      margin-top: 24px;
+    }
+    #page02 .page-title {
+      font-size: var(--text-xl) !important;
+    }
+    #page02 .page-subtitle {
+      font-size: var(--text-md);
+    }
+    #page02 .transparency-badge {
+      font-size: var(--text-sm);
+      padding: 10px 24px;
+    }
+    #page02 .slogan-pill {
+      font-size: var(--text-sm);
+      padding: 8px 20px;
+    }
+
+    /* ===== P5 卖点标签加大 ===== */
+    #page05 {
+      padding: 24px 10px;
+    }
+    #page05 .usp-tag {
+      padding: 14px 24px;
+      font-size: var(--text-md);
+      border-radius: 50px;
+    }
+    #page05 .usp-explain {
+      font-size: var(--text-md);
+      min-height: 48px;
+      margin-top: 12px;
+    }
+    #page05 .bread-product {
+      width: 240px;
+      height: 180px;
+      margin: 12px auto;
+    }
+    #page05 .bread-body {
+      width: 220px;
+      height: 130px;
+    }
+    #page05 .slogan-pill {
+      font-size: var(--text-sm);
+      padding: 8px 20px;
+    }
+
+    /* ===== P10 厂长工牌结果加大 ===== */
+    #page10 {
+      padding: 24px 12px;
+    }
+    #page10 .badge-result {
+      width: 300px;
+      height: 320px;
+    }
+    #page10 .badge-result .badge-grade {
+      font-size: 60px;
+    }
+    #page10 #badgeRank {
+      font-size: 44px;
+    }
+    #page10 .badge-result .badge-title-text {
+      font-size: 22px;
+    }
+    #page10 .badge-result .badge-slogan {
+      font-size: 14px;
+    }
+    #page10 .slogan-pill {
+      font-size: var(--text-sm);
+      padding: 8px 20px;
+    }
+    #page10 .page-hint {
+      font-size: var(--text-sm);
+    }
+
+    /* ===== P11 直播屏加大 ===== */
+    #page11 {
+      padding: 24px 12px;
+    }
+    #page11 .live-mock {
+      width: 420px;
+      height: 500px;
+    }
+    #page11 .live-mock .live-header {
+      padding: 16px 20px;
+    }
+    #page11 .live-mock .live-title-bar {
+      font-size: var(--text-sm);
+    }
+    #page11 .live-mock .live-viewers {
+      font-size: 12px;
+    }
+    #page11 .danmaku-msg {
+      font-size: var(--text-sm);
+    }
+    #page11 .btn-warm {
+      font-size: var(--text-md);
+      padding: 16px 48px;
+    }
+    #page11 .live-mock .live-badge {
+      font-size: 12px;
+      padding: 6px 16px;
+    }
+    @keyframes danmakuScroll {
+      from { transform: translateX(440px); }
+      to { transform: translateX(-100%); }
+    }
+
+    /* ===== P12 转化页加大 ===== */
+    #page12 .coupon-card {
+      width: 320px;
+      padding: 24px 20px;
+    }
+    #page12 .coupon-card .coupon-title {
+      font-size: 24px;
+    }
+    #page12 .coupon-card .coupon-desc {
+      font-size: var(--text-sm);
+    }
+    #page12 .action-btn {
+      font-size: var(--text-md);
+      padding: 18px 48px;
+      min-height: 54px;
+    }
+    #page12 .bread-product {
+      width: 240px;
+      height: 180px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #page12 .bread-body {
+      width: 220px;
+      height: 130px;
     }
 
     /* ===== P8 切片包装 ===== */
