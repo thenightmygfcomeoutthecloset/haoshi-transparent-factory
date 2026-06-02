@@ -18,13 +18,13 @@ export function showToast(message, duration = 2000) {
     toast.addEventListener('transitionend', () => toast.remove(), { once: true });
   }, duration);
 }
-export function updateProgress(stationIndex, stationName) {
+export function updateProgress(stationIndex, stationName, pct) {
   const bar = document.getElementById('progress-bar');
   const label = document.getElementById('progress-label');
   const fill = document.getElementById('progress-fill');
   if (bar) bar.style.display = 'block';
-  if (label) label.textContent = `第 ${stationIndex} / 5 站 · ${stationName}`;
-  if (fill) fill.style.width = `${(stationIndex / 5) * 100}%`;
+  if (label) label.textContent = stationName;
+  if (fill) fill.style.width = `${pct != null ? pct : (stationIndex / 5) * 100}%`;
 }
 export function hideProgress() {
   const bar = document.getElementById('progress-bar');
