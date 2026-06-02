@@ -72,10 +72,14 @@
     }
 
     .page-hint {
-      position: absolute; bottom: 36px;
-      font-size: var(--text-sm); color: rgba(91,50,23,0.45);
-      letter-spacing: 0.05em;
-      animation: hintBreathe 2.5s ease-in-out infinite; z-index: 3;
+      position: absolute; bottom: 24px;
+      font-size: 18px; font-weight: 700;
+      color: rgba(0,48,135,0.7);
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(6px);
+      padding: 8px 20px; border-radius: 50px;
+      letter-spacing: 0.04em;
+      animation: hintBreathe 2s ease-in-out infinite; z-index: 10;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     }
 
     /* 粒子 */
@@ -514,8 +518,9 @@
     #page07 .page-hint,
     #page09 .page-hint,
     #page12 .page-hint {
-      font-size: var(--text-sm);
-      bottom: 24px;
+      font-size: 20px;
+      bottom: 20px;
+      padding: 10px 24px;
     }
 
     /* P6/P7 滑块加大 */

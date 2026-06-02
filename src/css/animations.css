@@ -110,8 +110,8 @@
 
 /* 提示文字呼吸 */
 @keyframes hintBreathe {
-  0%, 100% { opacity: 0.5; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(-4px); }
+  0%, 100% { opacity: 0.6; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-6px); }
 }
 
 /* ===== 保留旧动效名（JS 可能引用） ===== */
