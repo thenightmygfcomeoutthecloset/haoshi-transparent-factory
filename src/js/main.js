@@ -49,7 +49,7 @@ class App {
     // 手势 — P1/P2 禁止滑动翻页，必须点按钮
     this.gesture = new Gesture(document.querySelector('.app'), { threshold: 50 });
     this.gesture.onSwipeLeft(() => {
-      if (this.current <= 2) return; // P1/P2/P3 禁止滑动（P3有推门交互）
+      if (this.current <= 1) return; // P1/P2 禁止滑动（需点按钮）
       if (this.current === 7) return; // P8 传送带页，禁止手势翻页
       this.next();
     });

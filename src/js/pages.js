@@ -82,7 +82,7 @@ window.init_page02 = function () {
 };
 
 // ============================================================
-// P3 工厂大门 — 点击开门 → 左滑进入P4
+// P3 工厂大门 — 滑动开门 → 左滑进入P4
 // ============================================================
 window.init_page03 = function () {
   updateProgress(0, '第3/12页 · 工厂大门', 0);
@@ -95,14 +95,13 @@ window.init_page03 = function () {
 
   let opened = false;
 
-  page03.addEventListener('click', () => {
+  const openGate = () => {
     if (opened) return;
     opened = true;
     if (hint) hint.style.display = 'none';
-
     if (typeof gsap !== 'undefined') {
-      gsap.to(gateLeft, { x: -320, opacity: 0, duration: 0.5, ease: 'power2.in' });
-      gsap.to(gateRight, { x: 320, opacity: 0, duration: 0.5, ease: 'power2.in', onComplete: () => {
+      gsap.to(gateLeft, { x: -320, opacity: 0, duration: 0.4, ease: 'power2.in' });
+      gsap.to(gateRight, { x: 320, opacity: 0, duration: 0.4, ease: 'power2.in', onComplete: () => {
         audio.play('open');
         window.app._slideNext = true;
         window.app.next();
@@ -111,9 +110,12 @@ window.init_page03 = function () {
       gateLeft.style.transform = 'translateX(-320px)'; gateLeft.style.opacity = '0';
       gateRight.style.transform = 'translateX(320px)'; gateRight.style.opacity = '0';
       audio.play('open');
-      setTimeout(() => { window.app._slideNext = true; window.app.next(); }, 500);
+      setTimeout(() => { window.app._slideNext = true; window.app.next(); }, 400);
     }
-  });
+  };
+
+  // 点击或滑动都触发开门
+  page03.addEventListener('click', openGate);
 };
 
 // ============================================================
