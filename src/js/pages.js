@@ -61,51 +61,36 @@ window.init_page02 = function () {
 };
 
 // ============================================================
-// P3 工厂大门 — 点击开门，左滑进入P4
+// P3 工厂大门 — 点击开门 → 左滑进入P4
 // ============================================================
 window.init_page03 = function () {
   const gateLeft = document.getElementById('gateLeft');
   const gateRight = document.getElementById('gateRight');
   const hint = document.getElementById('gateHint');
+  const page03 = document.getElementById('page03');
   if (!gateLeft || gateLeft.dataset.ready) return;
   gateLeft.dataset.ready = '1';
 
   let opened = false;
 
-  const finishOpen = () => {
+  page03.addEventListener('click', () => {
     if (opened) return;
     opened = true;
-    if (hint) { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.3s'; }
+    if (hint) hint.style.display = 'none';
 
     if (typeof gsap !== 'undefined') {
-      gsap.killTweensOf(gateLeft); gsap.killTweensOf(gateRight);
-      gsap.to(gateLeft, { x: -320, opacity: 0, duration: 0.4, ease: 'power2.in' });
-      gsap.to(gateRight, { x: 320, opacity: 0, duration: 0.4, ease: 'power2.in', onComplete: () => {
+      gsap.to(gateLeft, { x: -320, opacity: 0, duration: 0.5, ease: 'power2.in' });
+      gsap.to(gateRight, { x: 320, opacity: 0, duration: 0.5, ease: 'power2.in', onComplete: () => {
         audio.play('open');
-        if (window.app) {
-          window.app._slideNext = true;
-          window.app.next();
-        }
+        window.app._slideNext = true;
+        window.app.next();
       }});
     } else {
-      gateLeft.style.transform = 'translateX(-320px)';
-      gateRight.style.transform = 'translateX(320px)';
-      gateLeft.style.opacity = gateRight.style.opacity = '0';
+      gateLeft.style.transform = 'translateX(-320px)'; gateLeft.style.opacity = '0';
+      gateRight.style.transform = 'translateX(320px)'; gateRight.style.opacity = '0';
       audio.play('open');
-      setTimeout(() => {
-        if (window.app) {
-          window.app._slideNext = true;
-          window.app.next();
-        }
-      }, 400);
+      setTimeout(() => { window.app._slideNext = true; window.app.next(); }, 500);
     }
-  };
-
-  // 点击任意位置开门
-  const page03 = document.getElementById('page03');
-  page03.addEventListener('click', (e) => {
-    if (opened) return;
-    finishOpen();
   });
 };
 
