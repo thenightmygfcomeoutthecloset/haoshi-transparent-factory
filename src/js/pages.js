@@ -61,7 +61,7 @@ window.init_page02 = function () {
 };
 
 // ============================================================
-// P3 工厂大门 — 自动开门，左滑进入P4
+// P3 工厂大门 — 开门后左滑进入P4
 // ============================================================
 window.init_page03 = function () {
   const gateLeft = document.getElementById('gateLeft');
@@ -79,44 +79,27 @@ window.init_page03 = function () {
     clearTimeout(autoTimer);
     if (hint) { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.3s'; }
 
-    const page03 = document.getElementById('page03');
-    const page04 = document.getElementById('page04');
-    const app = window.app;
-
-    // 让 P4 先准备好（在右侧等待）
-    if (page04) {
-      page04.classList.add('active');
-      if (app && typeof app._initPage === 'function') app._initPage(3); // index 3 = P4
-      if (app && typeof app._updateIndicator === 'function') app._updateIndicator(3);
-    }
-
     if (typeof gsap !== 'undefined') {
-      // 大门动画
       gsap.killTweensOf(gateLeft); gsap.killTweensOf(gateRight);
-      const tl = gsap.timeline();
-      // 大门推开
-      tl.to(gateLeft, { x: -320, opacity: 0, duration: 0.4, ease: 'power2.in' }, 0);
-      tl.to(gateRight, { x: 320, opacity: 0, duration: 0.4, ease: 'power2.in' }, 0);
-      // 大门打开后，P3 左滑出去，P4 从右侧滑入
-      tl.to(page03, { x: '-100%', duration: 0.45, ease: 'power2.inOut' }, 0.35);
-      tl.fromTo(page04, { x: '100%' }, { x: 0, duration: 0.45, ease: 'power2.inOut' }, 0.35);
-      tl.call(() => {
+      gsap.to(gateLeft, { x: -320, opacity: 0, duration: 0.4, ease: 'power2.in' });
+      gsap.to(gateRight, { x: 320, opacity: 0, duration: 0.4, ease: 'power2.in', onComplete: () => {
         audio.play('open');
-        page03.classList.remove('active');
-        if (app) {
-          app.current = 3;
-          app.isTransitioning = false;
+        if (window.app) {
+          window.app._slideNext = true;
+          window.app.next();
         }
-      });
+      }});
     } else {
-      // 无 GSAP 的备选
       gateLeft.style.transform = 'translateX(-320px)';
       gateRight.style.transform = 'translateX(320px)';
       gateLeft.style.opacity = gateRight.style.opacity = '0';
       audio.play('open');
       setTimeout(() => {
-        if (app) app.goTo(3);
-      }, 800);
+        if (window.app) {
+          window.app._slideNext = true;
+          window.app.next();
+        }
+      }, 400);
     }
   };
 
@@ -127,7 +110,7 @@ window.init_page03 = function () {
     finishOpen();
   });
 
-  // 1.2 秒后自动开门（不需要任何操作）
+  // 1.2 秒后自动开门
   autoTimer = setTimeout(finishOpen, 1200);
 };
 

@@ -10,6 +10,7 @@ class App {
     this.total = this.pages.length;
     this.current = 0;
     this.isTransitioning = false;
+    this._slideNext = false; // 标记下一次 goTo 用左滑过渡
 
     // 页面指示器
     this.indicator = document.querySelector('.page-indicator');
@@ -55,29 +56,30 @@ class App {
 
     const oldPage = this.pages[this.current];
     const newPage = this.pages[index];
+    const slide = this._slideNext;
+    this._slideNext = false; // 只用一次
 
     // 离开旧页
     this._leavePage(this.current);
-    if (typeof gsap !== 'undefined' && oldPage) {
-      gsap.to(oldPage, { opacity: 0, scale: 0.97, duration: 0.35, ease: 'power2.in', onComplete: () => oldPage.classList.remove('active') });
-    } else {
-      oldPage && oldPage.classList.remove('active');
-    }
-
-    // 进入新页
     newPage.classList.add('active');
     this.current = index;
     this._initPage(index);
     this._updateIndicator();
 
-    // GSAP 入场动画
     if (typeof gsap !== 'undefined') {
-      gsap.fromTo(newPage, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out', onComplete: () => { this.isTransitioning = false; } });
+      if (slide) {
+        // 左滑过渡：旧页左滑退出，新页从右侧滑入
+        gsap.to(oldPage, { x: '-100%', duration: 0.4, ease: 'power2.inOut', onComplete: () => oldPage.classList.remove('active') });
+        gsap.fromTo(newPage, { x: '100%' }, { x: 0, duration: 0.4, ease: 'power2.inOut', onComplete: () => { this.isTransitioning = false; } });
+      } else {
+        gsap.to(oldPage, { opacity: 0, scale: 0.97, duration: 0.35, ease: 'power2.in', onComplete: () => oldPage.classList.remove('active') });
+        gsap.fromTo(newPage, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out', onComplete: () => { this.isTransitioning = false; } });
+      }
     } else {
+      oldPage && oldPage.classList.remove('active');
       this.isTransitioning = false;
     }
 
-    // 触发粒子效果
     this._spawnParticles(newPage);
   }
 
