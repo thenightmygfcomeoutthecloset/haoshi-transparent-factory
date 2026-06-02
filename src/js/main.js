@@ -69,7 +69,10 @@ class App {
     if (typeof gsap !== 'undefined') {
       if (slide) {
         // 左滑过渡：旧页左滑退出，新页从右侧滑入
-        gsap.to(oldPage, { x: '-100%', duration: 0.4, ease: 'power2.inOut', onComplete: () => oldPage.classList.remove('active') });
+        gsap.to(oldPage, { x: '-100%', duration: 0.4, ease: 'power2.inOut', onComplete: () => {
+          oldPage.classList.remove('active');
+          gsap.set(oldPage, { x: 0 }); // 清理 translateX，否则返回时会残留
+        }});
         gsap.fromTo(newPage, { x: '100%' }, { x: 0, duration: 0.4, ease: 'power2.inOut', onComplete: () => { this.isTransitioning = false; } });
       } else {
         gsap.to(oldPage, { opacity: 0, scale: 0.97, duration: 0.35, ease: 'power2.in', onComplete: () => oldPage.classList.remove('active') });
