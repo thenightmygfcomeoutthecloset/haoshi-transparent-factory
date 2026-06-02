@@ -32,29 +32,29 @@
     .page-bg {
       position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover; z-index: 0; pointer-events: none;
-      filter: brightness(0.55) saturate(0.7);
+      filter: brightness(0.8) saturate(0.85);
     }
     .overlay-gradient {
       position: absolute; inset: 0; z-index: 1; pointer-events: none;
     }
     .overlay-gradient.warm {
-      background: linear-gradient(180deg, rgba(26,26,30,0.55) 0%, transparent 35%, transparent 65%, rgba(26,26,30,0.5) 100%);
+      background: linear-gradient(180deg, rgba(26,26,30,0.2) 0%, transparent 40%, transparent 60%, rgba(26,26,30,0.15) 100%);
     }
     .overlay-gradient.soft {
-      background: linear-gradient(180deg, rgba(255,248,234,0.35) 0%, transparent 50%, rgba(255,248,234,0.55) 100%);
+      background: linear-gradient(180deg, rgba(255,248,234,0.15) 0%, transparent 60%, rgba(255,248,234,0.2) 100%);
     }
 
     /* 玻璃拟态卡片 */
     .glass-card {
-      background: var(--glass-white);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.5);
       border-radius: var(--radius-lg); padding: 28px 24px;
       box-shadow: var(--shadow-soft);
       position: relative; z-index: 2; max-width: 520px;
       color: var(--text-primary);
     }
-    .glass-card.red { background: rgba(255,255,255,0.88); border-color: rgba(201,33,43,0.15); }
+    .glass-card.red { background: rgba(255,255,255,0.65); border-color: rgba(201,33,43,0.15); }
 
     .page-title {
       font-family: var(--font-title); font-size: var(--text-xl); font-weight: 900;
@@ -1090,7 +1090,7 @@
       <img class="page-bg" src="./assets/images/车间.png" alt="和面车间" />
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
-      <div class="glass-card" id="doughState" style="background:rgba(255,255,255,0.85);">
+      <div class="glass-card" id="doughState" style="background:rgba(255,255,255,0.65);">
         <div class="transparency-badge" style="margin-bottom:10px;">第二站 · 查工艺</div>
         <div class="divider-ornament"></div>
         <div class="page-title" style="font-size:var(--text-xl);">手感刚刚好<br>口感才刚刚好</div>
@@ -1110,7 +1110,7 @@
       <img class="page-bg" src="./assets/images/生产区域2.png" alt="烘烤生产线" />
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
-      <div class="glass-card" id="bakeToast" style="background:rgba(255,255,255,0.85);">
+      <div class="glass-card" id="bakeToast" style="background:rgba(255,255,255,0.65);">
         <div class="transparency-badge" style="margin-bottom:10px;">第三站 · 查火候</div>
         <div class="divider-ornament"></div>
         <div class="page-title" style="font-size:var(--text-xl);">火候这关<br>也得你点头</div>
@@ -1166,7 +1166,7 @@
       <img class="page-bg" src="./assets/images/工厂3.png" alt="工厂质检线" />
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
-      <div class="glass-card" style="background:rgba(255,255,255,0.88);">
+      <div class="glass-card" style="background:rgba(255,255,255,0.65);">
         <div class="transparency-badge" style="margin-bottom:10px;">第五站 · 查质检</div>
         <div class="page-title" style="font-size:var(--text-lg);color:var(--brand-red);">厂长，有两片需要复检</div>
         <p class="page-subtitle" style="color:var(--brown);">6片吐司中，有2片不够完美<br>10秒内，找出它们</p>
@@ -1228,7 +1228,7 @@
       <img class="page-bg" src="./assets/images/漳州工厂3.png" alt="豪士工厂全景" />
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
-      <div class="glass-card" style="background:rgba(255,255,255,0.88);">
+      <div class="glass-card" style="background:rgba(255,255,255,0.65);">
         <div class="divider-ornament"></div>
         <div class="page-title red" style="font-size:var(--text-lg);">现在，尝一口<br>你亲自查过岗的面包</div>
         <!-- 透明厂长试吃券 -->
