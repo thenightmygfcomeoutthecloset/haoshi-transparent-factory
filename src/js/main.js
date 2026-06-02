@@ -4,6 +4,36 @@ import Gesture from './gesture.js';
 import audio from './audio.js';
 import './pages.js';
 
+// ========== 全局工具函数 ==========
+export function showToast(message, duration = 2000) {
+  const existing = document.querySelector('.global-toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.className = 'global-toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('visible'));
+  setTimeout(() => {
+    toast.classList.remove('visible');
+    toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+  }, duration);
+}
+export function updateProgress(stationIndex, stationName) {
+  const bar = document.getElementById('progress-bar');
+  const label = document.getElementById('progress-label');
+  const fill = document.getElementById('progress-fill');
+  if (bar) bar.style.display = 'block';
+  if (label) label.textContent = `第 ${stationIndex} / 5 站 · ${stationName}`;
+  if (fill) fill.style.width = `${(stationIndex / 5) * 100}%`;
+}
+export function hideProgress() {
+  const bar = document.getElementById('progress-bar');
+  if (bar) bar.style.display = 'none';
+}
+window.showToast = showToast;
+window.updateProgress = updateProgress;
+window.hideProgress = hideProgress;
+
 class App {
   constructor() {
     this.pages = document.querySelectorAll('.page');
@@ -33,6 +63,11 @@ class App {
         audio.toggleMute();
         this._updateMuteUI();
       });
+      // 首次进入提示
+      if (!sessionStorage.getItem('audio_hint_shown')) {
+        sessionStorage.setItem('audio_hint_shown', '1');
+        setTimeout(() => showToast('🔊 点击右上角开启声音，体验更佳', 3000), 1500);
+      }
     }
 
     // 直接初始化首屏，不走 goTo 避免 index===current 拦截

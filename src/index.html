@@ -951,6 +951,11 @@
 </head>
 <body>
 
+<div id="progress-bar" class="progress-bar" style="display:none;">
+  <span id="progress-label">第 1 / 5 站 · 查原料</span>
+  <div class="progress-track"><div id="progress-fill"></div></div>
+</div>
+
 <div class="app">
   <button class="mute-btn" title="开关音效">🔊</button>
   <div class="page-indicator"></div>
@@ -981,17 +986,18 @@
 
     <!-- ===== P2 厂长身份确认 ===== -->
     <div class="page" id="page02" data-page="2">
-      <div class="transparency-badge" style="margin-bottom:16px;">身份验证中</div>
-      <div class="page-title">你已被任命为</div>
-      <div class="badge-card" id="badgeCard">
+      <div class="transparency-badge" id="verifyBadge" style="margin-bottom:16px;">
+        <span class="loading-spinner" id="verifySpinner"></span> 身份验证中
+      </div>
+      <div class="page-title" id="verifyTitle" style="display:none;">你已被任命为</div>
+      <div class="badge-card" id="badgeCard" style="display:none;">
         <img src="./assets/images/1豪士logo.png" style="height:44px;object-fit:contain;filter:brightness(0) invert(1);margin-bottom:4px;" alt="豪士logo" />
         <div class="badge-role">一日透明厂长</div>
-        <div class="badge-hint">点击戴上工牌</div>
+        <div class="badge-hint" id="badgeHint">点击戴上工牌 →</div>
       </div>
-      <p class="page-subtitle" style="margin-top:16px;">
+      <p class="page-subtitle" id="verifySubtitle" style="margin-top:16px;">
         今天你是厂长，想看哪就看哪<br>原料、工艺、质检，一样不许跳过
       </p>
-      <div class="slogan-pill">豪士豪士，好吃好吃</div>
     </div>
 
     <!-- ===== P3 透明工厂大门 ===== -->
@@ -1007,13 +1013,12 @@
             <p class="page-subtitle" style="margin-bottom:0;">
               透过玻璃，看见自动化流水线<br>扫包装二维码，看见面包诞生过程
             </p>
-            <span class="slogan-pill" style="margin-top:8px;">豪士豪士，好吃好吃</span>
           </div>
         </div>
         <div class="gate-left" id="gateLeft"></div>
         <div class="gate-right" id="gateRight"></div>
       </div>
-      <div class="page-hint" id="gateHint">👈 👉 推开玻璃门，开始查岗</div>
+      <div class="page-hint" id="gateHint">👆 点击推开大门 →</div>
     </div>
 
     <!-- ===== P4 原料查验 + 世界地图 ===== -->
@@ -1060,7 +1065,6 @@
           <div class="card-detail">每一批原料<br>都有来路、有记录</div>
         </div>
       </div>
-      <div class="slogan-pill" style="margin-top:10px;">豪士豪士，好吃好吃</div>
       <div class="page-hint">点开看看原料从哪来的</div>
     </div>
 
@@ -1078,7 +1082,6 @@
       </div>
       <div class="usp-explain" id="uspExplain"></div>
       <div class="bread-product" style="margin:8px 0;"><div class="bread-body"></div></div>
-      <div class="slogan-pill">豪士豪士，好吃好吃</div>
       <div class="page-hint">点点标签，看看好在哪</div>
     </div>
 
@@ -1186,14 +1189,14 @@
       <div class="transparency-badge" style="margin-bottom:8px;">认证通过</div>
       <div class="page-title" style="font-size:var(--text-lg);">你的透明厂长认证<br>已生成</div>
       <div class="badge-result" id="badgeResult">
-        <div class="badge-grade" id="badgeGrade">S</div>
-        <div id="badgeRank" style="font-size:36px;font-weight:900;color:#FFD700;">S</div>
+        <div class="badge-grade" id="badgeGrade">S<span class="rating-label">速度评级</span></div>
+        <div id="badgeRank" style="font-size:36px;font-weight:900;color:#FFD700;">S<span class="rating-label">准确率评级</span></div>
         <div class="badge-title-text" id="badgeTitleText">天生厂长</div>
         <div class="badge-slogan">HORSH · 豪士面包</div>
       </div>
       <p id="badgePersonal" style="font-size:14px;color:var(--brown);margin-top:12px;opacity:0.8;"></p>
-      <div class="slogan-pill">豪士豪士，好吃好吃</div>
-      <div class="page-hint">点击工牌，继续查岗</div>
+      <p style="font-size:12px;color:var(--brown);opacity:0.6;margin-bottom:4px;">作为认证厂长，你有权提前看到这个</p>
+      <div class="page-hint">🎬 解锁工厂探秘视频</div>
     </div>
 
     <!-- ===== P11 透明工厂直播间 ===== -->
@@ -1212,7 +1215,6 @@
             <div class="danmaku-msg" style="top:20%;animation-delay:0s;">这车间也太亮了</div>
             <div class="danmaku-msg" style="top:40%;animation-delay:2.5s;">原来吐司是这样出来的</div>
             <div class="danmaku-msg" style="top:55%;animation-delay:5s;">厂长查岗中 👀</div>
-            <div class="danmaku-msg" style="top:70%;animation-delay:1.5s;">豪士豪士，好吃好吃</div>
           </div>
         </div>
       </div>
@@ -1237,6 +1239,7 @@
           <button class="action-btn red" id="btnTmall">🛒 去官方商城</button>
           <button class="action-btn gold" id="btnLive2">📱 看工厂探秘视频</button>
           <button class="action-btn blue" id="btnShare">📋 复制话题去分享</button>
+          <p id="sharePreview" style="font-size:12px;color:#999;margin-top:6px;line-height:1.5;">#豪士透明工厂查岗日# 我今天当了一天透明厂长，原来面包是这样做出来的</p>
         </div>
         <div class="bread-product" style="margin-top:8px;"><div class="bread-body"></div></div>
         <p style="font-size:12px;color:var(--brown);opacity:0.5;margin-top:8px;">先查岗，再开吃 · 豪士豪士，好吃好吃</p>

@@ -9,7 +9,8 @@ const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
 // ============================================================
-// P1 首屏 — 金色参观券入场
+// P1 首屏 — 金色参观券入场 + 手势引导
+
 // ============================================================
 window.init_page01 = function () {
   const btn = document.getElementById('btnEnter');
@@ -24,25 +25,48 @@ window.init_page01 = function () {
     gsap.fromTo('#btnEnter', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, delay: 1, ease: 'back.out(2)' });
   }
 
+  // Fix-1: 手势引导动画
+  const hint = document.createElement('div');
+  hint.className = 'swipe-hint';
+  hint.innerHTML = '<span class="finger-icon">👆</span>';
+  btn.parentElement.appendChild(hint);
+  const removeHint = () => { hint.remove(); };
+  btn.addEventListener('touchstart', removeHint, { once: true });
+  btn.addEventListener('mousedown', removeHint, { once: true });
+
   btn.addEventListener('click', () => {
     audio.play('click');
     window.app && window.app.next();
   });
+
+  hideProgress();
 };
 
 // ============================================================
-// P2 厂长身份 — 工牌脉冲
+// P2 厂长身份 — Loading → 验证成功 → 戴上工牌
 // ============================================================
 window.init_page02 = function () {
   const card = document.getElementById('badgeCard');
+  const verifyBadge = document.getElementById('verifyBadge');
+  const verifyTitle = document.getElementById('verifyTitle');
+  const hint = document.getElementById('badgeHint');
   if (!card || card.dataset.ready) return;
   card.dataset.ready = '1';
 
-  if (typeof gsap !== 'undefined') {
-    gsap.fromTo(card, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(2)' });
-    // 脉冲光环
-    gsap.to(card, { boxShadow: '0 0 30px rgba(245,184,75,0.5), 0 0 80px rgba(0,59,122,0.3)', duration: 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-  }
+  // Step 1: 1500ms loading → 验证成功
+  setTimeout(() => {
+    if (verifyBadge) verifyBadge.innerHTML = '✓ 验证成功，你已被任命为一日透明厂长';
+    // Step 2: 500ms后显示工牌
+    setTimeout(() => {
+      if (verifyTitle) verifyTitle.style.display = '';
+      card.style.display = '';
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(card, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(2)' });
+        gsap.to(card, { boxShadow: '0 0 30px rgba(245,184,75,0.5), 0 0 80px rgba(0,59,122,0.3)', duration: 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      }
+      if (hint) hint.textContent = '点击戴上工牌 →';
+    }, 500);
+  }, 1500);
 
   card.addEventListener('click', () => {
     card.style.animation = 'none';
@@ -58,12 +82,15 @@ window.init_page02 = function () {
       setTimeout(() => window.app && window.app.next(), 800);
     }
   });
+
+  hideProgress();
 };
 
 // ============================================================
 // P3 工厂大门 — 点击开门 → 左滑进入P4
 // ============================================================
 window.init_page03 = function () {
+  hideProgress();
   const gateLeft = document.getElementById('gateLeft');
   const gateRight = document.getElementById('gateRight');
   const hint = document.getElementById('gateHint');
@@ -98,6 +125,7 @@ window.init_page03 = function () {
 // P4 原料查验 + 世界地图 GSAP
 // ============================================================
 window.init_page04 = function () {
+  updateProgress(1, '查原料');
   const cards = $$('#ingredientCards .ingredient-card');
   if (cards.length === 0 || cards[0].dataset.ready) return;
 
@@ -159,8 +187,11 @@ window.init_page05 = function () {
 };
 
 // ============================================================
-// 滑块页通用逻辑（P6 / P7 共用）
+// 滑块页通用逻辑（P6 / P7 共用）— 含最佳区间反馈
 // ============================================================
+const SWEET_ZONE_MIN = 42;
+const SWEET_ZONE_MAX = 58;
+
 function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
   const slider = document.getElementById(sliderId);
   const feedback = document.getElementById(feedbackId);
@@ -168,21 +199,35 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
   if (!slider || slider.dataset.ready) return;
   slider.dataset.ready = '1';
 
+  let sweetTimer = null;
+  let wasInZone = false;
+
   slider.addEventListener('input', () => {
     const val = parseInt(slider.value);
     if (!window._userData) window._userData = {};
     window._userData[sliderId] = val;
-    const { text, color, advance, hintText, bgEl, bgColor } = getMsg(val);
+    const { text, color, bgEl, bgColor } = getMsg(val);
     setFeedback(feedback, text, color);
     if (bgEl && bgColor) {
       const bgElement = document.getElementById(bgEl);
       if (bgElement) bgElement.style.background = bgColor;
     }
-    if (advance) {
-      if (hint && hintText) hint.textContent = hintText;
-      slider.disabled = true;
-      triggerSloganBeat();
-      setTimeout(() => { window.app && window.app.next(); slider.disabled = false; }, 1500);
+
+    // Sweet zone 检测
+    const inZone = val >= SWEET_ZONE_MIN && val <= SWEET_ZONE_MAX;
+    if (inZone && !wasInZone) {
+      wasInZone = true;
+      if (navigator.vibrate) navigator.vibrate(80);
+      showToast('✓ 手感刚好！', 1500);
+      sweetTimer = setTimeout(() => {
+        slider.disabled = true;
+        triggerSloganBeat();
+        setTimeout(() => { window.app && window.app.next(); slider.disabled = false; }, 1500);
+      }, 800);
+    } else if (!inZone && wasInZone) {
+      wasInZone = false;
+      clearTimeout(sweetTimer);
+      sweetTimer = null;
     }
   });
 }
@@ -199,12 +244,13 @@ function setFeedback(el, text, color) {
 // P6 和面工艺 — GSAP 反馈
 // ============================================================
 window.init_page06 = function () {
+  updateProgress(2, '查工艺');
   initSliderPage({
     sliderId: 'doughSlider', feedbackId: 'doughFeedback', hintId: 'doughHint',
     getMsg: (val) => {
       if (val < 33) return { text: '面团太软，成品会发黏——再加点力', color: '#B07820', bgEl: 'doughState', bgColor: '#F8E8C0' };
       if (val > 66) return { text: '筋度过强，面包会发柴——松一点', color: '#C03030', bgEl: 'doughState', bgColor: '#C8A060' };
-      return { text: '✓ 豪士4年找到的黄金比例，就是这里！', color: '#5C8A3C', bgEl: 'doughState', bgColor: '#E8C870', advance: true, hintText: '手感对了！进烘烤线...' };
+      return { text: '✓ 豪士4年找到的黄金比例，就是这里！', color: '#5C8A3C', bgEl: 'doughState', bgColor: '#E8C870' };
     },
   });
 };
@@ -213,12 +259,13 @@ window.init_page06 = function () {
 // P7 烘烤火候 — GSAP 反馈
 // ============================================================
 window.init_page07 = function () {
+  updateProgress(3, '查火候');
   initSliderPage({
     sliderId: 'bakeSlider', feedbackId: 'bakeFeedback', hintId: null,
     getMsg: (val) => {
       if (val < 35) return { text: '温度太低，颜色苍白，内心未熟', color: '#B07820', bgEl: 'bakeToast', bgColor: '#F8EDD0' };
       if (val > 65) return { text: '太高了，焦了——这批要重做！', color: '#C03030', bgEl: 'bakeToast', bgColor: '#5C3010' };
-      return { text: '✓ 220°C，表皮微脆内心柔软，这就是豪士的温度', color: '#5C8A3C', bgEl: 'bakeToast', bgColor: '#C89030', advance: true };
+      return { text: '✓ 220°C，表皮微脆内心柔软，这就是豪士的温度', color: '#5C8A3C', bgEl: 'bakeToast', bgColor: '#C89030' };
     },
   });
 };
@@ -227,6 +274,7 @@ window.init_page07 = function () {
 // P8 切片包装
 // ============================================================
 window.init_page08 = function () {
+  updateProgress(4, '查包装');
   const wrap = document.getElementById('conveyorWrap');
   if (!wrap || wrap.dataset.ready) return;
   wrap.dataset.ready = '1';
@@ -242,24 +290,39 @@ window.init_page08 = function () {
 };
 
 // ============================================================
-// P9 质检 — GSAP 计时器脉冲
+// P9 质检 — SVG 计时器 + 重试上限 + 防卡死
 // ============================================================
 window.init_page09 = function () {
   const page = document.getElementById('page09');
   if (!page || page.dataset.ready) return;
   page.dataset.ready = '1';
+  updateProgress(5, '查质检');
 
   const breads = Array.from($$('#quizBreads .quiz-bread'));
-  const timer = document.getElementById('quizTimer');
+  const timerEl = document.getElementById('quizTimer');
   const result = document.getElementById('quizResult');
   const retryBtn = document.getElementById('quizRetry');
-  let quiz;
+  let quiz, retryCount = 0, svgCircle;
+
+  // 创建 SVG 计时器
+  if (timerEl) {
+    timerEl.innerHTML = '';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 80 80');
+    svg.setAttribute('width', '64');
+    svg.setAttribute('height', '64');
+    svg.classList.add('quiz-timer-svg');
+    const r = 34, cx = 40, cy = 40, circ = 2 * Math.PI * r;
+    svg.innerHTML = `<circle class="quiz-timer-bg" cx="${cx}" cy="${cy}" r="${r}"/><circle class="quiz-timer-fg" id="quizCircle" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="0" transform="rotate(-90 ${cx} ${cy})"/>`;
+    timerEl.appendChild(svg);
+    svgCircle = svg.getElementById('quizCircle');
+  }
 
   const startQuiz = () => {
     breads.forEach(b => { b.classList.remove('found', 'wrong'); b.style.pointerEvents = 'auto'; });
     if (result) { result.textContent = ''; result.style.color = ''; }
     if (retryBtn) retryBtn.style.display = 'none';
-    if (timer) { timer.textContent = '10'; timer.style.color = ''; timer.style.animation = ''; }
+    if (svgCircle) { svgCircle.style.strokeDashoffset = '0'; svgCircle.classList.remove('urgent'); }
 
     quiz = new QuizGame({
       breads, badIndices: [2, 4], timeLimit: 10, maxMistakes: 3,
@@ -269,23 +332,38 @@ window.init_page09 = function () {
         else if (mistakes <= 1 && timeUsed <= 8) { grade = 'A'; gradeText = '✅ 合格，每一片都查到位了'; gradeTitle = '合格厂长'; }
         else { grade = 'B'; gradeText = '🍞 实习厂长，下次手速再快点'; gradeTitle = '实习厂长'; }
         if (result) { result.innerHTML = gradeText; gsapPop(result); }
-        if (timer) timer.textContent = '✅';
-        if (retryBtn) retryBtn.style.display = 'inline-block';
+        if (retryBtn) retryBtn.style.display = 'none';
         window._quizScore = { found, timeUsed, mistakes, grade, gradeTitle };
         audio.play('click');
         setTimeout(() => window.app && window.app.next(), 2000);
       },
       onFail: ({ found, mistakes }) => {
         const missed = 2 - found;
-        if (result) { result.textContent = `漏了${missed}片，失误${mistakes}次 😅 再试一把？`; gsapPop(result); }
-        if (timer) { timer.textContent = '⏰'; timer.style.animation = ''; }
-        if (retryBtn) retryBtn.style.display = 'inline-block';
-        window._quizScore = { found, timeUsed: 10, mistakes, grade: 'F', gradeTitle: '学员' };
+        retryCount++;
+        if (retryCount >= 3) {
+          // 第3次失败后直接通过
+          if (result) { result.innerHTML = '🍞 即使有漏网之鱼，质检团队也会补上这一关'; gsapPop(result); }
+          window._quizScore = { found, timeUsed: 10, mistakes, grade: 'B', gradeTitle: '实习厂长' };
+          setTimeout(() => window.app && window.app.next(), 2000);
+        } else {
+          if (result) { result.textContent = `正确答案是第3和第5片！再试一次 (${retryCount}/3)`; gsapPop(result); }
+          if (retryBtn) {
+            retryBtn.style.display = 'inline-block';
+            retryBtn.textContent = retryCount >= 2 ? '最后一次挑战' : '再挑战一次';
+          }
+        }
       },
       onUpdate: ({ timeLeft, mistakes }) => {
-        if (timer) {
-          timer.textContent = timeLeft;
-          if (timeLeft <= 3) { timer.style.animation = 'pulse 0.5s infinite'; timer.style.color = '#C9212B'; }
+        // SVG 圆弧倒计时
+        if (svgCircle) {
+          const r = 34, circ = 2 * Math.PI * r;
+          const progress = timeLeft / 10;
+          svgCircle.style.strokeDashoffset = circ * (1 - progress);
+          if (timeLeft <= 3) svgCircle.classList.add('urgent');
+        }
+        if (timerEl && timerEl.querySelector('svg')) {
+          // 用 data 属性显示数字
+          timerEl.setAttribute('data-time', timeLeft);
         }
         const remaining = 3 - (mistakes || 0);
         if (result && mistakes > 0) { result.textContent = `还剩 ${remaining} 次容错机会`; result.style.color = '#F5B84B'; }
@@ -299,8 +377,6 @@ window.init_page09 = function () {
 };
 
 window.leave_page09 = function () {
-  const timerEl = document.getElementById('quizTimer');
-  if (timerEl) timerEl.style.animation = '';
 };
 
 // GSAP 弹出效果
@@ -314,6 +390,7 @@ function gsapPop(el) {
 // P10 厂长工牌
 // ============================================================
 window.init_page10 = function () {
+  hideProgress();
   const badge = document.getElementById('badgeResult');
   const gradeEl = document.getElementById('badgeGrade');
   const rankEl = document.getElementById('badgeRank');
@@ -367,6 +444,7 @@ window.init_page10 = function () {
 // P11 直播
 // ============================================================
 window.init_page11 = function () {
+  hideProgress();
   const btn = document.getElementById('btnWatchLive');
   if (!btn || btn.dataset.ready) return;
   btn.dataset.ready = '1';
@@ -380,6 +458,7 @@ window.init_page11 = function () {
 // P12 转化页 — GSAP 级联
 // ============================================================
 window.init_page12 = function () {
+  hideProgress();
   const page = document.getElementById('page12');
   if (!page || page.dataset.ready) return;
   page.dataset.ready = '1';
@@ -395,14 +474,16 @@ window.init_page12 = function () {
     const btn = document.getElementById('btnShare');
     if (!btn) return;
     const orig = btn.textContent;
+    const fullContent = '#豪士透明工厂查岗日# 我今天当了一天透明厂长，原来面包是这样做出来的 → ' + window.location.href;
     try {
-      await navigator.clipboard.writeText(TOPIC_TEXT);
+      await navigator.clipboard.writeText(fullContent);
       btn.textContent = '✅ 已复制！去微博/抖音/小红书发帖吧';
       btn.style.background = 'linear-gradient(135deg, #4CAF50, #388E3C)';
+      showToast('✓ 已复制到剪贴板，快去分享吧！', 2000);
       if (typeof gsap !== 'undefined') gsap.fromTo(btn, { scale: 1 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' });
       setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2500);
     } catch {
-      window.prompt('复制话题标签：', TOPIC_TEXT);
+      window.prompt('复制话题标签：', fullContent);
     }
   });
 };
