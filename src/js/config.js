@@ -7,18 +7,19 @@ export const OFFICIAL_SITE_URL = 'https://www.haoshifood.com';
 export const TOPIC_TEXT = '#豪士豪士好吃好吃#';
 
 // 页面标签 — 显示在顶部进度条（可自行编辑）
+// show: false = 该页不显示进度条
 export const PAGE_LABELS = [
-  '参观券',
-  '身份认证',
-  '第一站 · 查原料',
-  '王牌产品',
-  '第二站 · 查工艺',
-  '第三站 · 查火候',
-  '切片包装',
-  '第五站 · 查质检',
-  '厂长认证',
-  '探秘视频',
-  '尝一口',
+  { show: false, label: '' },                              // P1 参观券
+  { show: true,  label: '领取工牌' },                       // P2
+  { show: true,  label: '第 1/5 站 · 查原料' },            // P3
+  { show: true,  label: '王牌产品' },                       // P4
+  { show: true,  label: '第 2/5 站 · 查工艺' },            // P5
+  { show: true,  label: '第 3/5 站 · 查火候' },            // P6
+  { show: true,  label: '第 4/5 站 · 查包装' },            // P7
+  { show: true,  label: '第 5/5 站 · 查质检' },            // P8
+  { show: true,  label: '认证完成 ✓' },                    // P9
+  { show: true,  label: '探秘视频' },                       // P10
+  { show: true,  label: '查岗完成' },                       // P11
 ];
 
 export default {

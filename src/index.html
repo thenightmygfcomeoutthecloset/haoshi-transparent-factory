@@ -476,6 +476,16 @@
       margin-top: 10px; font-size: var(--text-lg); font-weight: 700; min-height: 28px;
       position: relative; z-index: 2;
     }
+    .slider-state-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--brand-color, #E8380D);
+      text-align: center;
+      min-height: 24px;
+      transition: all 0.2s;
+      margin-top: 6px;
+      position: relative; z-index: 2;
+    }
 
     /* ===== 单框页面全局放大 ===== */
     /* P4第一站 / P6第二站 / P7第三站 / P9第五站 — glass-card */
@@ -987,6 +997,122 @@
       50%  { transform: translate(-50%,-50%) scale(1.05); opacity:1; }
       100% { transform: translate(-50%,-50%) scale(1.2); opacity:0; }
     }
+
+    /* ===== P9 认证页 — Slogan 揭示 ===== */
+    .slogan-reveal {
+      font-size: clamp(22px, 6vw, 32px);
+      font-weight: 900;
+      color: var(--brand-color, #E8380D);
+      letter-spacing: 0.08em;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 14px 0;
+    }
+    /* ===== P9 认证页 — 评级徽章 ===== */
+    .rating-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .rating-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: rgba(232,56,13,0.07);
+      border: 1.5px solid var(--brand-color, #E8380D);
+      border-radius: 12px;
+      padding: 14px 18px;
+      min-width: 88px;
+    }
+    .rating-s {
+      font-size: clamp(38px, 11vw, 56px);
+      font-weight: 900;
+      color: var(--brand-color, #E8380D);
+      line-height: 1;
+    }
+    .rating-label {
+      font-size: 11px;
+      color: #888;
+      white-space: nowrap;
+    }
+    /* ===== P9 认证页 — 解锁按钮 ===== */
+    .btn-unlock {
+      background: var(--brand-color, #E8380D);
+      color: white;
+      border: none;
+      border-radius: 24px;
+      padding: 14px 28px;
+      font-size: var(--font-base, 16px);
+      font-weight: 600;
+      margin-top: 16px;
+      animation: pulse-btn 2s ease-in-out infinite;
+      cursor: pointer;
+    }
+    @keyframes pulse-btn {
+      0%,100% { box-shadow: 0 0 0 0 rgba(232,56,13,0.4); }
+      50%     { box-shadow: 0 0 0 10px rgba(232,56,13,0); }
+    }
+    /* ===== P10 视频封面升级 ===== */
+    .video-card {
+      width: min(360px, 92%);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+      position: relative; z-index: 2;
+    }
+    .video-thumb-wrap {
+      position: relative;
+      aspect-ratio: 16/9;
+      width: 100%;
+    }
+    .video-thumb-img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .video-play-mask {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.22);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .play-circle {
+      width: 62px; height: 62px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s;
+    }
+    .video-card:active .play-circle { transform: scale(0.9); }
+    .video-comment-bubbles {
+      position: absolute;
+      top: 10px; left: 10px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .bubble {
+      background: rgba(0,0,0,0.55);
+      color: white;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      backdrop-filter: blur(4px);
+      animation: bubble-float 3s ease-in-out infinite;
+    }
+    .bubble.b2 { animation-delay: 1.2s; }
+    @keyframes bubble-float {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-3px); }
+    }
+    .video-meta-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 12px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .video-title-text { color: white; font-size: 13px; font-weight: 600; }
+    .video-views      { color: rgba(255,255,255,0.75); font-size: 11px; }
   </style>
 </head>
 <body>
@@ -1018,7 +1144,6 @@
       </div>
       <div class="p1-hook-text">这届年轻人<br>连面包都要<em>亲自查岗</em></div>
       <div class="p1-hook-sub">恭喜你抽中豪士透明工厂参观资格</div>
-      <div class="slogan-pill" style="margin-top:8px;background:rgba(198,168,75,0.2);color:var(--toast-brown);">豪士豪士，好吃好吃</div>
       <button class="btn-warm" id="btnEnter" style="margin-top:14px;">撕下参观券，进入工厂</button>
     </div>
 
@@ -1118,6 +1243,7 @@
           </div>
         </div>
         <div class="slider-feedback" id="doughFeedback"></div>
+        <p class="slider-state-label" id="dough-state-label">拖动找到最佳筋度</p>
       </div>
       <div class="page-hint" id="doughHint">👈👉 拖动滑块，找到最佳筋度</div>
     </div>
@@ -1138,6 +1264,7 @@
           </div>
         </div>
         <div class="slider-feedback" id="bakeFeedback"></div>
+        <p class="slider-state-label" id="heat-state-label">拖动找到最佳火候</p>
       </div>
       <div class="page-hint">👈👉 拖动滑块，找到最佳火候</div>
     </div>
@@ -1210,31 +1337,42 @@
     <div class="page" id="page10" data-page="10" style="background:linear-gradient(180deg,#F4F8FD,#FFF8EA);">
       <div class="transparency-badge" style="margin-bottom:8px;">认证通过</div>
       <div class="page-title" style="font-size:var(--text-lg);">你的透明厂长认证<br>已生成</div>
-      <div class="badge-result" id="badgeResult">
+      <div class="badge-result" id="badgeResult" style="width:min(340px,88%);padding:clamp(24px,7vw,40px);">
         <div class="badge-grade" id="badgeGrade">S</div>
         <div id="badgeRank" style="display:none;"></div>
         <div class="badge-title-text" id="badgeTitleText">天生厂长</div>
         <div class="badge-slogan">HORSH · 豪士面包</div>
       </div>
-      <p id="badgePersonal" style="font-size:14px;color:var(--brown);margin-top:12px;opacity:0.8;"></p>
-      <p style="font-size:12px;color:var(--brown);opacity:0.6;margin-bottom:4px;">作为认证厂长，你有权提前看到这个</p>
-      <div class="page-hint">🎬 解锁工厂探秘视频</div>
+      <div class="rating-row" style="margin:14px 0;">
+        <div class="rating-badge"><span class="rating-s" id="speedGrade">S</span><span class="rating-label">速度评级</span></div>
+        <div class="rating-badge"><span class="rating-s" id="accuracyGrade">S</span><span class="rating-label">准确率评级</span></div>
+      </div>
+      <p id="badgePersonal" style="font-size:14px;color:var(--brown);margin-top:8px;opacity:0.8;"></p>
+      <div class="slogan-reveal">
+        <span>豪士豪士</span>
+        <span>好吃好吃</span>
+      </div>
+      <button class="btn-unlock" onclick="window.app&&window.app.next()">🎬 探秘视频已解锁，点击观看</button>
     </div>
 
     <!-- ===== P11 工厂探秘视频 ===== -->
     <div class="page" id="page11" data-page="11" style="background:linear-gradient(180deg,#1A1A2E,#16213E);">
       <div class="page-title" style="font-size:var(--font-lg);color:#fff;">查岗还没结束<br>工厂探秘视频来了</div>
-      <div class="video-cover-card" id="videoCard">
-        <div class="video-thumb">
-          <img src="./assets/images/漳州工厂2.png" alt="豪士透明工厂探秘视频封面" />
-          <div class="video-play-overlay">
-            <div class="play-btn-circle">
-              <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><polygon points="5,3 19,12 5,21"/></svg>
+      <div class="video-card" id="videoCard" onclick="window.open(LIVE_URL,'_blank')">
+        <div class="video-thumb-wrap">
+          <img src="./assets/images/漳州工厂2.png" alt="豪士透明工厂探秘" class="video-thumb-img" />
+          <div class="video-play-mask">
+            <div class="play-circle">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="white"><polygon points="6,3 20,12 6,21"/></svg>
             </div>
           </div>
-          <div class="video-info-overlay">
-            <span class="video-title">豪士透明工厂探秘</span>
-            <span class="video-meta">👁 94.5万次播放</span>
+          <div class="video-comment-bubbles">
+            <span class="bubble b1">这车间也太亮了 👀</span>
+            <span class="bubble b2">原来吐司是这样出来的！</span>
+          </div>
+          <div class="video-meta-bar">
+            <span class="video-title-text">豪士透明工厂探秘</span>
+            <span class="video-views">👁 94.5万次播放</span>
           </div>
         </div>
       </div>
@@ -1257,7 +1395,7 @@
           <p id="sharePreview" style="font-size:12px;color:#999;margin-top:6px;line-height:1.5;">#豪士透明工厂查岗日# 我今天当了一天透明厂长，原来面包是这样做出来的</p>
         </div>
         <img src="./assets/images/产品正面图.png" alt="豪士藜麦吐司" style="width:240px;margin:8px auto 0;display:block;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.15));" />
-        <p style="font-size:12px;color:var(--brown);opacity:0.5;margin-top:8px;">先查岗，再开吃 · 豪士豪士，好吃好吃</p>
+        <p style="font-size:var(--font-xs);color:#999;margin-top:8px;">先查岗，再开吃 · 豪士豪士，好吃好吃</p>
       </div>
     </div>
 

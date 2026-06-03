@@ -176,6 +176,20 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
       if (bgElement) bgElement.style.background = bgColor;
     }
 
+    // 动态状态标签
+    const stateLabels = {
+      dough: ['太软', '偏软', '✓ 刚好', '偏硬', '太硬'],
+      heat:  ['温度不足', '偏低', '✓ 220°C', '偏高', '过热'],
+    };
+    const type = sliderId === 'doughSlider' ? 'dough' : 'heat';
+    const labelId = type === 'dough' ? 'dough-state-label' : 'heat-state-label';
+    const labelEl = document.getElementById(labelId);
+    if (labelEl) {
+      const idx = Math.min(4, Math.floor(val / 20));
+      labelEl.textContent = stateLabels[type][idx];
+      labelEl.style.color = idx === 2 ? '#5C8A3C' : 'var(--brand-color, #E8380D)';
+    }
+
     const inZone = val >= SWEET_ZONE_MIN && val <= SWEET_ZONE_MAX;
     if (inZone && !wasInZone) {
       wasInZone = true;
@@ -480,26 +494,3 @@ window.init_page12 = function () {
     }
   });
 };
-
-// ============================================================
-// Slogan 节奏感动效
-// ============================================================
-function triggerSloganBeat() {
-  const words = ['豪士', '豪士', '好吃', '好吃'];
-  words.forEach((word, i) => {
-    setTimeout(() => {
-      const el = document.createElement('div');
-      el.className = 'slogan-beat';
-      el.textContent = word;
-      document.body.appendChild(el);
-      if (typeof gsap !== 'undefined') {
-        gsap.fromTo(el, { scale: 0, opacity: 0 }, { scale: 1.3, opacity: 1, duration: 0.35, ease: 'back.out(2)', onComplete: () => {
-          gsap.to(el, { scale: 1.2, opacity: 0, duration: 0.45, delay: 0.15, ease: 'power2.in', onComplete: () => el.remove() });
-        }});
-      } else {
-        requestAnimationFrame(() => el.classList.add('pop'));
-        setTimeout(() => el.remove(), 900);
-      }
-    }, i * 350);
-  });
-}
