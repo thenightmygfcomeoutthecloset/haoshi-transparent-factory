@@ -2,6 +2,7 @@
 
 import Gesture from './gesture.js';
 import audio from './audio.js';
+import { PAGE_LABELS } from './config.js';
 import './pages.js';
 
 // ========== 全局工具函数 ==========
@@ -183,7 +184,8 @@ class App {
   // ========== 进度条 ==========
   _updateProgressBar() {
     const idx = this.current + 1;
-    const name = `第${idx}页/共${this.total}页`;
+    const label = PAGE_LABELS[this.current] || '';
+    const name = `第${idx}页/共${this.total}页 · ${label}`;
     const pct = Math.round(((this.current) / (this.total - 1)) * 100);
     updateProgress(this.current, name, pct);
   }
