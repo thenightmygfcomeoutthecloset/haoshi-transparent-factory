@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="./css/animations.css" />
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- 预加载产品图，避免切换时白屏 -->
+  <link rel="preload" as="image" href="./assets/images/产品正面图.png" />
 
   <style>
     /* ===== 全局响应式 ===== */
@@ -1223,7 +1225,7 @@
         <span class="usp-tag" data-usp="5">😋 松软有嚼劲</span>
       </div>
       <div class="usp-explain" id="uspExplain"></div>
-      <img src="./assets/images/产品正面图.png" alt="豪士藜麦吐司" style="width:260px;margin:8px auto;display:block;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.15));" />
+      <img src="./assets/images/产品正面图.png" alt="豪士藜麦吐司" loading="eager" style="width:260px;margin:8px auto;display:block;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.15));" />
       <div class="page-hint">👆 点击标签，看看好在哪</div>
     </div>
 
@@ -1382,7 +1384,7 @@
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
       <div class="glass-card" style="background:rgba(255,255,255,0.65);">
-        <div class="divider-ornament"></div>
+        <div class="divider-ornament" style="margin-top:40px;"></div>
         <div class="page-title red" style="font-size:var(--text-lg);">现在，尝一口<br>你亲自查过岗的面包</div>
         <div class="action-buttons">
           <button class="action-btn red" id="btnTmall">🛒 去官方商城</button>
@@ -1390,7 +1392,7 @@
           <button class="action-btn blue" id="btnShare">📋 复制话题去分享</button>
           <p id="sharePreview" style="font-size:12px;color:#999;margin-top:6px;line-height:1.5;">#豪士透明工厂查岗日# 我今天当了一天透明厂长，原来面包是这样做出来的</p>
         </div>
-        <img src="./assets/images/产品正面图.png" alt="豪士藜麦吐司" style="width:240px;margin:8px auto 0;display:block;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.15));" />
+        <img src="./assets/images/产品正面图.png" alt="豪士藜麦吐司" loading="eager" style="width:240px;margin:8px auto 0;display:block;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.15));" />
         <p style="font-size:var(--font-xs);color:#999;margin-top:8px;">先查岗，再开吃 · 豪士豪士，好吃好吃</p>
       </div>
     </div>
