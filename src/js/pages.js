@@ -82,44 +82,6 @@ window.init_page02 = function () {
 };
 
 // ============================================================
-// P3 工厂大门 — 滑动开门 → 左滑进入P4
-// ============================================================
-window.init_page03 = function () {
-  updateProgress(0, '第3/12页 · 工厂大门', 5);
-  const gateLeft = document.getElementById('gateLeft');
-  const gateRight = document.getElementById('gateRight');
-  const hint = document.getElementById('gateHint');
-  const page03 = document.getElementById('page03');
-  if (!gateLeft || gateLeft.dataset.ready) return;
-  gateLeft.dataset.ready = '1';
-
-  let opened = false;
-
-  const openGate = () => {
-    if (opened) return;
-    opened = true;
-    if (hint) hint.style.display = 'none';
-    if (typeof gsap !== 'undefined') {
-      gsap.to(gateLeft, { x: -320, opacity: 0, duration: 0.4, ease: 'power2.in' });
-      gsap.to(gateRight, { x: 320, opacity: 0, duration: 0.4, ease: 'power2.in', onComplete: () => {
-        audio.play('open');
-        window.app._slideNext = true;
-        window.app.next();
-      }});
-    } else {
-      gateLeft.style.transform = 'translateX(-320px)'; gateLeft.style.opacity = '0';
-      gateRight.style.transform = 'translateX(320px)'; gateRight.style.opacity = '0';
-      audio.play('open');
-      setTimeout(() => { window.app._slideNext = true; window.app.next(); }, 400);
-    }
-  };
-
-  // 点击或滑动都触发开门
-  page03.addEventListener('click', openGate);
-  mountGestureHint(page03, 'swipe-right', '滑动推开工厂大门');
-};
-
-// ============================================================
 // P4 原料查验 + 世界地图 GSAP
 // ============================================================
 window.init_page04 = function () {
