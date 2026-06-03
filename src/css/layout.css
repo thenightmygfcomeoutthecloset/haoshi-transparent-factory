@@ -8,9 +8,9 @@
   overflow: hidden;
 }
 
-/* 全屏画布 */
+/* 固定640x1008画布，JS动态缩放填满屏幕 */
 .viewport {
-  position: absolute; inset: 0;
+  position: relative;
   overflow: hidden;
   background: var(--cream-white);
 }

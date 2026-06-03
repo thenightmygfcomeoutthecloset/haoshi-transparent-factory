@@ -183,12 +183,16 @@ class App {
   _resize() {
     const vp = document.querySelector('.viewport');
     if (!vp) return;
-    vp.style.width = '100%';
-    vp.style.height = '100%';
+    const scaleX = window.innerWidth / 640;
+    const scaleY = window.innerHeight / 1008;
+    const scale = Math.max(scaleX, scaleY); // fill, may crop edges
+    vp.style.width = '640px';
+    vp.style.height = '1008px';
     vp.style.position = 'absolute';
-    vp.style.left = '0';
-    vp.style.top = '0';
-    vp.style.transform = 'none';
+    vp.style.left = `${(window.innerWidth - 640 * scale) / 2}px`;
+    vp.style.top = `${(window.innerHeight - 1008 * scale) / 2}px`;
+    vp.style.transform = `scale(${scale})`;
+    vp.style.transformOrigin = 'top left';
   }
 }
 
