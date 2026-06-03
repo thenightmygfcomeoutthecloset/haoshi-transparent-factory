@@ -186,10 +186,12 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
       wasInZone = true;
       if (navigator.vibrate) navigator.vibrate(80);
       showToast('✓ 刚刚好！', 1500);
-      // 提示切换：文字从拖动→左滑
       const hintId = type === 'dough' ? 'doughHint' : 'bakeHint';
       const hintEl = document.getElementById(hintId);
       if (hintEl) hintEl.textContent = type === 'dough' ? '✓ 查工艺已完成，👈 左滑进入下一站' : '✓ 查火候已完成，👈 左滑进入下一站';
+      const doneId = type === 'dough' ? 'doughDone' : 'bakeDone';
+      const doneEl = document.getElementById(doneId);
+      if (doneEl) doneEl.style.display = 'flex';
     } else if (!inZone && wasInZone) {
       wasInZone = false;
       clearTimeout(sweetTimer);
@@ -274,8 +276,10 @@ window.init_page08 = function () {
     dots.forEach((d, i) => d.classList.toggle('active', i === current));
     if (!hintGone && current > 0) { hint.classList.add('hidden'); hintGone = true; }
     if (current === 2) {
-      hint.classList.remove('hidden');
-      hint.textContent = '👈 查包装完成，左滑进入下一站';
+      setTimeout(() => {
+        if (complete) complete.style.display = 'flex';
+        hint.classList.add('hidden');
+      }, 800);
     }
   }
 
@@ -387,7 +391,10 @@ window.init_page09 = function () {
   mountGestureHint(document.getElementById('page09'), 'tap', '点击选出瑕疵面包');
 };
 
-window.leave_page09 = function () {};
+window.leave_page09 = function () {
+  const retryBtn = document.getElementById('quizRetry');
+  if (retryBtn) retryBtn.style.display = 'none';
+};
 
 function gsapPop(el) {
   if (typeof gsap !== 'undefined') {

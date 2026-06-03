@@ -218,6 +218,7 @@ class App {
 // 启动
 function boot() {
   window.app = new App();
+  hideProgress();
   window.app._resize();
   window.addEventListener('resize', () => window.app._resize());
   const ticketEl = document.getElementById('ticketNo');

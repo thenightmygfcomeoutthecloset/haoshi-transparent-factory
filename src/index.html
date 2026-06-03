@@ -1211,7 +1211,7 @@
         <div class="badge-hint" id="badgeHint">点击戴上工牌 →</div>
       </div>
       <p class="page-subtitle" id="verifySubtitle" style="margin-top:16px;">
-        今天你是厂长，想看哪就看哪<br>原料、工艺、质检，一样不许跳过
+        今天你是厂长<br>原料、工艺、质检——全都得过你这关
       </p>
     </div>
 
@@ -1327,8 +1327,8 @@
           </div>
         </div>
         <div class="slider-feedback" id="doughFeedback"></div>
-        <p class="slider-state-label" id="dough-state-label">拖动找到最佳筋度</p>
-        <div class="pkg-complete hidden" id="doughDone" style="position:relative;z-index:2;">
+        <p class="slider-state-label" id="dough-state-label"></p>
+        <div class="pkg-complete" id="doughDone" style="display:none;position:relative;z-index:2;">
           <div class="pkg-complete-icon">✓</div>
           <p class="pkg-complete-text" style="color:var(--text-primary);">查工艺完成</p>
           <p class="pkg-complete-sub">黄金比例，就是这里</p>
@@ -1353,8 +1353,8 @@
           </div>
         </div>
         <div class="slider-feedback" id="bakeFeedback"></div>
-        <p class="slider-state-label" id="heat-state-label">拖动找到最佳火候</p>
-        <div class="pkg-complete hidden" id="bakeDone" style="position:relative;z-index:2;">
+        <p class="slider-state-label" id="heat-state-label"></p>
+        <div class="pkg-complete" id="bakeDone" style="display:none;position:relative;z-index:2;">
           <div class="pkg-complete-icon">✓</div>
           <p class="pkg-complete-text" style="color:var(--text-primary);">查火候完成</p>
           <p class="pkg-complete-sub">智能精准控温，表皮微脆内心柔软</p>
@@ -1365,6 +1365,7 @@
 
     <!-- ===== P8 切片包装 ===== -->
     <div class="page" id="page08" data-page="8">
+      <div class="station-header">第四站 · 查包装</div>
       <img class="page-bg" src="./assets/images/车间机械手.jpg" alt="切片包装机械手" />
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
@@ -1395,9 +1396,8 @@
         <div class="pkg-dots" id="pkgDots">
           <span class="pkg-dot active"></span><span class="pkg-dot"></span><span class="pkg-dot"></span>
         </div>
-        <div class="pkg-complete hidden" id="pkgComplete">
-          <div class="pkg-complete-icon">✓</div>
-          <p class="pkg-complete-text" style="color:var(--text-primary);">✓ 查包装已完成，👈 左滑进入下一站</p>
+        <div class="pkg-complete" id="pkgComplete" style="display:none;">
+          <p class="pkg-complete-text" style="color:var(--text-primary);">查包装完成</p>
         </div>
       </div>
       <div class="page-hint" id="pkgHint">👈 左右滑动查看切片流程</div>
@@ -1448,7 +1448,7 @@
 
     <!-- ===== P11 工厂探秘视频 ===== -->
     <div class="page" id="page11" data-page="11" style="background:linear-gradient(180deg,#1A1A2E,#16213E);">
-      <div class="page-title" style="font-size:var(--font-lg);color:#fff;">查岗还没结束<br>工厂探秘视频来了</div>
+      <div class="page-title" style="font-size:var(--font-lg);color:#fff;">查岗完成！解锁隐藏福利<br>工厂探秘视频，仅限今日厂长</div>
       <div class="video-card" id="videoCard" onclick="window.open(LIVE_URL,'_blank')">
         <div class="video-thumb-wrap">
           <img src="./assets/images/视频封面.jpg" alt="豪士透明工厂探秘" class="video-thumb-img" />
@@ -1478,12 +1478,14 @@
       <div class="glass-card" style="background:rgba(255,255,255,0.65);padding:24px 20px 16px;">
         <div class="page-title red" style="font-size:var(--text-md);margin-bottom:14px;">现在，尝一口<br>你亲自查过岗的面包</div>
         <div class="action-buttons" style="margin:20px 0 12px;">
+          <img src="./assets/images/产品正面图.png" alt="豪士藜麦吐司"
+            style="width:min(280px,75%); margin:16px auto 24px;
+                   display:block; filter:drop-shadow(0 8px 20px rgba(0,0,0,0.12));">
           <button class="action-btn red" id="btnTmall" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;">🛒 去官方旗舰店</button>
           <button class="action-btn gold" id="btnLive2" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;">📱 看工厂探秘视频</button>
           <button class="action-btn blue" id="btnShare" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;">📋 复制话题去分享</button>
           <p id="sharePreview" style="font-size:11px;color:#999;margin-top:4px;line-height:1.4;">#豪士透明工厂查岗日# 我今天当了一天透明厂长，原来面包是这样做出来的</p>
         </div>
-        <img src="./assets/images/产品正面图.png" alt="豪士藜麦吐司" loading="eager" style="width:200px;margin:0 auto;display:block;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.15));" />
         <p style="font-size:var(--font-xs);color:#999;margin-top:8px;">先查岗，再开吃 · 豪士豪士，好吃好吃</p>
       </div>
     </div>

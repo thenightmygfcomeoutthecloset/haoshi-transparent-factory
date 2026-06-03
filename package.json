@@ -1,7 +1,7 @@
 {
   "name": "haoshi-factory",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "大广赛互动类作品 - 面包工厂探秘日志",
   "scripts": {
     "dev": "vite",
