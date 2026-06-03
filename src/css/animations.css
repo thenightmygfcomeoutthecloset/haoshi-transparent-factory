@@ -284,6 +284,8 @@
 /* ===== P8 单卡轮播 ===== */
 .pkg-carousel-wrapper {
   width: 100%; overflow: hidden; position: relative; margin: 8px 0;
+  background: rgba(0,0,0,0.35); backdrop-filter: blur(6px);
+  border-radius: var(--radius-lg); padding: 16px 0;
 }
 .pkg-carousel-track {
   display: flex; width: 300%;
@@ -293,20 +295,20 @@
   width: calc(100% / 3); flex-shrink: 0;
   padding: 0 10%; box-sizing: border-box;
   display: flex; flex-direction: column; align-items: center;
-  text-align: center; gap: 10px;
+  text-align: center; gap: 12px;
 }
-.pkg-card-icon { font-size: 48px; line-height: 1; }
-.pkg-card-step { font-size: var(--font-sm); color: #999; letter-spacing: 0.05em; }
-.pkg-card-title { font-size: var(--font-lg); font-weight: 700; color: #1a1a1a; }
-.pkg-card-desc { font-size: var(--font-base); color: #555; line-height: 1.7; }
+.pkg-card-icon { font-size: 56px; line-height: 1; }
+.pkg-card-step { font-size: 16px; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; font-weight: 600; }
+.pkg-card-title { font-size: 26px; font-weight: 800; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.pkg-card-desc { font-size: 18px; color: rgba(255,255,255,0.9); line-height: 1.7; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
 .pkg-dots { display: flex; gap: 8px; justify-content: center; margin-top: 12px; position: relative; z-index: 2; }
-.pkg-dot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; transition: all 0.3s; }
+.pkg-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.35); transition: all 0.3s; }
 .pkg-dot.active { background: var(--brand-color); width: 18px; border-radius: 3px; }
 .pkg-complete { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 16px; position: relative; z-index: 2; animation: fadeInUp 0.5s ease forwards; }
 .pkg-complete.hidden { display: none; }
 .pkg-complete-icon { width: 52px; height: 52px; border-radius: 50%; background: var(--brand-color); color: #fff; font-size: 24px; display: flex; align-items: center; justify-content: center; }
-.pkg-complete-text { font-size: var(--font-lg); font-weight: 700; margin: 0; }
-.pkg-complete-sub { font-size: var(--font-sm); color: #888; margin: 0; }
+.pkg-complete-text { font-size: var(--font-lg); font-weight: 700; margin: 0; color: #fff; }
+.pkg-complete-sub { font-size: var(--font-sm); color: rgba(255,255,255,0.7); margin: 0; }
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
