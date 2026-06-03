@@ -85,7 +85,7 @@ window.init_page02 = function () {
 // P3 工厂大门 — 滑动开门 → 左滑进入P4
 // ============================================================
 window.init_page03 = function () {
-  updateProgress(0, '第3/12页 · 工厂大门', 0);
+  updateProgress(0, '第3/12页 · 工厂大门', 5);
   const gateLeft = document.getElementById('gateLeft');
   const gateRight = document.getElementById('gateRight');
   const hint = document.getElementById('gateHint');
@@ -221,7 +221,7 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
       showToast('✓ 手感刚好！', 1500);
       sweetTimer = setTimeout(() => {
         slider.disabled = true;
-        triggerSloganBeat();
+        showToast('✓ 刚刚好！继续查岗', 1200);
         setTimeout(() => { window.app && window.app.next(); slider.disabled = false; }, 1500);
       }, 800);
     } else if (!inZone && wasInZone) {
@@ -273,31 +273,43 @@ window.init_page07 = function () {
 };
 
 // ============================================================
-// P8 切片包装 — Step 卡片滑动 + 完成提示
+// P8 切片包装 — 单卡轮播
 // ============================================================
 window.init_page08 = function () {
   updateProgress(4, '第8/12页 · 第4站 查包装', 80);
-  const container = document.getElementById('stepCardsContainer');
-  const dots = document.querySelectorAll('#cardDots .dot');
+  const track = document.getElementById('pkgTrack');
+  const dots = document.querySelectorAll('#pkgDots .pkg-dot');
   const complete = document.getElementById('pkgComplete');
   const hint = document.getElementById('pkgHint');
   const nextBtn = document.getElementById('pkgNextBtn');
-  if (!container || container.dataset.ready) return;
-  container.dataset.ready = '1';
+  if (!track || track.dataset.ready) return;
+  track.dataset.ready = '1';
 
-  let lastStep = 0;
-  container.addEventListener('scroll', () => {
-    const idx = Math.round(container.scrollLeft / (container.clientWidth * 0.8));
-    if (idx !== lastStep) {
-      lastStep = idx;
-      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-      if (idx >= 2) {
-        setTimeout(() => {
-          if (complete) complete.classList.add('show');
-          if (hint) hint.style.display = 'none';
-        }, 600);
-      }
+  let current = 0, startX = 0, hintGone = false;
+
+  function goTo(idx) {
+    if (idx < 0 || idx > 2) return;
+    current = idx;
+    track.style.transform = `translateX(${-current * (100 / 3)}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    if (!hintGone && current > 0) { hint.classList.add('hidden'); hintGone = true; }
+    if (current === 2) {
+      setTimeout(() => { complete.classList.remove('hidden'); hint.classList.add('hidden'); }, 600);
     }
+  }
+
+  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+  }, { passive: true });
+
+  let md = false;
+  track.addEventListener('mousedown', e => { md = true; startX = e.clientX; });
+  track.addEventListener('mouseup', e => {
+    if (!md) return; md = false;
+    const diff = startX - e.clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
   });
 
   if (nextBtn) {
