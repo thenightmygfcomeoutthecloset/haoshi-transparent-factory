@@ -103,7 +103,7 @@ window.init_page05 = function () {
       card.classList.add('revealed');
       audio.play('click');
       revealed++;
-      if (revealed >= 3 && $('#page05 .page-hint')) $('#page05 .page-hint').textContent = '👈 原料已查，左滑进入下一站';
+      if (revealed >= 3 && $('#page05 .page-hint')) $('#page05 .page-hint').textContent = '✓ 查原料已完成';
     });
   });
   mountGestureHint(document.getElementById('page05'), 'tap', '点击卡片查看原料来源');
