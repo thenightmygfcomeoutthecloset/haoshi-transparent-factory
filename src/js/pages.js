@@ -82,7 +82,7 @@ window.init_page02 = function () {
 // ============================================================
 // P4 原料查验 + 世界地图 GSAP
 // ============================================================
-window.init_page04 = function () {
+window.init_page05 = function () {
   const cards = $$('#ingredientCards .ingredient-card');
   if (cards.length === 0 || cards[0].dataset.ready) return;
 
@@ -103,16 +103,16 @@ window.init_page04 = function () {
       card.classList.add('revealed');
       audio.play('click');
       revealed++;
-      if (revealed >= 3 && $('#page04 .page-hint')) $('#page04 .page-hint').textContent = '👈 原料已查，左滑进入下一站';
+      if (revealed >= 3 && $('#page05 .page-hint')) $('#page05 .page-hint').textContent = '👈 原料已查，左滑进入下一站';
     });
   });
-  mountGestureHint(document.getElementById('page04'), 'tap', '点击卡片查看原料来源');
+  mountGestureHint(document.getElementById('page05'), 'tap', '点击卡片查看原料来源');
 };
 
 // ============================================================
 // P5 卖点标签 — GSAP stagger
 // ============================================================
-window.init_page05 = function () {
+window.init_page04 = function () {
   const tags = $$('#uspTags .usp-tag');
   const explain = document.getElementById('uspExplain');
   if (tags.length === 0 || tags[0].dataset.ready) return;
@@ -131,7 +131,7 @@ window.init_page05 = function () {
   };
 
   let clickedCount = 0;
-  const hint = $('#page05 .page-hint');
+  const hint = $('#page04 .page-hint');
   tags.forEach((tag) => {
     tag.dataset.ready = '1';
     tag.addEventListener('click', () => {
@@ -142,11 +142,11 @@ window.init_page05 = function () {
       }
       if (explain) explain.textContent = explanations[parseInt(tag.dataset.usp)] || '';
       clickedCount++;
-      if (clickedCount >= 6 && hint) hint.textContent = '👈 全部了解，左滑进入下一站';
+      if (clickedCount >= 6 && hint) hint.textContent = '👈 全部记住，左滑开始核实';
       audio.play('click');
     });
   });
-  mountGestureHint(document.getElementById('page05'), 'tap', '点击标签查看卖点');
+  mountGestureHint(document.getElementById('page04'), 'tap', '点开看，记住这6条');
 };
 
 // ============================================================
