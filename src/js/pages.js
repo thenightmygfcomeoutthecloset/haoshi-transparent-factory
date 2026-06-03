@@ -195,11 +195,7 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
       const swipeHintId = type === 'dough' ? 'doughSwipeHint' : 'bakeSwipeHint';
       const swipeEl = document.getElementById(swipeHintId);
       if (swipeEl) swipeEl.style.display = '';
-      sweetTimer = setTimeout(() => {
-        slider.disabled = true;
-        showToast('✓ 刚刚好！继续查岗', 1200);
-        setTimeout(() => { window.app && window.app.next(); slider.disabled = false; }, 1500);
-      }, 800);
+      showToast('✓ 刚刚好！继续查岗', 1500);
     } else if (!inZone && wasInZone) {
       wasInZone = false;
       clearTimeout(sweetTimer);
