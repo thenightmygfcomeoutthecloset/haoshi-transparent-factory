@@ -185,7 +185,6 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
     if (inZone && !wasInZone) {
       wasInZone = true;
       if (navigator.vibrate) navigator.vibrate(80);
-      showToast('✓ 刚刚好！', 1500);
       const hintId = type === 'dough' ? 'doughHint' : 'bakeHint';
       const hintEl = document.getElementById(hintId);
       if (hintEl) hintEl.textContent = type === 'dough' ? '✓ 查工艺已完成，👈 左滑进入下一站' : '✓ 查火候已完成，👈 左滑进入下一站';
