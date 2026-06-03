@@ -97,8 +97,12 @@ window.init_page05 = function () {
     animPin('[data-pin="france"]',    1.3);
     animPin('[data-pin="nz"]',        1.3);
     // 轨迹线跟随标记
-    gsap.fromTo('.map-trail[data-trail="1"]', { width: 0, opacity: 0 }, { width: 121, opacity: 0.7, duration: 0.6, delay: 1.1, ease: 'power2.out' });
-    gsap.fromTo('.map-trail[data-trail="0"], .map-trail[data-trail="2"]', { width: 0, opacity: 0 }, { opacity: 0.7, duration: 0.6, delay: 1.6, ease: 'power2.out', stagger: 0.1 });
+    const trail1 = document.querySelector('.map-trail[data-trail="1"]');
+    const trail0 = document.querySelector('.map-trail[data-trail="0"]');
+    const trail2 = document.querySelector('.map-trail[data-trail="2"]');
+    gsap.fromTo(trail1, { width: 0, opacity: 0 }, { width: trail1?.style?.width || 121, opacity: 0.7, duration: 0.6, delay: 1.1, ease: 'power2.out' });
+    gsap.fromTo(trail0, { width: 0, opacity: 0 }, { width: trail0?.style?.width || 58, opacity: 0.7, duration: 0.6, delay: 1.6, ease: 'power2.out' });
+    gsap.fromTo(trail2, { width: 0, opacity: 0 }, { width: trail2?.style?.width || 77, opacity: 0.7, duration: 0.6, delay: 1.6, ease: 'power2.out' });
   } else {
     $$('#worldMap .map-pin').forEach((p, i) => { setTimeout(() => p.classList.add('show-label'), i * 350 + 500); });
   }
