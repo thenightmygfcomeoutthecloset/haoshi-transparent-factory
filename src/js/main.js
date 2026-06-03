@@ -185,7 +185,7 @@ class App {
   _updateProgressBar() {
     const idx = this.current + 1;
     const label = PAGE_LABELS[this.current] || '';
-    const name = `第${idx}页/共${this.total}页 · ${label}`;
+    const name = `第${idx}页/${this.total}页 · ${label}`;
     const pct = Math.round(((this.current) / (this.total - 1)) * 100);
     updateProgress(this.current, name, pct);
   }
