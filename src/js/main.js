@@ -87,6 +87,7 @@ class App {
 
     // 直接初始化首屏，不走 goTo 避免 index===current 拦截
     this._initPage(0);
+    this._updateProgressBar();
   }
 
   next() {
@@ -218,7 +219,6 @@ class App {
 // 启动
 function boot() {
   window.app = new App();
-  hideProgress();
   window.app._resize();
   window.addEventListener('resize', () => window.app._resize());
   const ticketEl = document.getElementById('ticketNo');
