@@ -130,6 +130,8 @@ window.init_page05 = function () {
     5: '经过近4年反复调试，才找到刚好松软又有嚼劲的口感。',
   };
 
+  let clickedCount = 0;
+  const hint = $('#page05 .page-hint');
   tags.forEach((tag) => {
     tag.dataset.ready = '1';
     tag.addEventListener('click', () => {
@@ -139,6 +141,8 @@ window.init_page05 = function () {
         gsap.fromTo(tag, { scale: 1 }, { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.out' });
       }
       if (explain) explain.textContent = explanations[parseInt(tag.dataset.usp)] || '';
+      clickedCount++;
+      if (clickedCount >= 6 && hint) hint.textContent = '👈 全部了解，左滑进入下一站';
       audio.play('click');
     });
   });
