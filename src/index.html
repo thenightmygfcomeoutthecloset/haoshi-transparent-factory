@@ -473,12 +473,12 @@
     /* ===== P4 原料查验卡片 ===== */
     .ingredient-cards { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 14px 0; position: relative; z-index: 2; }
     .ingredient-card {
-      width: 88px; height: 96px; border-radius: var(--radius-md);
+      width: 96px; height: 108px; border-radius: var(--radius-md);
       background: var(--glass-white); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255,255,255,0.6);
       cursor: pointer; transition: all 0.3s;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      box-shadow: var(--shadow-soft);
+      gap: 4px; box-shadow: var(--shadow-soft);
     }
     .ingredient-card:active { transform: scale(0.95); }
     .ingredient-card.revealed { background: rgba(0,59,122,0.06); border-color: var(--haoshi-blue); }
@@ -646,8 +646,8 @@
 
     /* P4 原料卡片加大 */
     #page05 .ingredient-card {
-      width: 120px;
-      height: 130px;
+      width: 130px;
+      height: 145px;
     }
     #page05 .ingredient-card .card-icon {
       font-size: 34px;
@@ -1280,7 +1280,7 @@
         <div class="map-pin highlight" style="left:72px;top:72px;" data-pin="bolivia">
           <span class="map-pin-label">玻利维亚</span>
         </div>
-        <div class="map-pin" style="left:45px;top:18px;" data-pin="canada">
+        <div class="map-pin" style="left:40px;top:14px;" data-pin="canada">
           <span class="map-pin-label">加拿大</span>
         </div>
         <div class="map-pin zhangzhou" style="left:190px;top:44px;" data-pin="zhangzhou">
@@ -1288,7 +1288,7 @@
         </div>
         <div class="map-trail" data-trail="0" style="left:139px;top:34px;width:52px;transform:rotate(11deg);"></div>
         <div class="map-trail" data-trail="1" style="left:78px;top:78px;width:117px;transform:rotate(-17deg);"></div>
-        <div class="map-trail" data-trail="2" style="left:49px;top:22px;width:143px;transform:rotate(9deg);"></div>
+        <div class="map-trail" data-trail="2" style="left:44px;top:18px;width:148px;transform:rotate(10deg);"></div>
       </div>
 
       <!-- 原料卡片 -->
@@ -1382,13 +1382,11 @@
               <div class="pkg-card-desc" style="color:var(--text-secondary);text-shadow:none;">四周都有吐司边<br>切掉浪费，吃掉将就</div>
             </div>
             <div class="pkg-card" data-index="1">
-              <div class="pkg-card-icon">✂️</div>
               <div class="pkg-card-step">Step 2 / 3</div>
               <div class="pkg-card-title" style="color:var(--text-primary);text-shadow:none;">精准切边</div>
               <div class="pkg-card-desc" style="color:var(--text-secondary);text-shadow:none;">自动化流水线<br>四边精准去除，只留软芯</div>
             </div>
             <div class="pkg-card" data-index="2">
-              <div class="pkg-card-icon" style="color:#FFD700;background:linear-gradient(135deg,#C9212B,#A01822);border-radius:10px;font-weight:900;font-size:28px;width:64px;height:64px;line-height:64px;text-align:center;">豪士</div>
               <div class="pkg-card-step">Step 3 / 3</div>
               <div class="pkg-card-title" style="color:var(--text-primary);text-shadow:none;">无边入袋</div>
               <div class="pkg-card-desc" style="color:var(--text-secondary);text-shadow:none;">每一片都是纯芯<br>打开即食，不用再撕边</div>
