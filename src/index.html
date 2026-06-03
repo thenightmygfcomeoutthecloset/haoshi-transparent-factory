@@ -344,44 +344,13 @@
     /* ===== P4 世界地图 ===== */
     .world-map {
       position: relative; width: 320px; height: 160px;
-      margin: 72px auto 80px; z-index: 2;
-      transform: scale(1.8) translateX(12px); transform-origin: center center;
+      margin: 24px auto 12px; z-index: 2;
+      transform: scale(1.6); transform-origin: center center;
       overflow: visible;
     }
-    /* 像素地图底层 */
-    .map-dots-layer {
-      width: 6px; height: 6px;
-      background: rgba(0,59,122,0.1);
-      border-radius: 0;
-      position: absolute; top: 0; left: 0;
-      pointer-events: none;
-      box-shadow:
-        30px 10px, 40px 10px, 50px 10px, 60px 10px, 70px 10px, 80px 10px,
-        120px 10px, 130px 10px, 140px 10px, 150px 10px, 160px 10px,
-        190px 10px, 200px 10px, 210px 10px, 220px 10px,
-        20px 20px, 30px 20px, 40px 20px, 50px 20px, 60px 20px, 70px 20px, 80px 20px, 90px 20px,
-        110px 20px, 120px 20px, 130px 20px, 140px 20px, 150px 20px, 160px 20px, 170px 20px,
-        190px 20px, 200px 20px, 210px 20px, 220px 20px, 230px 20px, 240px 20px,
-        10px 30px, 20px 30px, 30px 30px, 40px 30px, 50px 30px, 60px 30px, 70px 30px, 80px 30px, 90px 30px,
-        110px 30px, 120px 30px, 130px 30px, 140px 30px, 150px 30px, 160px 30px, 170px 30px,
-        180px 30px, 190px 30px, 200px 30px, 210px 30px, 220px 30px, 230px 30px, 260px 30px,
-        20px 40px, 30px 40px, 40px 40px, 50px 40px, 60px 40px, 70px 40px, 80px 40px,
-        120px 40px, 130px 40px, 140px 40px, 150px 40px, 160px 40px, 170px 40px,
-        180px 40px, 190px 40px, 200px 40px, 210px 40px, 220px 40px, 230px 40px,
-        30px 50px, 40px 50px, 50px 50px, 60px 50px, 70px 50px,
-        130px 50px, 140px 50px, 150px 50px, 160px 50px, 170px 50px, 190px 50px, 200px 50px, 210px 50px, 220px 50px,
-        40px 60px, 50px 60px, 60px 60px, 70px 60px,
-        130px 60px, 140px 60px, 150px 60px, 160px 60px, 170px 60px, 180px 60px, 200px 60px, 210px 60px,
-        40px 70px, 50px 70px, 60px 70px, 70px 70px,
-        130px 70px, 140px 70px, 150px 70px, 160px 70px, 170px 70px, 180px 70px, 200px 70px, 210px 70px,
-        40px 80px, 50px 80px, 60px 80px, 70px 80px, 80px 80px,
-        130px 80px, 140px 80px, 150px 80px, 160px 80px, 170px 80px, 180px 80px, 190px 80px, 200px 80px, 210px 80px, 220px 80px,
-        30px 90px, 40px 90px, 50px 90px, 60px 90px, 70px 90px,
-        130px 90px, 140px 90px, 150px 90px, 160px 90px, 170px 90px, 180px 90px, 190px 90px, 200px 90px, 210px 90px,
-        30px 100px, 40px 100px, 50px 100px, 60px 100px,
-        140px 100px, 150px 100px, 160px 100px, 180px 100px, 190px 100px, 200px 100px, 210px 100px,
-        130px 110px, 140px 110px, 150px 110px, 180px 110px, 190px 110px, 200px 110px,
-        60px 120px, 70px 120px, 80px 120px, 100px 120px, 110px 120px, 120px 120px, 130px 120px, 140px 120px, 150px 120px, 160px 120px, 170px 120px, 180px 120px;
+    .map-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
     }
     /* 地图标记点 */
     .map-pin {
@@ -614,10 +583,10 @@
     #page04 .ingredient-card .card-name {
       font-size: var(--text-sm);
     }
-    /* P4 世界地图加大 */
+    /* P4 世界地图 — 已通过基础scale(1.6)放大，此处微调 */
     #page04 .world-map {
-      transform: scale(2) translateX(14px);
-      margin-bottom: 80px;
+      transform: scale(1.8);
+      margin-bottom: 24px;
     }
 
     /* P9 质检加大 */
@@ -1177,24 +1146,51 @@
       <div class="page-title" style="font-size:var(--text-lg);">原料从地球另一端来</div>
       <p class="page-subtitle" style="margin-bottom:16px;">真材实料，不藏着掖着</p>
 
-      <!-- 像素世界地图 -->
+      <!-- SVG 世界地图 -->
       <div class="world-map" id="worldMap">
-        <div class="map-dots-layer"></div>
+        <svg viewBox="0 0 320 140" class="map-svg">
+          <!-- 简化世界地图轮廓 -->
+          <g fill="none" stroke="rgba(0,48,135,0.15)" stroke-width="2.5">
+            <!-- 北美洲 -->
+            <path d="M15,12 L55,10 L80,15 L85,35 L70,45 L55,55 L40,48 L20,40 L12,25 Z"/>
+            <!-- 南美洲 -->
+            <path d="M65,58 L80,55 L88,70 L82,88 L70,95 L62,85 L60,70 Z"/>
+            <!-- 欧洲 -->
+            <path d="M125,10 L145,8 L160,12 L158,28 L148,35 L135,30 L122,22 Z"/>
+            <!-- 非洲 -->
+            <path d="M130,38 L155,35 L168,45 L165,65 L150,78 L135,72 L125,55 Z"/>
+            <!-- 亚洲 (中国区域) -->
+            <path d="M170,10 L220,8 L260,12 L275,25 L265,40 L240,42 L210,35 L180,30 Z"/>
+            <!-- 东南亚/澳洲 -->
+            <path d="M250,50 L270,45 L285,55 L278,72 L268,78 L255,72 L248,60 Z"/>
+            <!-- 新西兰 -->
+            <path d="M272,88 L280,85 L285,95 L278,100 Z"/>
+          </g>
+          <!-- 大陆填充 -->
+          <g fill="rgba(0,48,135,0.04)">
+            <path d="M20,15 L50,12 L75,18 L82,32 L68,42 L55,52 L42,46 L22,38 L15,28 Z"/>
+            <path d="M68,60 L78,57 L85,68 L80,86 L70,92 L64,84 L62,72 Z"/>
+            <path d="M128,14 L142,12 L155,15 L153,25 L145,33 L135,28 L125,20 Z"/>
+            <path d="M132,42 L150,40 L162,48 L160,62 L148,74 L137,68 L128,56 Z"/>
+            <path d="M175,14 L215,12 L255,16 L268,22 L260,36 L238,39 L210,32 L182,26 Z"/>
+            <path d="M252,52 L268,48 L280,58 L274,70 L264,74 L256,68 L250,58 Z"/>
+          </g>
+        </svg>
         <div class="map-pin" style="left:135px;top:30px;" data-pin="france">
           <span class="map-pin-label">法国</span>
         </div>
-        <div class="map-pin" style="left:56px;top:76px;" data-pin="bolivia">
+        <div class="map-pin" style="left:72px;top:72px;" data-pin="bolivia">
           <span class="map-pin-label">玻利维亚</span>
         </div>
-        <div class="map-pin" style="left:224px;top:104px;" data-pin="nz">
+        <div class="map-pin" style="left:275px;top:93px;" data-pin="nz">
           <span class="map-pin-label">新西兰</span>
         </div>
         <div class="map-pin zhangzhou" style="left:190px;top:44px;" data-pin="zhangzhou">
           <span class="map-pin-label">漳州</span>
         </div>
         <div class="map-trail" data-trail="0" style="left:135px;top:30px;width:58px;transform:rotate(14deg);"></div>
-        <div class="map-trail" data-trail="1" style="left:56px;top:76px;width:134px;transform:rotate(-13deg);"></div>
-        <div class="map-trail" data-trail="2" style="left:224px;top:104px;width:56px;transform:rotate(-60deg);"></div>
+        <div class="map-trail" data-trail="1" style="left:72px;top:72px;width:121px;transform:rotate(-13deg);"></div>
+        <div class="map-trail" data-trail="2" style="left:275px;top:93px;width:98px;transform:rotate(-150deg);"></div>
       </div>
 
       <!-- 原料卡片 -->
@@ -1206,13 +1202,13 @@
         </div>
         <div class="ingredient-card" data-ingredient="1">
           <div class="card-icon">🧈</div>
-          <div class="card-name">全球精选原料</div>
-          <div class="card-detail">从世界各地的优质产区<br>甄选每一种配料</div>
+          <div class="card-name">新西兰安佳黄油</div>
+          <div class="card-detail">≥6%安佳黄油添加<br>新西兰乳制品全球公认</div>
         </div>
         <div class="ingredient-card" data-ingredient="2">
-          <div class="card-icon">🔬</div>
-          <div class="card-name">透明可溯源</div>
-          <div class="card-detail">每一批原料<br>都有来路、有记录</div>
+          <div class="card-icon">🥖</div>
+          <div class="card-name">法国乐斯福酵母</div>
+          <div class="card-detail">百年法国酵母企业<br>2023进博会签约合作</div>
         </div>
       </div>
       <div class="page-hint">👆 点击卡片查看原料来源</div>
