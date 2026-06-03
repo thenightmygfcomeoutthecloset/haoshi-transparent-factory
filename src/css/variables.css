@@ -1,21 +1,23 @@
 /* === 豪士面包 品牌色体系 + 移动端适配变量 === */
 :root {
-  /* 品牌色 */
-  --haoshi-blue: #003087;
+  /* 品牌色 — PANTONE */
+  --pantone-288c: #003087;   /* 豪士专蓝 */
+  --pantone-873c: #B8892E;   /* 豪士专金 */
+  --haoshi-blue: var(--pantone-288c);
   --haoshi-blue-dark: #001A52;
   --haoshi-blue-soft: #EAF3FF;
   --haoshi-red: #C9212B;
   --haoshi-red-dark: #A01822;
-  --brand-color: #E8380D;
+  --brand-color: var(--pantone-873c);  /* 主品牌色改为专金 */
   --brand-bg: #FFF8F0;
-  --brand-gold: #C6A84B;
+  --brand-gold: var(--pantone-873c);
 
   /* 暖色调 */
   --cream-white: #FFF8EA;
   --cream-soft: #FFF3D6;
-  --bread-yellow: #F5B84B;
-  --bread-light: #FFD98A;
-  --toast-brown: #B87435;
+  --bread-yellow: var(--pantone-873c);
+  --bread-light: #D9B86A;
+  --toast-brown: #8C6628;
 
   /* 文字色 */
   --text-primary: #1A1A1A;
