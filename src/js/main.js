@@ -189,8 +189,8 @@ class App {
       // 手机：填满屏幕
       scale = Math.max(window.innerWidth / 640, window.innerHeight / 1008);
     } else {
-      // 电脑：限制最大缩放，居中显示
-      scale = Math.min(1, Math.min(window.innerWidth / 640, window.innerHeight / 1008) * 0.85);
+      // 电脑：固定适当大小，如手机大小居中
+      scale = 0.55;
     }
     vp.style.width = '640px';
     vp.style.height = '1008px';
