@@ -481,6 +481,7 @@
     .ingredient-card:active { transform: scale(0.95); }
     .ingredient-card.revealed { background: rgba(0,59,122,0.06); border-color: var(--haoshi-blue); }
     .ingredient-card .card-icon { font-size: 28px; margin-bottom: 4px; }
+    .ingredient-card .card-icon-img { width: 36px; height: 36px; object-fit: contain; margin-bottom: 4px; }
     .ingredient-card .card-name { font-size: 12px; font-weight: 700; color: var(--haoshi-blue); }
     .ingredient-card .card-detail { font-size: 10px; color: var(--brown); margin-top: 4px; opacity: 0; transition: opacity 0.3s; text-align: center; line-height: 1.4; }
     .ingredient-card.revealed .card-detail { opacity: 0.8; }
@@ -648,6 +649,10 @@
     }
     #page05 .ingredient-card .card-icon {
       font-size: 34px;
+    }
+    #page05 .ingredient-card .card-icon-img {
+      width: 52px;
+      height: 52px;
     }
     #page05 .ingredient-card .card-name {
       font-size: var(--text-sm);
@@ -1292,7 +1297,7 @@
           <div class="card-detail">海拔4000米黄金谷物<br>高蛋白、高营养</div>
         </div>
         <div class="ingredient-card" data-ingredient="1">
-          <div class="card-icon">🧈</div>
+          <img src="./assets/images/lesaffre-logo.png" alt="乐斯福" class="card-icon-img" />
           <div class="card-name">法国乐斯福酵母</div>
           <div class="card-detail">源自法国百年酵母企业<br>活性高，风味足</div>
         </div>
