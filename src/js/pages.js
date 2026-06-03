@@ -195,6 +195,10 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
       const hintId = type === 'dough' ? 'doughHint' : 'bakeHint';
       const hintEl = document.getElementById(hintId);
       if (hintEl) hintEl.textContent = '👈 左滑进入下一站';
+      // 显示完成指示
+      const doneId = type === 'dough' ? 'doughDone' : 'bakeDone';
+      const doneEl = document.getElementById(doneId);
+      if (doneEl) doneEl.classList.remove('hidden');
       showToast('✓ 刚刚好！继续查岗', 1500);
     } else if (!inZone && wasInZone) {
       wasInZone = false;
@@ -282,7 +286,6 @@ window.init_page08 = function () {
     if (current === 2) {
       hint.classList.remove('hidden');
       hint.textContent = '👈 查包装完成，左滑进入下一站';
-      setTimeout(() => { complete.classList.remove('hidden'); hint.classList.add('hidden'); }, 600);
     }
   }
 
