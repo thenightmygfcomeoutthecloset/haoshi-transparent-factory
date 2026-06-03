@@ -169,7 +169,7 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
     // 动态状态标签
     const stateLabels = {
       dough: ['太软', '偏软', '✓ 刚好', '偏硬', '太硬'],
-      heat:  ['温度不足', '偏低', '✓ 220°C', '偏高', '过热'],
+      heat:  ['温度不足', '偏低', '✓ 最佳温度', '偏高', '过热'],
     };
     const type = sliderId === 'doughSlider' ? 'dough' : 'heat';
     const labelId = type === 'dough' ? 'dough-state-label' : 'heat-state-label';
@@ -246,7 +246,7 @@ window.init_page07 = function () {
       const bgColor = `rgb(${r},${g},${b})`;
       if (val < 35) return { text: '温度太低，颜色苍白，内心未熟', color: '#B07820', bgEl: 'bakeToast', bgColor };
       if (val > 65) return { text: '太高了，焦了——这批要重做！', color: '#C03030', bgEl: 'bakeToast', bgColor };
-      return { text: '✓ 220°C，表皮微脆内心柔软，这就是豪士的温度', color: '#5C8A3C', bgEl: 'bakeToast', bgColor };
+      return { text: '✓ 精准控温，表皮微脆内心柔软，这就是豪士的温度', color: '#5C8A3C', bgEl: 'bakeToast', bgColor };
     },
   });
   mountGestureHint(document.getElementById('page07'), 'drag', '拖动滑块调到最佳火候');
