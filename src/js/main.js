@@ -182,10 +182,13 @@ class App {
 
   // ========== 进度条 ==========
   _updateProgressBar() {
-    if (this.current === 0) { hideProgress(); return; }
-    const names = ['参观券','身份认证','工厂大门','原料查验','王牌产品','和面工艺','烘烤火候','切片包装','质检挑战','厂长认证','探秘视频','尝一口'];
     const idx = this.current + 1;
-    const name = `${idx}/${this.total}  ${names[this.current] || ''}`;
+    let name;
+    if (this.current === 0) {
+      name = `第${idx}页/共${this.total}页`;
+    } else {
+      name = `${idx}/${this.total}`;
+    }
     const pct = Math.round(((this.current) / (this.total - 1)) * 100);
     updateProgress(this.current, name, pct);
   }
