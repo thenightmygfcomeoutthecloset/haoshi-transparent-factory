@@ -1282,40 +1282,43 @@
       <img class="page-bg" src="./assets/images/车间机械手.jpg" alt="切片包装机械手" />
       <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
-      <div class="transparency-badge" style="margin-bottom:12px;position:relative;z-index:3;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.3);">第四站 · 查包装</div>
-      <p class="page-title" style="font-size:var(--font-lg);color:#fff;z-index:3;text-shadow:0 2px 8px rgba(0,0,0,0.4);margin-bottom:4px;">没有吐司边 · 每一口都是芯</p>
-      <div class="pkg-carousel-wrapper">
-        <div class="pkg-carousel-track" id="pkgTrack">
-          <div class="pkg-card" data-index="0">
-            <div class="pkg-card-icon">🍞</div>
-            <div class="pkg-card-step">Step 1 / 3</div>
-            <div class="pkg-card-title">整条吐司</div>
-            <div class="pkg-card-desc">四周都有吐司边<br>切掉浪费，吃掉将就</div>
-          </div>
-          <div class="pkg-card" data-index="1">
-            <div class="pkg-card-icon">✂️</div>
-            <div class="pkg-card-step">Step 2 / 3</div>
-            <div class="pkg-card-title">精准切边</div>
-            <div class="pkg-card-desc">自动化流水线<br>四边精准去除，只留软芯</div>
-          </div>
-          <div class="pkg-card" data-index="2">
-            <div class="pkg-card-icon" style="color:#FFD700;background:linear-gradient(135deg,#C9212B,#A01822);border-radius:10px;font-weight:900;font-size:28px;width:64px;height:64px;line-height:64px;text-align:center;">豪士</div>
-            <div class="pkg-card-step">Step 3 / 3</div>
-            <div class="pkg-card-title">无边入袋</div>
-            <div class="pkg-card-desc">每一片都是纯芯<br>打开即食，不用再撕边</div>
+      <div class="glass-card" style="background:rgba(255,255,255,0.65);">
+        <div class="transparency-badge" style="margin-bottom:10px;">第四站 · 查包装</div>
+        <div class="divider-ornament"></div>
+        <div class="page-title" style="font-size:var(--text-lg);">没有吐司边 · 每一口都是芯</div>
+        <div class="pkg-carousel-wrapper" style="background:transparent;backdrop-filter:none;border-radius:0;padding:8px 0;">
+          <div class="pkg-carousel-track" id="pkgTrack">
+            <div class="pkg-card" data-index="0">
+              <div class="pkg-card-icon">🍞</div>
+              <div class="pkg-card-step">Step 1 / 3</div>
+              <div class="pkg-card-title" style="color:var(--text-primary);text-shadow:none;">整条吐司</div>
+              <div class="pkg-card-desc" style="color:var(--text-secondary);text-shadow:none;">四周都有吐司边<br>切掉浪费，吃掉将就</div>
+            </div>
+            <div class="pkg-card" data-index="1">
+              <div class="pkg-card-icon">✂️</div>
+              <div class="pkg-card-step">Step 2 / 3</div>
+              <div class="pkg-card-title" style="color:var(--text-primary);text-shadow:none;">精准切边</div>
+              <div class="pkg-card-desc" style="color:var(--text-secondary);text-shadow:none;">自动化流水线<br>四边精准去除，只留软芯</div>
+            </div>
+            <div class="pkg-card" data-index="2">
+              <div class="pkg-card-icon" style="color:#FFD700;background:linear-gradient(135deg,#C9212B,#A01822);border-radius:10px;font-weight:900;font-size:28px;width:64px;height:64px;line-height:64px;text-align:center;">豪士</div>
+              <div class="pkg-card-step">Step 3 / 3</div>
+              <div class="pkg-card-title" style="color:var(--text-primary);text-shadow:none;">无边入袋</div>
+              <div class="pkg-card-desc" style="color:var(--text-secondary);text-shadow:none;">每一片都是纯芯<br>打开即食，不用再撕边</div>
+            </div>
           </div>
         </div>
+        <div class="pkg-dots" id="pkgDots">
+          <span class="pkg-dot active"></span><span class="pkg-dot"></span><span class="pkg-dot"></span>
+        </div>
+        <div class="pkg-complete hidden" id="pkgComplete">
+          <div class="pkg-complete-icon">✓</div>
+          <p class="pkg-complete-text" style="color:var(--text-primary);">查包装完成</p>
+          <p class="pkg-complete-sub">不用撕边，打开就吃</p>
+          <button class="btn-warm" id="pkgNextBtn">继续查岗 →</button>
+        </div>
       </div>
-      <div class="pkg-dots" id="pkgDots">
-        <span class="pkg-dot active"></span><span class="pkg-dot"></span><span class="pkg-dot"></span>
-      </div>
-      <div class="page-hint" id="pkgHint" style="color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.35);">👈 左右滑动查看切片流程</div>
-      <div class="pkg-complete hidden" id="pkgComplete">
-        <div class="pkg-complete-icon">✓</div>
-        <p class="pkg-complete-text">查包装完成</p>
-        <p class="pkg-complete-sub">不用撕边，打开就吃</p>
-        <button class="btn-warm" id="pkgNextBtn">继续查岗 →</button>
-      </div>
+      <div class="page-hint" id="pkgHint">👈 左右滑动查看切片流程</div>
     </div>
 
     <!-- ===== P9 质检挑战 ===== -->
