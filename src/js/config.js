@@ -9,7 +9,7 @@ export const TOPIC_TEXT = '#豪士豪士好吃好吃#';
 // 页面标签 — 显示在顶部进度条（可自行编辑）
 // show: false = 该页不显示进度条
 export const PAGE_LABELS = [
-  { show: false, label: '' },                              // P1 参观券
+  { show: true,  label: '参观券' },                             // P1
   { show: true,  label: '领取工牌' },                       // P2
   { show: true,  label: '第 1/5 站 · 查原料' },            // P3
   { show: true,  label: '王牌产品' },                       // P4
