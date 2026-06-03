@@ -488,9 +488,9 @@
     #page07 .glass-card,
     #page09 .glass-card,
     #page12 .glass-card {
-      max-width: 628px;
-      width: 98%;
-      padding: 40px 24px;
+      max-width: 420px;
+      width: 90%;
+      padding: 28px 20px;
       border-radius: 24px;
     }
     #page03 .page-title,
@@ -499,9 +499,9 @@
     #page07 .page-title,
     #page09 .page-title,
     #page12 .page-title {
-      font-size: var(--text-display) !important;
-      margin-bottom: 18px;
-      line-height: 1.25;
+      font-size: var(--text-lg) !important;
+      margin-bottom: 14px;
+      line-height: 1.3;
     }
     #page03 .page-subtitle,
     #page04 .page-subtitle,
@@ -509,8 +509,8 @@
     #page07 .page-subtitle,
     #page09 .page-subtitle,
     #page12 .page-subtitle {
-      font-size: var(--text-md);
-      margin-bottom: 22px;
+      font-size: var(--text-sm);
+      margin-bottom: 16px;
       line-height: 1.6;
     }
     #page03 .transparency-badge,
@@ -519,9 +519,9 @@
     #page07 .transparency-badge,
     #page09 .transparency-badge,
     #page12 .transparency-badge {
-      font-size: var(--text-sm);
-      padding: 10px 24px;
-      margin-bottom: 16px;
+      font-size: var(--text-xs);
+      padding: 6px 18px;
+      margin-bottom: 10px;
     }
     #page03 .divider-ornament,
     #page04 .divider-ornament,
@@ -987,7 +987,7 @@
       100% { transform: translate(-50%,-50%) scale(1.2); opacity:0; }
     }
   </style>
-  <script src="./assets/index-BKkUgpLt.js"></script>
+  <script src="./assets/index-tCOxTXf2.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-MPIRklNI.css">
 </head>
 <body>
@@ -1231,10 +1231,8 @@
       <div class="transparency-badge" style="margin-bottom:8px;">认证通过</div>
       <div class="page-title" style="font-size:var(--text-lg);">你的透明厂长认证<br>已生成</div>
       <div class="badge-result" id="badgeResult">
-        <div class="rating-badges">
-          <div class="rating-badge"><span class="rating-letter" id="badgeGrade">S</span><span class="rating-desc">速度评级</span></div>
-          <div class="rating-badge"><span class="rating-letter" id="badgeRank">S</span><span class="rating-desc">准确率评级</span></div>
-        </div>
+        <div class="badge-grade" id="badgeGrade">S</div>
+        <div id="badgeRank" style="display:none;"></div>
         <div class="badge-title-text" id="badgeTitleText">天生厂长</div>
         <div class="badge-slogan">HORSH · 豪士面包</div>
       </div>

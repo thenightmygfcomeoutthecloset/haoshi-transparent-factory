@@ -298,15 +298,19 @@ window.init_page08 = function () {
     }
   }
 
-  track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchstart', e => { e.stopPropagation(); startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchmove', e => { e.stopPropagation(); }, { passive: true });
   track.addEventListener('touchend', e => {
+    e.stopPropagation();
     const diff = startX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
-  }, { passive: true });
+  });
 
   let md = false;
-  track.addEventListener('mousedown', e => { md = true; startX = e.clientX; });
+  track.addEventListener('mousedown', e => { e.stopPropagation(); md = true; startX = e.clientX; });
+  track.addEventListener('mousemove', e => { e.stopPropagation(); });
   track.addEventListener('mouseup', e => {
+    e.stopPropagation();
     if (!md) return; md = false;
     const diff = startX - e.clientX;
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
