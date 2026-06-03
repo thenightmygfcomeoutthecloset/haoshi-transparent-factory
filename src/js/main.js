@@ -138,14 +138,15 @@ class App {
   // ========== 页面生命周期 ==========
   _initPage(index) {
     const page = this.pages[index];
-    const pageId = `page${String(index + 1).padStart(2, '0')}`;
+    const pageId = page.id; // 用实际 DOM id，不依赖 index
     if (typeof window[`init_${pageId}`] === 'function') {
       window[`init_${pageId}`](page);
     }
   }
 
   _leavePage(index) {
-    const pageId = `page${String(index + 1).padStart(2, '0')}`;
+    const page = this.pages[index];
+    const pageId = page.id;
     if (typeof window[`leave_${pageId}`] === 'function') {
       window[`leave_${pageId}`]();
     }
