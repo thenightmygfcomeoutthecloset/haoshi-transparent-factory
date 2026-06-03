@@ -112,6 +112,7 @@ class App {
     newPage.classList.add('active');
     this.current = index;
     this._initPage(index);
+    this._updateProgressBar();
 
     if (typeof gsap !== 'undefined') {
       if (slide) {
@@ -177,6 +178,14 @@ class App {
     if (!this.muteBtn) return;
     this.muteBtn.textContent = audio.muted ? '🔇' : '🔊';
     this.muteBtn.classList.toggle('muted', audio.muted);
+  }
+
+  // ========== 进度条 ==========
+  _updateProgressBar() {
+    const names = ['参观券','身份认证','工厂大门','原料查验','王牌产品','和面工艺','烘烤火候','切片包装','质检挑战','厂长认证','探秘视频','尝一口'];
+    const name = names[this.current] || '';
+    const pct = Math.round(((this.current) / (this.total - 1)) * 100);
+    updateProgress(this.current, name, pct);
   }
 
   // ========== 缩放 ==========
