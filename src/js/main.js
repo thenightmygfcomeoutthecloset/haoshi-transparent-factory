@@ -183,9 +183,15 @@ class App {
   _resize() {
     const vp = document.querySelector('.viewport');
     if (!vp) return;
-    const scaleX = window.innerWidth / 640;
-    const scaleY = window.innerHeight / 1008;
-    const scale = Math.max(scaleX, scaleY); // fill, may crop edges
+    const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent) || window.innerWidth < 768;
+    let scale;
+    if (isMobile) {
+      // 手机：填满屏幕
+      scale = Math.max(window.innerWidth / 640, window.innerHeight / 1008);
+    } else {
+      // 电脑：限制最大缩放，居中显示
+      scale = Math.min(1, Math.min(window.innerWidth / 640, window.innerHeight / 1008) * 0.85);
+    }
     vp.style.width = '640px';
     vp.style.height = '1008px';
     vp.style.position = 'absolute';
