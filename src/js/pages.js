@@ -100,10 +100,10 @@ window.init_page05 = function () {
     const trails = document.querySelectorAll('.map-trail');
     trails.forEach((t, i) => {
       const w = parseFloat(t.style.width) || 140;
-      gsap.fromTo(t, { width: 0, opacity: 0 }, { width: w, opacity: 0.7, duration: 1.0, delay: 1.6, ease: 'power2.out' });
+      gsap.fromTo(t, { width: 0, opacity: 0 }, { width: w, opacity: 0.7, duration: 1.5, delay: 1.6, ease: 'power2.out' });
     });
     // Phase 3: 漳州在汇聚点登场
-    animPin('[data-pin="zhangzhou"]', 2.3);
+    animPin('[data-pin="zhangzhou"]', 2.7);
   } else {
     $$('#worldMap .map-pin').forEach((p, i) => { setTimeout(() => p.classList.add('show-label'), i * 350 + 500); });
   }
