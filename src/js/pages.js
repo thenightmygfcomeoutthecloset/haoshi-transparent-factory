@@ -110,12 +110,20 @@ window.init_page05 = function () {
 };
 
 // ============================================================
-// P4 查岗任务书 — 目录清单
+// P4 查岗任务书 — 目录清单 + 开始核实按钮
 // ============================================================
 window.init_page04 = function () {
   const page = document.getElementById('page04');
+  const btn = document.getElementById('btnStartCheck');
   if (!page || page.dataset.ready) return;
   page.dataset.ready = '1';
+
+  if (btn) {
+    btn.addEventListener('click', () => {
+      audio.play('click');
+      window.app && window.app.next();
+    });
+  }
   mountGestureHint(page, 'swipe-right', '左滑开始第一站');
 };
 
