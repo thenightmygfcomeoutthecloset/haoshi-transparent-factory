@@ -64,6 +64,16 @@ class Gesture {
   _onEnd(e) {
     if (!this._active) return;
     this._active = false;
+
+    // 不拦截滑块、传送带等控件
+    const target = e.target || (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].target);
+    if (target) {
+      const el = target.closest ? target : target.parentElement;
+      if (el && el.closest && (el.closest('input[type=range]') || el.closest('#pkgTrack') || el.closest('.slider-container'))) {
+        return;
+      }
+    }
+
     const pos = e.changedTouches ? e.changedTouches[0] : e;
     const dx = (pos.clientX || pos.x) - this._startX;
     const dy = (pos.clientY || pos.y) - this._startY;
