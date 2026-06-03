@@ -103,7 +103,7 @@ window.init_page04 = function () {
       card.classList.add('revealed');
       audio.play('click');
       revealed++;
-      if (revealed >= 3 && $('#page04 .page-hint')) $('#page04 .page-hint').textContent = '✓ 原料已查 👈 滑动继续';
+      if (revealed >= 3 && $('#page04 .page-hint')) $('#page04 .page-hint').textContent = '👈 原料已查，左滑进入下一站';
     });
   });
   mountGestureHint(document.getElementById('page04'), 'tap', '点击卡片查看原料来源');
@@ -191,10 +191,10 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
       wasInZone = true;
       if (navigator.vibrate) navigator.vibrate(80);
       showToast('✓ 手感刚好！', 1500);
-      // 显示左滑提示
-      const swipeHintId = type === 'dough' ? 'doughSwipeHint' : 'bakeSwipeHint';
-      const swipeEl = document.getElementById(swipeHintId);
-      if (swipeEl) swipeEl.style.display = '';
+      // 提示切换：同一位置，文字从拖动→左滑
+      const hintId = type === 'dough' ? 'doughHint' : 'bakeHint';
+      const hintEl = document.getElementById(hintId);
+      if (hintEl) hintEl.textContent = '👈 左滑进入下一站';
       showToast('✓ 刚刚好！继续查岗', 1500);
     } else if (!inZone && wasInZone) {
       wasInZone = false;
@@ -263,6 +263,8 @@ window.init_page08 = function () {
     dots.forEach((d, i) => d.classList.toggle('active', i === current));
     if (!hintGone && current > 0) { hint.classList.add('hidden'); hintGone = true; }
     if (current === 2) {
+      hint.classList.remove('hidden');
+      hint.textContent = '👈 查包装完成，左滑进入下一站';
       setTimeout(() => { complete.classList.remove('hidden'); hint.classList.add('hidden'); }, 600);
     }
   }
