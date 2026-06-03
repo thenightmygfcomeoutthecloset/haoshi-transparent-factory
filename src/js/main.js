@@ -183,7 +183,8 @@ class App {
   // ========== 进度条 ==========
   _updateProgressBar() {
     const names = ['参观券','身份认证','工厂大门','原料查验','王牌产品','和面工艺','烘烤火候','切片包装','质检挑战','厂长认证','探秘视频','尝一口'];
-    const name = names[this.current] || '';
+    const idx = this.current + 1;
+    const name = `${idx}/${this.total}  ${names[this.current] || ''}`;
     const pct = Math.round(((this.current) / (this.total - 1)) * 100);
     updateProgress(this.current, name, pct);
   }
