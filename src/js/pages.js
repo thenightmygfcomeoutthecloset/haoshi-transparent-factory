@@ -12,7 +12,7 @@ const $$ = (sel) => document.querySelectorAll(sel);
 // P1 首屏 — 金色参观券入场 + 手势引导
 // ============================================================
 window.init_page01 = function () {
-  hideProgress();
+  updateProgress(0, '第1/12页 · 豪士透明工厂', 3);
   const btn = document.getElementById('btnEnter');
   if (!btn || btn.dataset.ready) return;
   btn.dataset.ready = '1';
@@ -44,7 +44,7 @@ window.init_page01 = function () {
 // P2 厂长身份 — Loading → 验证成功 → 戴上工牌
 // ============================================================
 window.init_page02 = function () {
-  hideProgress();
+  updateProgress(0, '第2/12页 · 身份验证', 5);
   const card = document.getElementById('badgeCard');
   const verifyBadge = document.getElementById('verifyBadge');
   const verifyTitle = document.getElementById('verifyTitle');

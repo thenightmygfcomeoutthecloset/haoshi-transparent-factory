@@ -8,9 +8,9 @@
   overflow: hidden;
 }
 
-/* 固定尺寸画布，JS 动态缩放 */
+/* 全屏画布 */
 .viewport {
-  position: relative;
+  position: absolute; inset: 0;
   overflow: hidden;
   background: var(--cream-white);
 }

@@ -183,20 +183,12 @@ class App {
   _resize() {
     const vp = document.querySelector('.viewport');
     if (!vp) return;
-    const scale = Math.min(
-      window.innerWidth / 640,
-      window.innerHeight / 1008,
-      1
-    );
-    const w = 640 * scale;
-    const h = 1008 * scale;
-    vp.style.width = '640px';
-    vp.style.height = '1008px';
+    vp.style.width = '100%';
+    vp.style.height = '100%';
     vp.style.position = 'absolute';
-    vp.style.left = `${(window.innerWidth - w) / 2}px`;
-    vp.style.top = `${(window.innerHeight - h) / 2}px`;
-    vp.style.transform = `scale(${scale})`;
-    vp.style.transformOrigin = 'top left';
+    vp.style.left = '0';
+    vp.style.top = '0';
+    vp.style.transform = 'none';
   }
 }
 
