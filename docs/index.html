@@ -94,6 +94,31 @@
       position: relative; z-index: 2;
     }
 
+    /* 查岗任务书清单 */
+    .checklist {
+      display: flex; flex-direction: column; gap: 10px;
+      width: 90%; max-width: 420px; position: relative; z-index: 2;
+    }
+    .checklist-item {
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(255,255,255,0.7); border-radius: 12px;
+      padding: 12px 16px; text-align: left;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .check-num {
+      font-size: 22px; font-weight: 900; color: var(--pantone-873c);
+      min-width: 36px; text-align: center; font-family: var(--font-title);
+    }
+    .check-info { flex: 1; }
+    .check-name {
+      font-size: 15px; font-weight: 700; color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .check-desc {
+      font-size: 12px; color: var(--brown); opacity: 0.55;
+      line-height: 1.5;
+    }
+
     .gate-hint {
       position: absolute; bottom: 24px; left: 50%;
       transform: translateX(-50%);
@@ -1129,7 +1154,7 @@
     .video-title-text { color: white; font-size: 13px; font-weight: 600; }
     .video-views      { color: rgba(255,255,255,0.75); font-size: 11px; }
   </style>
-  <script src="./assets/index-BckJMG9M.js"></script>
+  <script src="./assets/index-BFmrAvMi.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-Cqv-r1nm.css">
 </head>
 <body>
@@ -1180,23 +1205,51 @@
       </p>
     </div>
 
-    <!-- ===== P4 查岗任务书（原王牌产品页前移） ===== -->
-    <div class="page" id="page04" data-page="4" style="background:linear-gradient(180deg,#FFF8EA,#FFE8B8);">
-      <div class="transparency-badge" style="margin-bottom:8px;">查岗任务书</div>
-      <div class="page-title red" style="font-size:var(--text-lg);">今天，就查它</div>
-      <p class="task-brief-desc">它宣称有这6条<br>全都要过你这关</p>
-      <div class="usp-tags" id="uspTags">
-        <span class="usp-tag" data-usp="0">🍞 没有吐司边</span>
-        <span class="usp-tag" data-usp="1">💪 高蛋白质</span>
-        <span class="usp-tag" data-usp="2">🍬 0蔗糖</span>
-        <span class="usp-tag" data-usp="3">🎨 0色素</span>
-        <span class="usp-tag" data-usp="4">🚫 0反式脂肪酸</span>
-        <span class="usp-tag" data-usp="5">😋 松软有嚼劲</span>
+    <!-- ===== P4 查岗任务书 ===== -->
+    <div class="page" id="page04" data-page="4" style="background:linear-gradient(180deg,#F4F8FD,#FFF8EA);">
+      <div class="transparency-badge" style="margin-bottom:6px;">📋 查岗任务书</div>
+      <div class="page-title" style="font-size:var(--text-xl);">今天，查什么</div>
+      <p class="task-brief-desc" style="margin-bottom:12px;">以下五关，一站一站过</p>
+
+      <div class="checklist">
+        <div class="checklist-item">
+          <span class="check-num">01</span>
+          <div class="check-info">
+            <div class="check-name">查原料 · 第一站</div>
+            <div class="check-desc">玻利维亚红藜麦 · 新西兰安佳黄油 · 法国乐斯福酵母</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <span class="check-num">02</span>
+          <div class="check-info">
+            <div class="check-name">查工艺 · 第二站</div>
+            <div class="check-desc">36米压面机模拟手工 · 4年调试黄金筋度</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <span class="check-num">03</span>
+          <div class="check-info">
+            <div class="check-name">查火候 · 第三站</div>
+            <div class="check-desc">220°C精准控温 · 表皮微脆内心柔软</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <span class="check-num">04</span>
+          <div class="check-info">
+            <div class="check-name">查包装 · 第四站</div>
+            <div class="check-desc">没有吐司边 · 每片独立包装</div>
+          </div>
+        </div>
+        <div class="checklist-item">
+          <span class="check-num">05</span>
+          <div class="check-info">
+            <div class="check-name">查质检 · 第五站</div>
+            <div class="check-desc">6片吐司找瑕疵 · 厂长亲自把关</div>
+          </div>
+        </div>
       </div>
-      <div class="usp-explain" id="uspExplain"></div>
-      <img src="./assets/%E4%BA%A7%E5%93%81%E6%AD%A3%E9%9D%A2%E5%9B%BE-DpS1TerQ.png" alt="豪士藜麦吐司" loading="eager" style="width:260px;margin:8px auto;display:block;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.15));" />
-      <div class="page-hint">👆 点开看，记住这6条</div>
-      <div style="font-size: var(--font-sm); color: var(--brown); opacity: 0.6; margin-top: 4px; position: relative; z-index: 2;">都看清楚了？👈 左滑开始核实</div>
+
+      <div class="page-hint" style="bottom:24px;">都看清楚了？👈 左滑开始第一站</div>
     </div>
 
     <!-- ===== P5 第一站 · 查原料（原P4后移） ===== -->

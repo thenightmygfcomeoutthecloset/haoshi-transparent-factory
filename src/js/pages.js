@@ -110,43 +110,13 @@ window.init_page05 = function () {
 };
 
 // ============================================================
-// P5 卖点标签 — GSAP stagger
+// P4 查岗任务书 — 目录清单
 // ============================================================
 window.init_page04 = function () {
-  const tags = $$('#uspTags .usp-tag');
-  const explain = document.getElementById('uspExplain');
-  if (tags.length === 0 || tags[0].dataset.ready) return;
-
-  if (typeof gsap !== 'undefined') {
-    gsap.fromTo(tags, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.08, ease: 'back.out(1.5)' });
-  }
-
-  const explanations = {
-    0: '不用撕边，打开就能吃。每一片都是柔软的吐司芯。',
-    1: '玻利维亚红藜麦带来的优质植物蛋白，吃得饱也吃得好。',
-    2: '不额外添加蔗糖，享受面包本身的自然微甜。',
-    3: '不添加人工色素，面包该有的颜色就是好颜色。',
-    4: '0反式脂肪酸，对身体的承诺跟面包一样实在。',
-    5: '经过近4年反复调试，才找到刚好松软又有嚼劲的口感。',
-  };
-
-  let clickedCount = 0;
-  const hint = $('#page04 .page-hint');
-  tags.forEach((tag) => {
-    tag.dataset.ready = '1';
-    tag.addEventListener('click', () => {
-      tags.forEach(t => t.classList.remove('active'));
-      tag.classList.add('active');
-      if (typeof gsap !== 'undefined') {
-        gsap.fromTo(tag, { scale: 1 }, { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.out' });
-      }
-      if (explain) explain.textContent = explanations[parseInt(tag.dataset.usp)] || '';
-      clickedCount++;
-      if (clickedCount >= 6 && hint) hint.textContent = '👈 全部记住，左滑开始核实';
-      audio.play('click');
-    });
-  });
-  mountGestureHint(document.getElementById('page04'), 'tap', '点开看，记住这6条');
+  const page = document.getElementById('page04');
+  if (!page || page.dataset.ready) return;
+  page.dataset.ready = '1';
+  mountGestureHint(page, 'swipe-right', '左滑开始第一站');
 };
 
 // ============================================================
