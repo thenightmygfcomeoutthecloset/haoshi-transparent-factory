@@ -234,9 +234,26 @@ window.init_page07 = function () {
   initSliderPage({
     sliderId: 'bakeSlider', feedbackId: 'bakeFeedback', hintId: null,
     getMsg: (val) => {
-      if (val < 35) return { text: '温度太低，颜色苍白，内心未熟', color: '#B07820', bgEl: 'bakeToast', bgColor: '#F8EDD0' };
-      if (val > 65) return { text: '太高了，焦了——这批要重做！', color: '#C03030', bgEl: 'bakeToast', bgColor: '#5C3010' };
-      return { text: '✓ 220°C，表皮微脆内心柔软，这就是豪士的温度', color: '#5C8A3C', bgEl: 'bakeToast', bgColor: '#C89030' };
+      // 渐变色：从浅奶油 → 金黄 → 焦深棕，连续过渡
+      const t = val / 100;
+      let r, g, b;
+      if (t < 0.5) {
+        // 低温→金黄：F8EDD0 → C89030
+        const s = t / 0.5;
+        r = Math.round(0xF8 + (0xC8 - 0xF8) * s);
+        g = Math.round(0xED + (0x90 - 0xED) * s);
+        b = Math.round(0xD0 + (0x30 - 0xD0) * s);
+      } else {
+        // 金黄→焦深棕：C89030 → 5C3010
+        const s = (t - 0.5) / 0.5;
+        r = Math.round(0xC8 + (0x5C - 0xC8) * s);
+        g = Math.round(0x90 + (0x30 - 0x90) * s);
+        b = Math.round(0x30 + (0x10 - 0x30) * s);
+      }
+      const bgColor = `rgb(${r},${g},${b})`;
+      if (val < 35) return { text: '温度太低，颜色苍白，内心未熟', color: '#B07820', bgEl: 'bakeToast', bgColor };
+      if (val > 65) return { text: '太高了，焦了——这批要重做！', color: '#C03030', bgEl: 'bakeToast', bgColor };
+      return { text: '✓ 220°C，表皮微脆内心柔软，这就是豪士的温度', color: '#5C8A3C', bgEl: 'bakeToast', bgColor };
     },
   });
   mountGestureHint(document.getElementById('page07'), 'drag', '拖动滑块调到最佳火候');
