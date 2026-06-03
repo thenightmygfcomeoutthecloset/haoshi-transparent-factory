@@ -63,7 +63,7 @@ class App {
     this._slideNext = false; // 标记下一次 goTo 用左滑过渡
 
     // 手势 — P1/P2 禁止滑动翻页，必须点按钮
-    this.gesture = new Gesture(document.querySelector('.app'), { threshold: 50 });
+    this.gesture = new Gesture(document.querySelector('.app'), { threshold: 80 });
     this.gesture.onSwipeLeft(() => {
       if (this.current <= 1) return; // P1/P2 禁止滑动（需点按钮）
       this.next();
