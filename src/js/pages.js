@@ -172,16 +172,11 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
     if (inZone && !wasInZone) {
       wasInZone = true;
       if (navigator.vibrate) navigator.vibrate(80);
-      showToast('✓ 手感刚好！', 1500);
-      // 提示切换：同一位置，文字从拖动→左滑
+      showToast('✓ 刚刚好！', 1500);
+      // 提示切换：文字从拖动→左滑
       const hintId = type === 'dough' ? 'doughHint' : 'bakeHint';
       const hintEl = document.getElementById(hintId);
-      if (hintEl) hintEl.textContent = '👈 左滑进入下一站';
-      // 显示完成指示
-      const doneId = type === 'dough' ? 'doughDone' : 'bakeDone';
-      const doneEl = document.getElementById(doneId);
-      if (doneEl) doneEl.classList.remove('hidden');
-      showToast('✓ 刚刚好！继续查岗', 1500);
+      if (hintEl) hintEl.textContent = type === 'dough' ? '✓ 查工艺已完成，👈 左滑进入下一站' : '✓ 查火候已完成，👈 左滑进入下一站';
     } else if (!inZone && wasInZone) {
       wasInZone = false;
       clearTimeout(sweetTimer);
