@@ -418,27 +418,27 @@
     }
     /* 地图标记点 */
     .map-pin {
-      position: absolute; width: 12px; height: 12px;
+      position: absolute; width: 8px; height: 8px;
       background: var(--bread-yellow); border-radius: 50%;
       cursor: pointer; z-index: 5;
       animation: gentlePulse 2s ease-in-out infinite;
-      box-shadow: 0 0 10px rgba(184,137,46,0.5);
+      box-shadow: 0 0 6px rgba(184,137,46,0.5);
       transform: translate(-50%, -50%);
     }
     .map-pin::after {
       content: ''; position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 5px; height: 5px; border-radius: 50%;
+      width: 3px; height: 3px; border-radius: 50%;
       background: #fff; opacity: 0.8;
     }
     .map-pin.zhangzhou {
       background: var(--haoshi-red);
-      width: 18px; height: 18px;
-      box-shadow: 0 0 14px rgba(201,33,43,0.7);
+      width: 12px; height: 12px;
+      box-shadow: 0 0 8px rgba(201,33,43,0.7);
     }
     .map-pin.highlight {
-      width: 18px; height: 18px;
-      box-shadow: 0 0 14px rgba(184,137,46,0.7);
+      width: 12px; height: 12px;
+      box-shadow: 0 0 8px rgba(184,137,46,0.7);
       background: var(--pantone-873c);
     }
     .map-pin-label {
@@ -1284,9 +1284,9 @@
         <div class="map-pin zhangzhou" style="left:190px;top:44px;" data-pin="zhangzhou">
           <span class="map-pin-label">漳州</span>
         </div>
-        <div class="map-trail" data-trail="0" style="left:141px;top:30px;width:52px;transform:rotate(14deg);"></div>
-        <div class="map-trail" data-trail="1" style="left:78px;top:72px;width:116px;transform:rotate(-13deg);"></div>
-        <div class="map-trail" data-trail="2" style="left:246px;top:90px;width:60px;transform:rotate(-140deg);"></div>
+        <div class="map-trail" data-trail="0" style="left:139px;top:34px;width:52px;transform:rotate(11deg);"></div>
+        <div class="map-trail" data-trail="1" style="left:78px;top:78px;width:117px;transform:rotate(-17deg);"></div>
+        <div class="map-trail" data-trail="2" style="left:256px;top:94px;width:83px;transform:rotate(-143deg);"></div>
       </div>
 
       <!-- 原料卡片 -->
