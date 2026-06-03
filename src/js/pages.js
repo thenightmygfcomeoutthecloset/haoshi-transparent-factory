@@ -345,7 +345,9 @@ window.init_page09 = function () {
         if (mistakes === 0 && timeUsed <= 5) { grade = 'S'; gradeText = '👑 天生厂长！眼睛也太尖了'; gradeTitle = '天生厂长'; }
         else if (mistakes <= 1 && timeUsed <= 8) { grade = 'A'; gradeText = '✅ 合格，每一片都查到位了'; gradeTitle = '合格厂长'; }
         else { grade = 'B'; gradeText = '🍞 实习厂长，下次手速再快点'; gradeTitle = '实习厂长'; }
-        if (result) { result.innerHTML = gradeText + '<br><span style="font-size:var(--font-sm);opacity:0.6;">✓ 查质检已完成，👈 左滑进入下一站</span>'; gsapPop(result); }
+        if (result) { result.innerHTML = gradeText; gsapPop(result); }
+        const quizHint = document.getElementById('quizHint');
+        if (quizHint) quizHint.textContent = '✓ 查质检已完成，👈 左滑进入下一站';
         if (retryBtn) retryBtn.style.display = 'none';
         window._quizScore = { found, timeUsed, mistakes, grade, gradeTitle };
         audio.play('click');
