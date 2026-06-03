@@ -183,12 +183,7 @@ class App {
   // ========== 进度条 ==========
   _updateProgressBar() {
     const idx = this.current + 1;
-    let name;
-    if (this.current === 0) {
-      name = `第${idx}页/共${this.total}页`;
-    } else {
-      name = `${idx}/${this.total}`;
-    }
+    const name = `第${idx}页/共${this.total}页`;
     const pct = Math.round(((this.current) / (this.total - 1)) * 100);
     updateProgress(this.current, name, pct);
   }
