@@ -191,6 +191,10 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
       wasInZone = true;
       if (navigator.vibrate) navigator.vibrate(80);
       showToast('✓ 手感刚好！', 1500);
+      // 显示左滑提示
+      const swipeHintId = type === 'dough' ? 'doughSwipeHint' : 'bakeSwipeHint';
+      const swipeEl = document.getElementById(swipeHintId);
+      if (swipeEl) swipeEl.style.display = '';
       sweetTimer = setTimeout(() => {
         slider.disabled = true;
         showToast('✓ 刚刚好！继续查岗', 1200);
