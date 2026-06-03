@@ -87,22 +87,23 @@ window.init_page05 = function () {
   if (cards.length === 0 || cards[0].dataset.ready) return;
 
   if (typeof gsap !== 'undefined') {
-    // 动画顺序：漳州(0s) → 玻利维亚(0.5s) → 法国+新西兰(1.0s)
+    // 动画：三国原料先后出现 → 三条线同时汇聚 → 漳州登场
     const animPin = (sel, delay) => {
       gsap.fromTo(sel, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, delay, ease: 'back.out(1.7)' });
       gsap.to(sel + ' .map-pin-label', { opacity: 1, duration: 0.3, delay: delay + 0.3, ease: 'power2.out' });
     };
-    animPin('[data-pin="zhangzhou"]', 0.3);
+    // Phase 1: 三国依次登场
+    animPin('[data-pin="france"]',    0.3);
     animPin('[data-pin="bolivia"]',   0.8);
-    animPin('[data-pin="france"]',    1.3);
-    animPin('[data-pin="nz"]',        1.3);
-    // 轨迹线跟随标记
-    const trail1 = document.querySelector('.map-trail[data-trail="1"]');
-    const trail0 = document.querySelector('.map-trail[data-trail="0"]');
-    const trail2 = document.querySelector('.map-trail[data-trail="2"]');
-    gsap.fromTo(trail1, { width: 0, opacity: 0 }, { width: trail1?.style?.width || 121, opacity: 0.7, duration: 0.6, delay: 1.1, ease: 'power2.out' });
-    gsap.fromTo(trail0, { width: 0, opacity: 0 }, { width: trail0?.style?.width || 58, opacity: 0.7, duration: 0.6, delay: 1.6, ease: 'power2.out' });
-    gsap.fromTo(trail2, { width: 0, opacity: 0 }, { width: trail2?.style?.width || 77, opacity: 0.7, duration: 0.6, delay: 1.6, ease: 'power2.out' });
+    animPin('[data-pin="canada"]',    1.3);
+    // Phase 2: 三条线同时画出，汇聚到漳州
+    const trails = document.querySelectorAll('.map-trail');
+    trails.forEach((t, i) => {
+      const w = parseFloat(t.style.width) || 140;
+      gsap.fromTo(t, { width: 0, opacity: 0 }, { width: w, opacity: 0.7, duration: 0.7, delay: 1.6, ease: 'power2.out' });
+    });
+    // Phase 3: 漳州在汇聚点登场
+    animPin('[data-pin="zhangzhou"]', 2.1);
   } else {
     $$('#worldMap .map-pin').forEach((p, i) => { setTimeout(() => p.classList.add('show-label'), i * 350 + 500); });
   }
