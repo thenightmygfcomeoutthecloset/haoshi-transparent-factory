@@ -87,11 +87,19 @@ window.init_page05 = function () {
   if (cards.length === 0 || cards[0].dataset.ready) return;
 
   if (typeof gsap !== 'undefined') {
-    gsap.fromTo('#worldMap .map-trail', { width: 0, opacity: 0 }, { width: '+=0', opacity: 0.7, duration: 0.8, stagger: 0.3, ease: 'power2.out' });
-    gsap.fromTo('#worldMap .map-pin', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, stagger: 0.35, delay: 0.6, ease: 'back.out(1.7)' });
-    gsap.to('#worldMap .map-pin-label', { opacity: 1, duration: 0.3, stagger: 0.35, delay: 1, ease: 'power2.out' });
+    // 动画顺序：漳州(0s) → 玻利维亚(0.5s) → 法国+新西兰(1.0s)
+    const animPin = (sel, delay) => {
+      gsap.fromTo(sel, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, delay, ease: 'back.out(1.7)' });
+      gsap.to(sel + ' .map-pin-label', { opacity: 1, duration: 0.3, delay: delay + 0.3, ease: 'power2.out' });
+    };
+    animPin('[data-pin="zhangzhou"]', 0.3);
+    animPin('[data-pin="bolivia"]',   0.8);
+    animPin('[data-pin="france"]',    1.3);
+    animPin('[data-pin="nz"]',        1.3);
+    // 轨迹线跟随标记
+    gsap.fromTo('.map-trail[data-trail="1"]', { width: 0, opacity: 0 }, { width: 121, opacity: 0.7, duration: 0.6, delay: 1.1, ease: 'power2.out' });
+    gsap.fromTo('.map-trail[data-trail="0"], .map-trail[data-trail="2"]', { width: 0, opacity: 0 }, { opacity: 0.7, duration: 0.6, delay: 1.6, ease: 'power2.out', stagger: 0.1 });
   } else {
-    $$('#worldMap .map-trail').forEach((t, i) => { setTimeout(() => t.classList.add('animate'), i * 250); });
     $$('#worldMap .map-pin').forEach((p, i) => { setTimeout(() => p.classList.add('show-label'), i * 350 + 500); });
   }
 
