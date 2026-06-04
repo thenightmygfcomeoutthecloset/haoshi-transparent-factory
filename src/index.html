@@ -344,9 +344,10 @@
     }
     .p1-hook-text em { font-style: normal; color: var(--brand-gold); }
     .p1-hook-sub {
-      font-size: 13px; color: rgba(255,255,255,0.5);
-      margin-top: 6px; letter-spacing: 0.06em; z-index: 2; position: relative;
+      font-size: 14px; color: rgba(255,255,255,0.65);
+      letter-spacing: 0.04em; z-index: 2; position: relative;
       font-family: var(--font-wenkai);
+      text-align: center; line-height: 1.7;
     }
 
     /* ===== P2 厂长任命 — 委任状风格 V3 ===== */
@@ -687,7 +688,7 @@
     #page01 .ticket-title { font-size: 38px; }
     #page01 .ticket-logo { font-size: 22px; }
     #page01 .p1-hook-text { font-size: 28px; margin-top: 22px; }
-    #page01 .p1-hook-sub { font-size: 15px; margin-top: 8px; }
+    #page01 .p1-hook-sub { font-size: 16px; }
     #page01 .slogan-pill { font-size: var(--text-sm); padding: 8px 20px; }
     #page01 .btn-gold { font-size: var(--text-md); padding: 16px 48px; }
 
@@ -1104,6 +1105,7 @@
       <!-- 金色光芒背景 -->
       <div class="p1-golden-glow"></div>
       <!-- 复古绅士参观券 -->
+      <div class="p1-hook-sub" style="margin-bottom:12px;">恭喜你，抽中了豪士的透明工厂参观券<br>获得了一日厂长资格</div>
       <div class="golden-ticket" id="goldenTicket">
         <div class="ticket-edge ticket-edge-top"></div>
         <div class="ticket-body">
@@ -1120,7 +1122,6 @@
         <div class="ticket-edge ticket-edge-bottom"></div>
       </div>
       <div class="p1-hook-text">这届年轻人<br>连面包都要<em>亲自查岗</em></div>
-      <div class="p1-hook-sub">CONGRATULATIONS · 豪士透明工厂参观资格</div>
       <button class="btn-gold" id="btnEnter" style="margin-top:14px;">撕下参观券，进入工厂</button>
     </div>
 
