@@ -3,7 +3,7 @@
 class Gesture {
   constructor(element, options = {}) {
     this.el = element;
-    this.threshold = options.threshold || 50; // swipe 最小距离
+    this.threshold = options.threshold || 50;
     this.handlers = {
       swipeLeft: [],
       swipeRight: [],
@@ -14,6 +14,7 @@ class Gesture {
 
     this._startX = 0;
     this._startY = 0;
+    this._startTarget = null;
     this._moved = false;
     this._active = false;
 
@@ -47,6 +48,7 @@ class Gesture {
     const pos = this._getPos(e);
     this._startX = pos.x;
     this._startY = pos.y;
+    this._startTarget = e.target;
     this._moved = false;
     this._active = true;
   }
@@ -65,8 +67,8 @@ class Gesture {
     if (!this._active) return;
     this._active = false;
 
-    // 不拦截滑块控件
-    const target = e.target || (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].target);
+    // 滑块控件不拦截
+    const target = this._startTarget;
     if (target) {
       const el = target.closest ? target : target.parentElement;
       if (el && el.closest && el.closest('input[type=range]')) {
@@ -85,11 +87,13 @@ class Gesture {
       return;
     }
 
-    // P8 包装页：根据轮播Step限制翻页方向
+    // P7 包装页：根据轮播 step 限制翻页
     if (target && target.closest && target.closest('#page08 .glass-card')) {
       const step = typeof window._pkgStep === 'function' ? window._pkgStep() : 2;
-      if (dx < 0 && step < 2) return;  // 左滑，还没到Step3，不翻页
-      if (dx > 0 && step > 0) return;  // 右滑，不在Step1，不翻页
+      // 左滑：step1/2 → 只切轮播不翻页；step3 → 翻下一页
+      if (dx < 0 && step < 2) return;
+      // 右滑：step1 → 翻上一页；step2/3 → 只切轮播不翻页
+      if (dx > 0 && step > 0) return;
     }
 
     if (absDx > absDy && absDx >= this.threshold) {
