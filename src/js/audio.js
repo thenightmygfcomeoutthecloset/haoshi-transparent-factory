@@ -17,8 +17,11 @@ class AudioManager {
   set muted(val) {
     this._muted = val;
     try { localStorage.setItem('haoshi_muted', String(val)); } catch (e) {}
-    if (val) this.stopAll();
-    else if (this.currentBGM) this.loop(this.currentBGM);
+    if (val) { this.stopAll(); }
+    else {
+      if (!this._bgmStarted) this.tryStartBGM();
+      else if (this.currentBGM) this.loop(this.currentBGM);
+    }
   }
 
   toggleMute() {
@@ -83,7 +86,7 @@ class AudioManager {
 const audio = new AudioManager();
 
 // 注册全部音效
-audio.register('bgm',   './assets/audio/bgm-factory.mp3');
+audio.register('bgm',   './assets/audio/bgm.mp3');
 audio.register('click', './assets/audio/click.mp3');
 audio.register('tear',  './assets/audio/tear.mp3');
 audio.register('stamp', './assets/audio/stamp.mp3');
