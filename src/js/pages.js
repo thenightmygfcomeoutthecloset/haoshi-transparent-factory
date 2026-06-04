@@ -276,17 +276,17 @@ window.init_page08 = function () {
     }
   }
 
-  // 整个框内：左右滑切轮播Step
-  if (card) {
-    card.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-    card.addEventListener('touchend', e => {
+  // 整页滑动都切轮播Step（包括框外背景区域）
+  if (page) {
+    page.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    page.addEventListener('touchend', e => {
       const diff = startX - e.changedTouches[0].clientX;
       if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
     });
 
     let md = false;
-    card.addEventListener('mousedown', e => { md = true; startX = e.clientX; });
-    card.addEventListener('mouseup', e => {
+    page.addEventListener('mousedown', e => { md = true; startX = e.clientX; });
+    page.addEventListener('mouseup', e => {
       if (!md) return; md = false;
       const diff = startX - e.clientX;
       if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);

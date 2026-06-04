@@ -88,7 +88,7 @@ class Gesture {
     }
 
     // P7 包装页：根据轮播 step 限制翻页
-    if (target && target.closest && target.closest('#page08 .glass-card')) {
+    if (target && target.closest && target.closest('#page08')) {
       const step = typeof window._pkgStep === 'function' ? window._pkgStep() : 2;
       // 左滑：step1/2 → 只切轮播不翻页；step3 → 翻下一页
       if (dx < 0 && step < 2) return;
