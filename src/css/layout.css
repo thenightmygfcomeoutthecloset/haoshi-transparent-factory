@@ -19,22 +19,24 @@
   position: fixed;
   top: 16px; right: 16px;
   z-index: 99999;
-  width: 52px; height: 52px;
+  width: 36px; height: 36px;
   border-radius: 50%;
-  background: rgba(27,58,140,0.92);
-  color: #FFD700;
-  font-size: 24px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 2px solid #C5A028;
+  font-size: 16px;
+  color: rgba(255,255,255,0.85);
   transition: all var(--dur-normal);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.4);
   -webkit-tap-highlight-color: transparent;
 }
-.mute-btn:hover { background: var(--brand-navy); border-color: var(--gold-bright); }
-.mute-btn.muted { background: rgba(0,0,0,0.55); border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.7); }
+.mute-btn:hover { background: rgba(255,255,255,0.28); }
+.mute-btn.muted { opacity: 0.5; }
 
 /* ═══ 统一按钮系统 ═══ */
 .btn-primary {
