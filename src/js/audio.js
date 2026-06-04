@@ -26,10 +26,10 @@ class AudioManager {
     return this._muted;
   }
 
-  /** 注册音效: audio.register('click', '/assets/audio/click.mp3') */
-  register(name, src) {
+  /** 注册音效: audio.register('click', '/assets/audio/click.mp3')。preloadBgm=false 用于大文件 */
+  register(name, src, preloadBgm = false) {
     const audio = new Audio(src);
-    audio.preload = 'auto';
+    audio.preload = preloadBgm ? 'none' : 'auto';
     this.sounds[name] = audio;
   }
 
@@ -87,7 +87,7 @@ class AudioManager {
 const audio = new AudioManager();
 
 // 注册全部音效（public/ 目录下的文件构建时直接复制到输出目录）
-audio.register('bgm',   './assets/audio/bgm.mp3');
+audio.register('bgm',   './assets/audio/bgm.mp3', true); // 3.5MB大文件，不预加载
 audio.register('click', './assets/audio/click.mp3');
 audio.register('tear',  './assets/audio/tear.mp3');
 audio.register('stamp', './assets/audio/stamp.mp3');
