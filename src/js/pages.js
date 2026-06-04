@@ -276,19 +276,19 @@ window.init_page08 = function () {
     }
   }
 
-  track.addEventListener('touchstart', e => { e.stopPropagation(); startX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchmove', e => { e.stopPropagation(); }, { passive: true });
+  track.addEventListener('touchstart', e => { if (current < 2) e.stopPropagation(); startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchmove', e => { if (current < 2) e.stopPropagation(); }, { passive: true });
   track.addEventListener('touchend', e => {
-    e.stopPropagation();
+    if (current < 2) e.stopPropagation();
     const diff = startX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
   });
 
   let md = false;
-  track.addEventListener('mousedown', e => { e.stopPropagation(); md = true; startX = e.clientX; });
-  track.addEventListener('mousemove', e => { e.stopPropagation(); });
+  track.addEventListener('mousedown', e => { if (current < 2) e.stopPropagation(); md = true; startX = e.clientX; });
+  track.addEventListener('mousemove', e => { if (current < 2) e.stopPropagation(); });
   track.addEventListener('mouseup', e => {
-    e.stopPropagation();
+    if (current < 2) e.stopPropagation();
     if (!md) return; md = false;
     const diff = startX - e.clientX;
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
@@ -325,13 +325,14 @@ window.init_page09 = function () {
     svg.setAttribute('height', '80');
     svg.classList.add('quiz-timer-svg');
     const r = 34, cx = 40, cy = 40, circ = 2 * Math.PI * r;
-    svg.innerHTML = `<circle class="quiz-timer-bg" cx="${cx}" cy="${cy}" r="${r}"/><circle class="quiz-timer-fg" id="quizCircle" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="0" transform="rotate(-90 ${cx} ${cy})"/><text id="quizText" x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" dy="2" fill="#1B3A8C" font-family="'Playfair Display',Georgia,serif" font-size="34" font-weight="700">10</text>`;
+    svg.innerHTML = `<circle class="quiz-timer-bg" cx="${cx}" cy="${cy}" r="${r}"/><circle class="quiz-timer-fg" id="quizCircle" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="0" transform="rotate(-90 ${cx} ${cy})"/><text id="quizText" x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" fill="#1B3A8C" font-family="'Playfair Display',Georgia,serif" font-size="34" font-weight="700">10</text>`;
     timerEl.appendChild(svg);
     svgCircle = svg.getElementById('quizCircle');
     svgText = svg.getElementById('quizText');
   }
 
   const startQuiz = () => {
+    if (quiz) quiz.reset();
     breads.forEach(b => { b.classList.remove('found', 'wrong'); b.style.pointerEvents = 'auto'; });
     if (result) { result.textContent = ''; result.style.color = ''; }
     if (retryBtn) retryBtn.style.display = 'none';
