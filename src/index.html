@@ -99,20 +99,14 @@
       position: relative; z-index: 2;
     }
 
-    /* 查岗任务书清单 — clipboard风格 */
+    /* 查岗任务书清单 */
     .checklist {
       display: flex; flex-direction: column; gap: 0;
       width: 90%; max-width: 420px; position: relative; z-index: 2;
-      background: var(--paper-warm); border-radius: 0 0 var(--radius-md) var(--radius-md);
-      border-top: 6px solid var(--brand-navy);
+      background: var(--paper-warm);
+      border-radius: var(--radius-md);
       box-shadow: 0 4px 16px rgba(27,58,140,0.1);
-      padding: 2px 0 6px;
-    }
-    .checklist::before {
-      content: ''; position: absolute; top: -22px; left: 50%;
-      transform: translateX(-50%);
-      width: 44px; height: 14px; background: var(--brand-gold);
-      border-radius: 2px 2px 0 0;
+      padding: 4px 0 8px;
     }
     .checklist-item {
       display: flex; align-items: center; gap: 10px;
@@ -1138,7 +1132,7 @@
       <div class="page-title" id="verifyTitle" style="display:none;">兹任命</div>
       <div class="appointment-card" id="badgeCard" style="display:none;">
         <div class="appointment-seal">
-          <img src="./assets/images/1豪士logo.png" alt="豪士" style="width:140px;height:60px;object-fit:contain;mix-blend-mode:multiply;" />
+          <img src="./assets/images/1豪士logo.png" alt="豪士" style="width:auto;height:80px;object-fit:contain;" />
         </div>
         <div class="appointment-role">一日透明厂长</div>
         <div style="font-size:14px;color:var(--ink-secondary);z-index:1;position:relative;margin-top:4px;">HORSH FACTORY INSPECTOR</div>
