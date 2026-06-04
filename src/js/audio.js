@@ -19,8 +19,8 @@ class AudioManager {
     try { localStorage.setItem('haoshi_muted', String(val)); } catch (e) {}
     if (val) { this.stopAll(); }
     else {
-      if (!this._bgmStarted) this.tryStartBGM();
-      else if (this.currentBGM) this.loop(this.currentBGM);
+      this._bgmStarted = true;
+      this.loop('bgm');
     }
   }
 
@@ -82,7 +82,7 @@ class AudioManager {
       s.pause();
       s.currentTime = 0;
     });
-    this.currentBGM = null;
+    // 不清除 currentBGM，以便取消静音后恢复
   }
 }
 
