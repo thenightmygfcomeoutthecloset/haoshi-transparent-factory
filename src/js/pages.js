@@ -189,9 +189,6 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
       const hintId = type === 'dough' ? 'doughHint' : 'bakeHint';
       const hintEl = document.getElementById(hintId);
       if (hintEl) hintEl.textContent = type === 'dough' ? '✓ 查工艺已完成，👈 左滑进入下一站' : '✓ 查火候已完成，👈 左滑进入下一站';
-      const doneId = type === 'dough' ? 'doughDone' : 'bakeDone';
-      const doneEl = document.getElementById(doneId);
-      if (doneEl) doneEl.style.display = 'flex';
     } else if (!inZone && wasInZone) {
       wasInZone = false;
       clearTimeout(sweetTimer);
@@ -261,24 +258,21 @@ window.init_page07 = function () {
 window.init_page08 = function () {
   const track = document.getElementById('pkgTrack');
   const dots = document.querySelectorAll('#pkgDots .pkg-dot');
-  const complete = document.getElementById('pkgComplete');
   const hint = document.getElementById('pkgHint');
   const nextBtn = document.getElementById('pkgNextBtn');
   if (!track || track.dataset.ready) return;
   track.dataset.ready = '1';
 
-  let current = 0, startX = 0, hintGone = false;
+  let current = 0, startX = 0;
 
   function goTo(idx) {
     if (idx < 0 || idx > 2) return;
     current = idx;
     track.style.transform = `translateX(${-current * (100 / 3)}%)`;
     dots.forEach((d, i) => d.classList.toggle('active', i === current));
-    if (!hintGone && current > 0) { hint.classList.add('hidden'); hintGone = true; }
     if (current === 2) {
       setTimeout(() => {
-        if (complete) complete.style.display = 'flex';
-        hint.classList.add('hidden');
+        if (hint) { hint.textContent = '✓ 查包装已完成，👈 左滑进入下一站'; hint.classList.remove('hidden'); }
       }, 800);
     }
   }
