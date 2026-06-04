@@ -1,4 +1,6 @@
-/* === CSS Reset === */
+/* === CSS Reset + 全局 Typography V3 === */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap');
+
 *,
 *::before,
 *::after {
@@ -15,7 +17,10 @@ html, body {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   user-select: none;
-  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-family: var(--font-body);
+  background-color: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
 }
 
 img {
@@ -39,4 +44,17 @@ button {
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
+}
+
+/* ── 全局标题样式 ── */
+h1, h2, h3, .page-title, .station-title {
+  font-family: var(--font-chinese-serif);
+  letter-spacing: 0.06em;
+}
+
+/* ── 英文装饰/数字 ── */
+.ticket-number, .cert-id, .station-badge span:first-child,
+.task-number, .cert-subtitle, .cert-stamp, .origin-tag {
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
 }

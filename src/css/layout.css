@@ -1,46 +1,187 @@
-/* === 640×1008 固定布局 + 翻页容器 V3 === */
+/* === 640×1008 固定布局 + 全局UI组件 V3 === */
 
-/* 全屏居中容器 */
+/* ═══ 全屏居中容器 ═══ */
 .app {
   position: fixed;
   inset: 0;
-  background: #1a1a1a;
+  background: var(--navy-dark);
   overflow: hidden;
 }
 
-/* 固定640x1008画布，JS动态缩放填满屏幕 */
 .viewport {
   position: relative;
   overflow: hidden;
-  background: var(--cream-white);
+  background: var(--paper);
 }
 
-/* 全局静音按钮 */
+/* ═══ 静音按钮 ═══ */
 .mute-btn {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 14px; right: 14px;
   z-index: 100;
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   border-radius: 50%;
-  background: rgba(0,59,122,0.15);
-  color: var(--haoshi-blue);
+  background: rgba(27,58,140,0.08);
+  color: var(--brand-navy);
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 2px solid rgba(0,59,122,0.2);
+  border: 1.5px solid rgba(27,58,140,0.2);
   transition: all var(--dur-normal);
 }
+.mute-btn:hover { background: rgba(27,58,140,0.18); border-color: var(--brand-navy); }
+.mute-btn.muted { opacity: 0.35; }
 
-.mute-btn:hover {
-  background: rgba(0,59,122,0.35);
-  border-color: rgba(0,59,122,0.35);
+/* ═══ 统一按钮系统 ═══ */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 32px;
+  background: var(--brand-navy);
+  color: var(--brand-gold);
+  border: 1.5px solid var(--brand-gold);
+  font-family: var(--font-chinese-serif);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-sm);
+  min-height: var(--touch-min);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.btn-primary:hover { background: var(--brand-gold); color: var(--navy-dark); }
+.btn-primary:active { transform: scale(0.96); }
+
+.btn-gold {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 32px;
+  background: var(--brand-gold);
+  color: var(--navy-dark);
+  border: 1.5px solid var(--gold-dark);
+  font-family: var(--font-chinese-serif);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-sm);
+  min-height: var(--touch-min);
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 2px 0 var(--gold-dark);
+}
+.btn-gold:hover { background: var(--gold-bright); transform: translateY(-2px); box-shadow: 0 4px 0 var(--gold-dark); }
+.btn-gold:active { transform: scale(0.96); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 12px 28px;
+  background: transparent;
+  color: var(--brand-navy);
+  border: 2px solid var(--brand-navy);
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  min-height: var(--touch-min);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.btn-outline:hover { background: var(--brand-navy); color: var(--paper); }
+.btn-outline:active { transform: scale(0.96); }
+
+.btn-red {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 32px;
+  background: var(--brand-red);
+  color: #fff;
+  border: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  min-height: var(--touch-min);
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 4px 16px rgba(201,33,43,0.2);
+}
+.btn-red:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,33,43,0.3); }
+.btn-red:active { transform: scale(0.96); }
+
+/* ═══ 金色分隔线 ═══ */
+.gold-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 24px auto; width: 80%;
+}
+.gold-divider::before, .gold-divider::after {
+  content: ''; flex: 1; height: 1px;
+}
+.gold-divider::before { background: linear-gradient(to right, transparent, var(--brand-gold)); }
+.gold-divider::after  { background: linear-gradient(to left, transparent, var(--brand-gold)); }
+.gold-divider .divider-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--brand-gold); flex-shrink: 0;
 }
 
-.mute-btn.muted {
-  opacity: 0.4;
+/* ═══ 进度条 ═══ */
+.progress-bar {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+  background: rgba(250,248,242,0.97); backdrop-filter: blur(6px);
+  padding: 8px var(--section-pad) 6px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.progress-bar.hidden { opacity: 0; pointer-events: none; transform: translateY(-100%); }
+#progress-label {
+  font-family: var(--font-mono);
+  font-size: 10px; color: var(--ink-secondary);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.progress-bar-track {
+  width: 80%; max-width: 320px; height: 3px;
+  background: var(--navy-light); border-radius: 2px; overflow: hidden;
+}
+#progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(to right, var(--brand-navy), var(--brand-gold));
+  border-radius: 2px;
+  transition: width 0.5s var(--ease-smooth);
 }
 
+/* ═══ Toast ═══ */
+.global-toast {
+  position: fixed; bottom: 80px; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--brand-navy); color: var(--paper);
+  padding: 10px 22px; border-radius: var(--radius-sm);
+  font-family: var(--font-body); font-size: 14px; opacity: 0;
+  border: 1px solid var(--brand-gold);
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none; z-index: 9999;
+}
+.global-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ═══ 关卡Header通用 ═══ */
+.station-header-bar {
+  background: var(--brand-navy);
+  color: var(--paper);
+  padding: 20px 16px 16px;
+  position: relative;
+  text-align: center;
+}
+.station-header-bar::after {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 60px; height: 60px;
+  background: rgba(197,160,40,0.12);
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+.station-badge {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  background: var(--brand-gold); padding: 3px 12px;
+  border-radius: var(--radius-sm); margin-bottom: 8px;
+}
+.station-badge .station-num {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--navy-dark); letter-spacing: 0.1em;
+}
+.station-badge .station-en {
+  font-family: var(--font-english-display); font-size: 18px;
+  font-weight: 700; color: var(--navy-dark);
+}

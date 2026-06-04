@@ -12,6 +12,9 @@ export function showToast(message, duration = 2000) {
   const toast = document.createElement('div');
   toast.className = 'global-toast';
   toast.textContent = message;
+  toast.style.background = 'var(--brand-navy)';
+  toast.style.color = 'var(--paper)';
+  toast.style.border = '1px solid var(--brand-gold)';
   document.body.appendChild(toast);
   requestAnimationFrame(() => toast.classList.add('visible'));
   setTimeout(() => {
@@ -158,7 +161,7 @@ class App {
     const container = page.querySelector('.particles');
     if (!container) return;
 
-    const colors = ['rgba(244,169,64,0.4)', 'rgba(255,215,0,0.3)', 'rgba(255,248,236,0.5)'];
+    const colors = ['rgba(197,160,40,0.35)', 'rgba(27,58,140,0.25)', 'rgba(235,240,251,0.5)'];
     for (let i = 0; i < 8; i++) {
       const p = document.createElement('div');
       p.className = 'particle';

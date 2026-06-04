@@ -57,9 +57,9 @@ window.init_page02 = function () {
       card.style.display = '';
       if (typeof gsap !== 'undefined') {
         gsap.fromTo(card, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(2)' });
-        gsap.to(card, { boxShadow: '0 0 30px rgba(245,184,75,0.5), 0 0 80px rgba(0,59,122,0.3)', duration: 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+        gsap.to(card, { boxShadow: '0 0 30px rgba(197,160,40,0.3), 0 0 80px rgba(27,58,140,0.25)', duration: 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
       }
-      if (badgeHint) badgeHint.textContent = '👆 点击戴上工牌';
+      if (badgeHint) badgeHint.textContent = '👆 点击接任厂长';
     }, 500);
   }, 1500);
 
@@ -67,12 +67,12 @@ window.init_page02 = function () {
     card.style.animation = 'none';
     if (typeof gsap !== 'undefined') {
       gsap.killTweensOf(card);
-      gsap.to(card, { scale: 0.9, duration: 0.15, yoyo: true, repeat: 1, onComplete: () => {
+      gsap.to(card, { scale: 0.92, duration: 0.15, yoyo: true, repeat: 1, onComplete: () => {
         audio.play('click');
         window.app && window.app.next();
       }});
     } else {
-      card.style.boxShadow = '0 0 60px rgba(245,184,75,0.7), 0 0 120px rgba(0,59,122,0.4)';
+      card.style.boxShadow = '0 0 60px rgba(197,160,40,0.5), 0 0 120px rgba(27,58,140,0.4)';
       audio.play('click');
       setTimeout(() => window.app && window.app.next(), 800);
     }
@@ -402,14 +402,14 @@ function gsapPop(el) {
 }
 
 // ============================================================
-// P10 厂长工牌
+// P10 厂长认证卡 V3
 // ============================================================
 window.init_page10 = function () {
   const badge = document.getElementById('badgeResult');
   const gradeEl = document.getElementById('badgeGrade');
-  const rankEl = document.getElementById('badgeRank');
   const titleEl = document.getElementById('badgeTitleText');
   const personalEl = document.getElementById('badgePersonal');
+  const certNum = document.getElementById('certNumber');
   if (!badge || badge.dataset.ready) return;
   badge.dataset.ready = '1';
 
@@ -417,17 +417,19 @@ window.init_page10 = function () {
     gsap.fromTo(badge, { scale: 0.5, opacity: 0, rotation: -10 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.8, ease: 'elastic.out(1,0.5)' });
   }
 
+  // 生成认证编号
+  if (certNum) certNum.textContent = String(Math.floor(Math.random() * 9000) + 1000);
+
   const quiz = window._quizScore || {};
   const ud = window._userData || {};
   if (gradeEl) gradeEl.textContent = quiz.grade || 'B';
   if (titleEl) titleEl.textContent = quiz.gradeTitle || '实习厂长';
 
   const quizErrors = quiz.mistakes || 0;
-  let rankGrade, rankColor;
-  if (quizErrors === 0) { rankGrade = 'S'; rankColor = '#FFD700'; }
-  else if (quizErrors === 1) { rankGrade = 'A'; rankColor = '#C0C0C0'; }
-  else { rankGrade = 'B'; rankColor = '#CD7F32'; }
-  if (rankEl) { rankEl.textContent = rankGrade; rankEl.style.color = rankColor; }
+  let rankColor;
+  if (quizErrors === 0) rankColor = '#FFD700';
+  else if (quizErrors === 1) rankColor = '#C0C0C0';
+  else rankColor = '#CD7F32';
 
   const bakeVal = ud.bakeSlider;
   let personalMsg;
@@ -438,21 +440,29 @@ window.init_page10 = function () {
   else personalMsg = '豪士藜麦吐司，等你来查岗';
   if (personalEl) personalEl.textContent = personalMsg;
 
+  // 扫光动画
+  const shine = badge.querySelector('.shine-overlay');
+  if (shine) {
+    shine.style.animation = 'none';
+    shine.offsetHeight; // reflow
+    shine.style.animation = 'shineSweep 2.5s ease 0.8s both';
+  }
+
   badge.addEventListener('click', () => {
     if (typeof gsap !== 'undefined') {
       gsap.killTweensOf(badge);
-      gsap.to(badge, { scale: 0.85, duration: 0.1, yoyo: true, repeat: 1, onComplete: () => {
+      gsap.to(badge, { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1, onComplete: () => {
         audio.play('click');
         setTimeout(() => window.app && window.app.next(), 800);
       }});
     } else {
       badge.style.animation = 'none';
-      badge.style.boxShadow = '0 0 60px rgba(245,184,75,0.8), 0 0 120px rgba(0,59,122,0.5)';
+      badge.style.boxShadow = '0 0 60px rgba(197,160,40,0.8), 0 0 120px rgba(27,58,140,0.5)';
       audio.play('click');
       setTimeout(() => window.app && window.app.next(), 1000);
     }
   });
-  mountGestureHint(document.getElementById('page10'), 'tap', '点击工牌查看认证');
+  mountGestureHint(document.getElementById('page10'), 'tap', '点击认证卡继续');
 };
 
 // ============================================================

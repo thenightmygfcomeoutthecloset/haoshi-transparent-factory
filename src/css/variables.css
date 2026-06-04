@@ -1,36 +1,86 @@
-/* === 豪士面包 品牌色体系 + 移动端适配变量 === */
+/* === 豪士透明工厂 品牌色体系 V3 — 复古绅士·精英督察 === */
 :root {
-  /* 品牌色 — PANTONE */
-  --pantone-288c: #003087;   /* 豪士专蓝 */
-  --pantone-873c: #B8892E;   /* 豪士专金 */
-  --haoshi-blue: var(--pantone-288c);
-  --haoshi-blue-dark: #001A52;
-  --haoshi-blue-soft: #EAF3FF;
+  /* ═══ 品牌主色 ═══ */
+  --brand-navy: #1B3A8C;           /* PANTONE 288C 专蓝，主导色 */
+  --brand-gold: #C5A028;           /* PANTONE 873C 专金，辅助强调色 */
+
+  /* 衍生色 */
+  --navy-dark: #102060;            /* 深海军蓝，深色背景 */
+  --navy-mid: #24519E;             /* 中蓝，hover 状态 */
+  --navy-light: #EBF0FB;           /* 浅蓝，浅色背景区块 */
+  --gold-bright: #D4B83C;          /* 亮金，光泽效果 */
+  --gold-dark: #8F7218;            /* 深金，文字/边框 */
+  --gold-pale: #F8F2DC;            /* 淡金，卡片底色 */
+
+  /* 中性色 */
+  --ink: #1A1A1A;                  /* 近黑，正文 */
+  --ink-secondary: #4A4A4A;        /* 次要文字 */
+  --paper: #FAF8F2;                /* 米白，页面底色 */
+  --paper-warm: #F2EDD8;           /* 暖米，卡片/票券底色 */
+  --divider: rgba(27,58,140,0.15); /* 分割线 */
+
+  /* 功能色 */
+  --success: #2D7D4F;              /* 完成状态绿 */
+  --warning-amber: #D4860C;        /* 警示琥珀 */
+
+  /* ═══ 向后兼容别名 ═══ */
+  --pantone-288c: var(--brand-navy);
+  --pantone-873c: var(--brand-gold);
+  --haoshi-blue: var(--brand-navy);
+  --haoshi-blue-dark: var(--navy-dark);
+  --haoshi-blue-soft: var(--navy-light);
   --haoshi-red: #C9212B;
   --haoshi-red-dark: #A01822;
-  --brand-color: var(--pantone-873c);  /* 主品牌色改为专金 */
-  --brand-bg: #FFF8F0;
-  --brand-gold: var(--pantone-873c);
-
-  /* 暖色调 */
-  --cream-white: #FFF8EA;
-  --cream-soft: #FFF3D6;
-  --bread-yellow: var(--pantone-873c);
-  --bread-light: #D9B86A;
+  --brand-color: var(--brand-gold);
+  --brand-bg: var(--paper);
+  --bread-yellow: var(--brand-gold);
+  --bread-light: #D4B83C;
   --toast-brown: #8C6628;
-
-  /* 文字色 */
-  --text-primary: #1A1A1A;
-  --text-secondary: #6A6A6A;
+  --cream-white: var(--paper);
+  --cream-soft: var(--paper-warm);
   --brown: #5B3217;
-  --safe-green: #7FA36B;
+  --safe-green: var(--success);
+  --brand-red: #C9212B;
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink-secondary);
 
-  /* 玻璃拟态 */
+  /* 兼容旧色名 */
+  --haoshi-gold: #FFD700;
+  --brand-gold-light: var(--gold-bright);
+  --brand-gold-dark: var(--gold-dark);
+  --color-red: #C9212B;
+  --color-red-dark: #A01822;
+  --color-red-light: #E8445A;
+  --color-gold: #F5B84B;
+  --color-gold-light: #FFD98A;
+  --color-gold-dark: #B87435;
+  --color-dark: #1A2A3A;
+  --color-dark-soft: #263545;
+  --color-warm-white: var(--paper);
+  --color-cream: var(--paper-warm);
+  --color-brown: #5B3217;
+  --color-brown-light: #8B7355;
   --glass-white: rgba(255, 255, 255, 0.78);
-  --shadow-soft: 0 2px 6px rgba(91,50,23,0.06), 0 8px 24px rgba(91,50,23,0.1);
-  --shadow-elevated: 0 4px 12px rgba(0,59,122,0.08), 0 12px 32px rgba(0,59,122,0.15);
+  --shadow-soft: 0 2px 6px rgba(27,58,140,0.06), 0 8px 24px rgba(27,58,140,0.1);
+  --shadow-elevated: 0 4px 12px rgba(27,58,140,0.08), 0 12px 32px rgba(27,58,140,0.15);
+  --shadow-button: 0 4px 16px rgba(27,58,140,0.12);
 
-  /* 移动端适配变量 */
+  /* ═══ 字体 ═══ */
+  --font-chinese-serif: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+  --font-english-display: 'Playfair Display', 'Georgia', serif;
+  --font-body: -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'Courier New', 'SF Mono', 'Consolas', monospace;
+  --font-title: var(--font-chinese-serif);
+
+  /* ═══ 字号 ═══ */
+  --text-display: 44px;
+  --text-xl: 36px;
+  --text-lg: 28px;
+  --text-md: 20px;
+  --text-sm: 16px;
+  --text-xs: 14px;
+
+  /* ═══ 移动端适配 ═══ */
   --screen-width: 100vw;
   --screen-height: 100dvh;
   --font-base: clamp(14px, 3.8vw, 17px);
@@ -41,48 +91,19 @@
   --section-pad: clamp(16px, 5vw, 32px);
   --touch-min: 44px;
 
-  /* 字体 */
-  --font-title: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --font-body: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-
-  /* 字号 */
-  --text-display: 44px;
-  --text-xl: 36px;
-  --text-lg: 28px;
-  --text-md: 20px;
-  --text-sm: 16px;
-  --text-xs: 14px;
-
-  /* 其他 */
+  /* ═══ 布局 ═══ */
   --page-width: 640px;
   --page-height: 1008px;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
   --radius-pill: 50px;
+
+  /* ═══ 缓动 ═══ */
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --dur-fast: 200ms;
   --dur-normal: 400ms;
   --dur-slow: 700ms;
-
-  /* 兼容旧变量 */
-  --haoshi-gold: #FFD700;
-  --brand-gold-light: #D4BB6E;
-  --brand-gold-dark: #A8892E;
-  --brand-red: #C9212B;
-  --shadow-button: 0 4px 16px rgba(91,50,23,0.12);
-  --color-red: #C9212B;
-  --color-red-dark: #A01822;
-  --color-red-light: #E8445A;
-  --color-gold: #F5B84B;
-  --color-gold-light: #FFD98A;
-  --color-gold-dark: #B87435;
-  --color-dark: #1A2A3A;
-  --color-dark-soft: #263545;
-  --color-warm-white: #FFF8EA;
-  --color-cream: #FFF3D6;
-  --color-brown: #5B3217;
-  --color-brown-light: #8B7355;
 }
