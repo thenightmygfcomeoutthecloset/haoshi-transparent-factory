@@ -22,6 +22,9 @@ html, body {
   user-select: none;
   font-family: var(--font-body);
   background-color: var(--paper);
+  background-image: url('../assets/images/texture-paper.png');
+  background-size: 200px;
+  background-blend-mode: multiply;
   color: var(--ink);
   -webkit-text-size-adjust: 100%;
 }

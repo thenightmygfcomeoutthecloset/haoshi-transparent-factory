@@ -82,7 +82,14 @@ class AudioManager {
 // 单例
 const audio = new AudioManager();
 
-// 注册 BGM
-audio.register('bgm', './assets/audio/bgm.mp3');
+// 注册全部音效
+audio.register('bgm',   './assets/audio/bgm.mp3');
+audio.register('click', './assets/audio/click.mp3');
+audio.register('tear',  './assets/audio/tear.mp3');
+audio.register('stamp', './assets/audio/stamp.mp3');
+audio.register('ding',  './assets/audio/ding.mp3');
+audio.register('alert', './assets/audio/alert.mp3');
+audio.register('fanfare', './assets/audio/fanfare.mp3');
+audio.register('flip',  './assets/audio/card-flip.mp3');
 
 export default audio;

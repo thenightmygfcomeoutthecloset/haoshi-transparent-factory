@@ -33,7 +33,7 @@ window.init_page01 = function () {
   btn.addEventListener('mousedown', removeHint, { once: true });
 
   btn.addEventListener('click', () => {
-    audio.play('click');
+    audio.play('tear');
     window.app && window.app.next();
   });
   mountGestureHint(document.getElementById('page01'), 'tap', '点击撕下参观券');
@@ -68,12 +68,12 @@ window.init_page02 = function () {
     if (typeof gsap !== 'undefined') {
       gsap.killTweensOf(card);
       gsap.to(card, { scale: 0.92, duration: 0.15, yoyo: true, repeat: 1, onComplete: () => {
-        audio.play('click');
+        audio.play('stamp');
         window.app && window.app.next();
       }});
     } else {
       card.style.boxShadow = '0 0 60px rgba(197,160,40,0.5), 0 0 120px rgba(27,58,140,0.4)';
-      audio.play('click');
+      audio.play('stamp');
       setTimeout(() => window.app && window.app.next(), 800);
     }
   });
@@ -114,7 +114,7 @@ window.init_page05 = function () {
     card.addEventListener('click', () => {
       if (card.classList.contains('revealed')) return;
       card.classList.add('revealed');
-      audio.play('click');
+      audio.play('flip');
       revealed++;
       if (revealed >= 3 && $('#page05 .page-hint')) $('#page05 .page-hint').textContent = '✓ 查原料已完成，👈 左滑进入下一站';
     });
@@ -184,6 +184,7 @@ function initSliderPage({ sliderId, feedbackId, hintId, getMsg }) {
     const inZone = val >= SWEET_ZONE_MIN && val <= SWEET_ZONE_MAX;
     if (inZone && !wasInZone) {
       wasInZone = true;
+      audio.play('ding');
       if (navigator.vibrate) navigator.vibrate(80);
       const hintId = type === 'dough' ? 'doughHint' : 'bakeHint';
       const hintEl = document.getElementById(hintId);
@@ -354,7 +355,7 @@ window.init_page09 = function () {
         if (quizHint) quizHint.textContent = '✓ 查质检已完成，👈 左滑进入下一站';
         if (retryBtn) retryBtn.style.display = 'none';
         window._quizScore = { found, timeUsed, mistakes, grade, gradeTitle };
-        audio.play('click');
+        audio.play('fanfare');
         setTimeout(() => window.app && window.app.next(), 2000);
       },
       onFail: ({ found, mistakes }) => {
@@ -452,13 +453,13 @@ window.init_page10 = function () {
     if (typeof gsap !== 'undefined') {
       gsap.killTweensOf(badge);
       gsap.to(badge, { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1, onComplete: () => {
-        audio.play('click');
+        audio.play('fanfare');
         setTimeout(() => window.app && window.app.next(), 800);
       }});
     } else {
       badge.style.animation = 'none';
       badge.style.boxShadow = '0 0 60px rgba(197,160,40,0.8), 0 0 120px rgba(27,58,140,0.5)';
-      audio.play('click');
+      audio.play('fanfare');
       setTimeout(() => window.app && window.app.next(), 1000);
     }
   });
