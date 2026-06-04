@@ -3,29 +3,18 @@
 
 export const TMALL_URL = 'https://haoshi.tmall.com';
 export const LIVE_URL = 'https://v.douyin.com/W_5x-RAUnG8/';
-export const OFFICIAL_SITE_URL = 'https://www.haoshifood.com';
-export const TOPIC_TEXT = '#豪士豪士好吃好吃#';
-
-// 页面标签 — 显示在顶部进度条（可自行编辑）
-// show: false = 该页不显示进度条
 export const PAGE_LABELS = [
-  { show: true,  label: '参观券' },                             // P1
-  { show: true,  label: '领取工牌' },                       // P2
-  { show: true,  label: '查岗任务书' },                     // P3
-  { show: true,  label: '查原料' },                       // P5
-  { show: true,  label: '查工艺' },                       // P6
-  { show: true,  label: '查火候' },                       // P7
-  { show: true,  label: '查包装' },                       // P8
-  { show: true,  label: '查质检' },                       // P9
-  { show: true,  label: '认证完成 ✓' },                    // P9
-  { show: true,  label: '探秘视频' },                       // P10
-  { show: true,  label: '查岗完成' },                       // P11
+  { show: true,  label: '参观券' },
+  { show: true,  label: '领取工牌' },
+  { show: true,  label: '查岗任务书' },
+  { show: true,  label: '查原料' },
+  { show: true,  label: '查工艺' },
+  { show: true,  label: '查火候' },
+  { show: true,  label: '查包装' },
+  { show: true,  label: '查质检' },
+  { show: true,  label: '认证完成 ✓' },
+  { show: true,  label: '探秘视频' },
+  { show: true,  label: '查岗完成' },
 ];
 
-export default {
-  TMALL_URL,
-  LIVE_URL,
-  OFFICIAL_SITE_URL,
-  TOPIC_TEXT,
-  PAGE_LABELS,
-};
+export default { TMALL_URL, LIVE_URL, PAGE_LABELS };

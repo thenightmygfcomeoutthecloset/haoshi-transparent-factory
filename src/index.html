@@ -207,18 +207,6 @@
     .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-elevated); }
     .btn-primary:active { transform: scale(0.96); }
 
-    .btn-warm {
-      display: inline-block; padding: 14px 44px;
-      background: linear-gradient(135deg, var(--bread-yellow), #FF9F2E);
-      color: #fff; border: none; border-radius: var(--radius-pill);
-      font-family: var(--font-body); font-size: var(--text-md); font-weight: 700;
-      letter-spacing: 0.04em; cursor: pointer;
-      position: relative; z-index: 2; min-height: 48px;
-      box-shadow: 0 4px 16px rgba(245,184,75,0.25);
-      transition: all var(--dur-fast);
-    }
-    .btn-warm:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,184,75,0.4); }
-    .btn-warm:active { transform: scale(0.96); }
 
     .btn-outline {
       display: inline-block; padding: 12px 36px;
@@ -507,30 +495,6 @@
     .ingredient-card.revealed .card-detail { opacity: 0.8; }
 
     /* ===== P5 卖点标签 ===== */
-    .usp-tags { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 20px 0; position: relative; z-index: 2; max-width: 440px; }
-    .usp-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 12px 22px; border-radius: var(--radius-sm);
-      background: var(--paper); border: 1.5px solid var(--divider);
-      font-size: var(--text-sm); font-weight: 700; color: var(--ink);
-      cursor: pointer; transition: all 0.25s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      font-family: var(--font-chinese-serif);
-    }
-    .usp-tag:active { transform: scale(0.95); }
-    .usp-tag.active {
-      background: var(--brand-navy); border-color: var(--brand-gold);
-      color: var(--brand-gold); transform: scale(1.05);
-      box-shadow: 0 4px 16px rgba(27,58,140,0.3);
-    }
-    .usp-explain {
-      min-height: 40px; font-size: var(--text-sm); color: var(--ink-secondary);
-      opacity: 0.8; margin-top: 8px; position: relative; z-index: 2;
-      transition: all 0.3s;
-    }
-
-    /* ===== P6/P7 滑块 ===== */
-    .slider-container { width: 80%; margin: 20px auto; position: relative; z-index: 2; }
     .slider-container input[type="range"] {
       width: 100%; height: 8px; border-radius: 4px;
       background: linear-gradient(90deg, var(--paper-warm), var(--brand-gold), var(--navy-dark));
@@ -677,10 +641,6 @@
 
     /* ===== P5 卖点标签加大 ===== */
     #page04 { padding: 0; }
-    #page04 .usp-tag { padding: 14px 24px; font-size: var(--text-md); border-radius: var(--radius-sm); }
-    #page04 .usp-explain { font-size: var(--text-md); min-height: 48px; margin-top: 12px; }
-    #page04 .bread-product { width: 240px; height: 180px; margin: 12px auto; }
-    #page04 .bread-body { width: 220px; height: 130px; }
     #page04 .slogan-pill { font-size: var(--text-sm); padding: 8px 20px; }
 
     /* ===== P10 认证卡加大 ===== */
@@ -876,26 +836,6 @@
     }
 
     /* ===== P12 转化页 V3 ===== */
-    .coupon-card {
-      width: 280px; background: var(--paper-warm);
-      border: 1px solid var(--gold-dark); border-radius: var(--radius-md);
-      padding: 20px 16px; text-align: center;
-      position: relative; z-index: 2;
-      box-shadow: 0 4px 16px rgba(27,58,140,0.1);
-    }
-    .coupon-card .coupon-title {
-      font-family: var(--font-chinese-serif); font-size: 20px; font-weight: 700;
-      color: var(--brand-navy); margin-bottom: 6px;
-    }
-    .coupon-card .coupon-desc {
-      font-size: 12px; color: var(--ink-secondary); opacity: 0.7;
-    }
-    .coupon-card .coupon-notice {
-      font-size: 10px; color: var(--ink-secondary); opacity: 0.4; margin-top: 10px;
-      font-family: var(--font-mono);
-    }
-    .action-buttons { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; position: relative; z-index: 2; }
-    .action-btn {
       padding: 16px 48px; border-radius: var(--radius-sm);
       font-size: var(--text-md); font-weight: 700; color: #fff; cursor: pointer;
       transition: all 0.2s; min-height: 50px; letter-spacing: 0.04em;
@@ -907,29 +847,6 @@
     .action-btn.gold { background: var(--brand-gold); color: var(--navy-dark); border: none; box-shadow: 0 4px 16px rgba(197,160,40,0.3); }
 
     /* 面包 CSS 产品 */
-    .bread-product { position: relative; width: 200px; height: 160px; z-index: 1; margin-left: auto; margin-right: auto; }
-    .bread-body {
-      width: 180px; height: 110px; margin: 25px auto 0;
-      background: linear-gradient(180deg, #E8C870 0%, #D4A040 40%, #C89230 80%, #B88028 100%);
-      border-radius: 6px 6px 4px 4px; position: relative;
-      box-shadow: 0 4px 20px rgba(180,120,40,0.3), inset 0 -8px 16px rgba(0,0,0,0.1);
-    }
-    .bread-body::after {
-      content: ''; position: absolute; inset: 8px 20px;
-      background-image:
-        radial-gradient(circle 3px, #F0E0B0 30%, transparent 70%),
-        radial-gradient(circle 2px, #F5E8C0 30%, transparent 70%),
-        radial-gradient(circle 2.5px, #E8D090 30%, transparent 70%),
-        radial-gradient(circle 2px, #F0E0B0 30%, transparent 70%),
-        radial-gradient(circle 3px, #F5E8C0 30%, transparent 70%),
-        radial-gradient(circle 2px, #E8D090 30%, transparent 70%);
-      background-size: 40px 30px, 35px 28px, 42px 32px, 38px 28px, 36px 30px, 40px 28px;
-      background-position: 5px 5px, 25px 12px, 10px 18px, 30px 25px, 15px 35px, 40px 8px;
-      opacity: 0.6;
-    }
-
-    /* Slogan 节奏动效 */
-    .slogan-beat {
       position: fixed; top: 50%; left: 50%;
       transform: translate(-50%,-50%) scale(0);
       font-family: var(--font-title); font-size: 42px; font-weight: 900;

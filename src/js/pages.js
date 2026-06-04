@@ -2,8 +2,7 @@
 
 import audio from './audio.js';
 import QuizGame from './quiz.js';
-import { generatePoster, downloadPoster } from './poster.js';
-import { LIVE_URL, TMALL_URL, OFFICIAL_SITE_URL, TOPIC_TEXT } from './config.js';
+import { LIVE_URL, TMALL_URL } from './config.js';
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -476,7 +475,6 @@ window.init_page12 = function () {
   page.dataset.ready = '1';
 
   if (typeof gsap !== 'undefined') {
-    gsap.fromTo('.coupon-card', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'back.out(1.5)' });
     gsap.fromTo('.action-btn', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.15, delay: 0.3, ease: 'power2.out' });
   }
 
