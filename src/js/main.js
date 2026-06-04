@@ -38,20 +38,12 @@ window.showToast = showToast;
 window.updateProgress = updateProgress;
 window.hideProgress = hideProgress;
 
-/** 手势提示组件 — 已禁用 */
-export function mountGestureHint(el, type, label) {
-  // 不再显示黑白指引条
-}
-window.mountGestureHint = mountGestureHint;
-
 class App {
   constructor() {
     this.pages = document.querySelectorAll('.page');
     this.total = this.pages.length;
     this.current = 0;
     this.isTransitioning = false;
-    this._slideNext = false; // 标记下一次 goTo 用左滑过渡
-
     // 手势 — P1/P2 禁止滑动翻页，必须点按钮
     this.gesture = new Gesture(document.querySelector('.app'), { threshold: 80 });
     this.gesture.onSwipeLeft(() => {
@@ -98,10 +90,7 @@ class App {
 
     const oldPage = this.pages[this.current];
     const newPage = this.pages[index];
-    const slide = this._slideNext;
-    this._slideNext = false; // 只用一次
 
-    // 离开旧页
     this._leavePage(this.current);
     newPage.classList.add('active');
     this.current = index;
@@ -109,17 +98,8 @@ class App {
     this._updateProgressBar();
 
     if (typeof gsap !== 'undefined') {
-      if (slide) {
-        // 左滑过渡：旧页左滑退出，新页从右侧滑入
-        gsap.to(oldPage, { x: '-100%', duration: 0.4, ease: 'power2.inOut', onComplete: () => {
-          oldPage.classList.remove('active');
-          gsap.set(oldPage, { x: 0 }); // 清理 translateX，否则返回时会残留
-        }});
-        gsap.fromTo(newPage, { x: '100%' }, { x: 0, duration: 0.4, ease: 'power2.inOut', onComplete: () => { this.isTransitioning = false; } });
-      } else {
-        gsap.to(oldPage, { opacity: 0, scale: 0.97, duration: 0.35, ease: 'power2.in', onComplete: () => oldPage.classList.remove('active') });
-        gsap.fromTo(newPage, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out', onComplete: () => { this.isTransitioning = false; } });
-      }
+      gsap.to(oldPage, { opacity: 0, scale: 0.97, duration: 0.35, ease: 'power2.in', onComplete: () => oldPage.classList.remove('active') });
+      gsap.fromTo(newPage, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out', onComplete: () => { this.isTransitioning = false; } });
     } else {
       oldPage && oldPage.classList.remove('active');
       this.isTransitioning = false;
@@ -179,8 +159,8 @@ class App {
   _updateProgressBar() {
     const cfg = PAGE_LABELS[this.current];
     if (!cfg || !cfg.show) { hideProgress(); return; }
-    const pageDataId = parseInt(this.pages[this.current].dataset.page) || (this.current + 1);
-    const name = `第${pageDataId}/12页 · ${cfg.label}`;
+    const idx = this.current + 1;
+    const name = `第${idx}/${this.total}页 · ${cfg.label}`;
     const pct = Math.round(((this.current) / (this.total - 1)) * 100);
     updateProgress(this.current, name, pct);
   }

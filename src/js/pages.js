@@ -1,4 +1,4 @@
-/* === pages.js — GSAP 增强 12页交互 === */
+﻿/* === pages.js — GSAP 增强 12页交互 === */
 
 import audio from './audio.js';
 import QuizGame from './quiz.js';
@@ -118,7 +118,6 @@ window.init_page05 = function () {
       if (revealed >= 3 && $('#page05 .page-hint')) $('#page05 .page-hint').textContent = '✓ 查原料已完成，👈 左滑进入下一站';
     });
   });
-  mountGestureHint(document.getElementById('page05'), 'tap', '点击卡片查看原料来源');
 };
 
 // ============================================================
@@ -136,7 +135,6 @@ window.init_page04 = function () {
       window.app && window.app.next();
     });
   }
-  mountGestureHint(page, 'swipe-right', '左滑开始第一站');
 };
 
 // ============================================================
@@ -216,7 +214,6 @@ window.init_page06 = function () {
       return { text: '✓ 豪士4年找到的黄金比例，就是这里！', color: '#5C8A3C', bgEl: 'doughState', bgColor: '#E8C870' };
     },
   });
-  mountGestureHint(document.getElementById('page06'), 'drag', '拖动滑块找到最佳筋度');
 };
 
 // ============================================================
@@ -248,7 +245,6 @@ window.init_page07 = function () {
       return { text: '✓ 精准控温，表皮微脆内心柔软，这就是豪士的温度', color: '#5C8A3C', bgEl: 'bakeToast', bgColor };
     },
   });
-  mountGestureHint(document.getElementById('page07'), 'drag', '拖动滑块调到最佳火候');
 };
 
 // ============================================================
@@ -303,7 +299,6 @@ window.init_page08 = function () {
       window.app && window.app.next();
     });
   }
-  mountGestureHint(document.getElementById('page08'), 'swipe-lr', '左右滑动查看切片流程');
 };
 
 // ============================================================
@@ -386,7 +381,6 @@ window.init_page09 = function () {
 
   if (retryBtn) retryBtn.addEventListener('click', startQuiz);
   startQuiz();
-  mountGestureHint(document.getElementById('page09'), 'tap', '点击选出瑕疵面包');
 };
 
 window.leave_page09 = function () {
@@ -461,7 +455,6 @@ window.init_page10 = function () {
       setTimeout(() => window.app && window.app.next(), 1000);
     }
   });
-  mountGestureHint(document.getElementById('page10'), 'tap', '点击认证卡继续');
 };
 
 // ============================================================
