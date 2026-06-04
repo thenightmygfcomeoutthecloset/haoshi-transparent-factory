@@ -88,6 +88,15 @@ class App {
       }
     }
 
+    // 首次用户交互时启动BGM
+    const startBGM = () => {
+      audio.tryStartBGM();
+      document.removeEventListener('click', startBGM);
+      document.removeEventListener('touchstart', startBGM);
+    };
+    document.addEventListener('click', startBGM);
+    document.addEventListener('touchstart', startBGM);
+
     // 直接初始化首屏，不走 goTo 避免 index===current 拦截
     this._initPage(0);
     this._updateProgressBar();

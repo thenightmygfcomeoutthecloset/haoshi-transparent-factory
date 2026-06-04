@@ -1,10 +1,11 @@
-/* === audio.js — AudioManager 类 === */
+/* === audio.js — AudioManager 类 V3（含BGM） === */
 
 class AudioManager {
   constructor() {
     this.sounds = {};     // { name: Audio }
     this.currentBGM = null;
     this._muted = false;
+    this._bgmStarted = false;
 
     // 从 localStorage 恢复静音状态
     try {
@@ -16,8 +17,8 @@ class AudioManager {
   set muted(val) {
     this._muted = val;
     try { localStorage.setItem('haoshi_muted', String(val)); } catch (e) {}
-    // 静音时停掉所有正在播放的
     if (val) this.stopAll();
+    else if (this.currentBGM) this.loop(this.currentBGM);
   }
 
   toggleMute() {
@@ -47,9 +48,17 @@ class AudioManager {
     const s = this.sounds[name];
     if (!s) return;
     s.loop = true;
+    s.volume = 0.15;
     s.currentTime = 0;
     s.play().catch(() => {});
     this.currentBGM = name;
+  }
+
+  /** 尝试启动BGM（需用户交互后调用） */
+  tryStartBGM() {
+    if (this._bgmStarted || this._muted) return;
+    this._bgmStarted = true;
+    this.loop('bgm');
   }
 
   /** 停止指定音效 */
@@ -72,4 +81,8 @@ class AudioManager {
 
 // 单例
 const audio = new AudioManager();
+
+// 注册 BGM
+audio.register('bgm', './assets/audio/bgm.mp3');
+
 export default audio;
