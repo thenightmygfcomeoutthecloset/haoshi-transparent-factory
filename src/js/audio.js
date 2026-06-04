@@ -4,7 +4,7 @@ class AudioManager {
   constructor() {
     this.sounds = {};     // { name: Audio }
     this.currentBGM = null;
-    this._muted = false;
+    this._muted = true; // 默认静音，用户点喇叭手动开启
     this._bgmStarted = false;
 
     // 从 localStorage 恢复静音状态
