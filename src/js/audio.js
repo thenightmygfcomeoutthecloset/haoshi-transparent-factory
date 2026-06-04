@@ -48,7 +48,7 @@ class AudioManager {
     const s = this.sounds[name];
     if (!s) return;
     s.loop = true;
-    s.volume = 0.15;
+    s.volume = 0.3;
     s.currentTime = 0;
     s.play().catch(() => {});
     this.currentBGM = name;
@@ -83,7 +83,7 @@ class AudioManager {
 const audio = new AudioManager();
 
 // 注册全部音效
-audio.register('bgm',   './assets/audio/bgm.mp3');
+audio.register('bgm',   './assets/audio/bgm-factory.mp3');
 audio.register('click', './assets/audio/click.mp3');
 audio.register('tear',  './assets/audio/tear.mp3');
 audio.register('stamp', './assets/audio/stamp.mp3');
