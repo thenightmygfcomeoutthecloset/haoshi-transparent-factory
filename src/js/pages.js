@@ -498,10 +498,12 @@ window.init_page12 = function () {
     try {
       await navigator.clipboard.writeText(fullContent);
       btn.textContent = '✅ 已复制！去微博/抖音/小红书发帖吧';
-      btn.style.background = 'linear-gradient(135deg, #4CAF50, #388E3C)';
+      btn.style.background = '#2D7D4F';
+      btn.style.borderColor = '#2D7D4F';
+      btn.style.color = '#FFFFFF';
       showToast('✓ 已复制到剪贴板，快去分享吧！', 2000);
       if (typeof gsap !== 'undefined') gsap.fromTo(btn, { scale: 1 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' });
-      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2500);
+      setTimeout(() => { btn.textContent = orig; btn.style.background = 'transparent'; btn.style.borderColor = '#C6A84B'; btn.style.color = '#C6A84B'; }, 2500);
     } catch {
       window.prompt('复制话题标签：', fullContent);
     }

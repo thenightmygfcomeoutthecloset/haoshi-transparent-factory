@@ -737,12 +737,8 @@
     #page08 .pkg-dot.active { width: 28px; }
 
     /* ===== P12 转化页加大 ===== */
-    #page12 .coupon-card { width: 320px; padding: 24px 20px; }
-    #page12 .coupon-card .coupon-title { font-size: 22px; }
-    #page12 .coupon-card .coupon-desc { font-size: var(--text-sm); }
+    #page12 .glass-card { max-width: 420px; padding: 28px 24px 20px; }
     #page12 .action-btn { font-size: var(--text-md); padding: 18px 48px; min-height: 54px; }
-    #page12 .bread-product { width: 240px; height: 180px; margin-left: auto; margin-right: auto; }
-    #page12 .bread-body { width: 220px; height: 130px; }
 
     /* ===== P8 切片包装 ===== */
     .conveyor-wrap {
@@ -1090,7 +1086,7 @@
     .video-title-text { color: white; font-size: 13px; font-weight: 600; }
     .video-views      { color: rgba(255,255,255,0.75); font-size: 11px; }
   </style>
-  <script src="./assets/index-CA_bflO-.js"></script>
+  <script src="./assets/index-C712fWR0.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-CBtPQtri.css">
 </head>
 <body>
@@ -1412,21 +1408,20 @@
     <!-- ===== P12 转化页 ===== -->
     <div class="page" id="page12" data-page="12">
       <img class="page-bg" src="./assets/%E6%BC%B3%E5%B7%9E%E5%B7%A5%E5%8E%823-KvLd684R.jpg" alt="豪士工厂全景" />
-      <div class="overlay-gradient warm"></div>
       <div class="particles"></div>
-      <div class="glass-card" style="background:rgba(255,255,255,0.65);padding:12px 20px 12px;">
-        <div class="page-title red" style="font-size:var(--text-md);margin-bottom:2px;">查过原料，盯过工艺，亲自品控<br>这片面包，配得上你的认可</div>
+      <div class="glass-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:20px 20px 16px;color:#FFFFFF;">
+        <div style="max-width:280px;margin:0 auto;text-align:center;font-family:var(--font-chinese-serif);font-size:var(--text-md);font-weight:700;line-height:1.5;margin-bottom:8px;color:#FFFFFF;">查过原料，盯过工艺，亲自品控<br>这片面包，配得上你的认可</div>
         <div class="action-buttons" style="margin:0 0 4px; gap:8px;">
-          <div style="width:min(280px,75%); margin:0 auto 6px; overflow:hidden;
-                      filter:drop-shadow(0 8px 20px rgba(0,0,0,0.12));">
+          <div style="width:min(240px,65%); margin:0 auto 8px; overflow:hidden;
+                      filter:drop-shadow(0 8px 20px rgba(0,0,0,0.25));">
             <img src="./assets/product-bread-Cn9XlbcX.png" alt="豪士藜麦吐司"
-              style="width:100%; display:block; transform:scale(1.12);">
+              style="width:100%; display:block; transform:scale(1.1);">
           </div>
-          <button class="action-btn red" id="btnTmall" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;">🛒 去官方旗舰店</button>
-          <button class="action-btn blue" id="btnShare" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;">📋 复制话题，让朋友也来查岗</button>
-          <p id="sharePreview" style="font-size:11px;color:#999;margin-top:4px;line-height:1.4;">#豪士透明工厂查岗日# 我今天当了一天透明厂长，原来面包是这样做出来的</p>
+          <button class="action-btn" id="btnTmall" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;background:#003087;color:#FFFFFF;border:none;border-radius:var(--radius-sm);">🛒 去官方旗舰店</button>
+          <button class="action-btn" id="btnShare" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;background:transparent;border:2px solid #C6A84B;color:#C6A84B;border-radius:var(--radius-sm);">📋 复制话题，让朋友也来查岗</button>
+          <p id="sharePreview" style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:4px;line-height:1.4;">#豪士透明工厂查岗日# 我今天当了一天透明厂长，原来面包是这样做出来的</p>
         </div>
-        <p style="font-size:var(--font-xs);color:#999;margin-top:8px;">先查岗，再开吃 · 豪士豪士，好吃好吃</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:8px;text-align:center;">先查岗，再开吃 · 豪士豪士，好吃好吃</p>
       </div>
     </div>
 
