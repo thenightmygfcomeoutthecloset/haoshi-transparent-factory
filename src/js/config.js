@@ -12,11 +12,11 @@ export const PAGE_LABELS = [
   { show: true,  label: '参观券' },                             // P1
   { show: true,  label: '领取工牌' },                       // P2
   { show: true,  label: '查岗任务书' },                     // P3
-  { show: true,  label: '第 1/5 站 · 查原料' },            // P4
-  { show: true,  label: '第 2/5 站 · 查工艺' },            // P5
-  { show: true,  label: '第 3/5 站 · 查火候' },            // P6
-  { show: true,  label: '第 4/5 站 · 查包装' },            // P7
-  { show: true,  label: '第 5/5 站 · 查质检' },            // P8
+  { show: true,  label: '查原料' },                       // P5
+  { show: true,  label: '查工艺' },                       // P6
+  { show: true,  label: '查火候' },                       // P7
+  { show: true,  label: '查包装' },                       // P8
+  { show: true,  label: '查质检' },                       // P9
   { show: true,  label: '认证完成 ✓' },                    // P9
   { show: true,  label: '探秘视频' },                       // P10
   { show: true,  label: '查岗完成' },                       // P11
