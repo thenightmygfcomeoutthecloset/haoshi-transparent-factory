@@ -180,7 +180,7 @@ class App {
     const cfg = PAGE_LABELS[this.current];
     if (!cfg || !cfg.show) { hideProgress(); return; }
     const idx = this.current + 1;
-    const name = `第${idx}/${this.total}页 · ${cfg.label}`;
+    const name = `第${idx}/${this.total}页`;
     const pct = Math.round(((this.current) / (this.total - 1)) * 100);
     updateProgress(this.current, name, pct);
   }
