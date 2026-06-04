@@ -85,7 +85,7 @@ class AudioManager {
 // 单例
 const audio = new AudioManager();
 
-// 注册全部音效
+// 注册全部音效（public/ 目录下的文件构建时直接复制到输出目录）
 audio.register('bgm',   './assets/audio/bgm.mp3');
 audio.register('click', './assets/audio/click.mp3');
 audio.register('tear',  './assets/audio/tear.mp3');

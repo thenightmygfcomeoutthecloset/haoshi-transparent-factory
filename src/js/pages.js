@@ -326,7 +326,7 @@ window.init_page09 = function () {
     svg.setAttribute('height', '80');
     svg.classList.add('quiz-timer-svg');
     const r = 34, cx = 40, cy = 40, circ = 2 * Math.PI * r;
-    svg.innerHTML = `<circle class="quiz-timer-bg" cx="${cx}" cy="${cy}" r="${r}"/><circle class="quiz-timer-fg" id="quizCircle" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="0" transform="rotate(-90 ${cx} ${cy})"/><text id="quizText" x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="var(--brand-navy)" font-family="var(--font-english-display)" font-size="28" font-weight="700">10</text>`;
+    svg.innerHTML = `<circle class="quiz-timer-bg" cx="${cx}" cy="${cy}" r="${r}"/><circle class="quiz-timer-fg" id="quizCircle" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="0" transform="rotate(-90 ${cx} ${cy})"/><text id="quizText" x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" dy="2" fill="#1B3A8C" font-family="'Playfair Display',Georgia,serif" font-size="34" font-weight="700">10</text>`;
     timerEl.appendChild(svg);
     svgCircle = svg.getElementById('quizCircle');
     svgText = svg.getElementById('quizText');
@@ -337,7 +337,7 @@ window.init_page09 = function () {
     if (result) { result.textContent = ''; result.style.color = ''; }
     if (retryBtn) retryBtn.style.display = 'none';
     if (svgCircle) { svgCircle.style.strokeDashoffset = '0'; svgCircle.classList.remove('urgent'); }
-    if (svgText) { svgText.textContent = '10'; svgText.setAttribute('fill', 'var(--brand-navy)'); }
+    if (svgText) { svgText.textContent = '10'; svgText.setAttribute('fill', '#1B3A8C'); }
 
     quiz = new QuizGame({
       breads, badIndices: [2, 4], timeLimit: 10, maxMistakes: 3,
