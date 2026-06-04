@@ -65,11 +65,11 @@ class Gesture {
     if (!this._active) return;
     this._active = false;
 
-    // 不拦截滑块控件本身和P8轮播区
+    // 不拦截滑块控件
     const target = e.target || (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].target);
     if (target) {
       const el = target.closest ? target : target.parentElement;
-      if (el && el.closest && (el.closest('input[type=range]') || el.closest('#pkgTrack'))) {
+      if (el && el.closest && el.closest('input[type=range]')) {
         return;
       }
     }
@@ -82,7 +82,17 @@ class Gesture {
 
     if (!this._moved && absDx < 10 && absDy < 10) {
       this._fire('tap');
-    } else if (absDx > absDy && absDx >= this.threshold) {
+      return;
+    }
+
+    // P8 包装页：根据轮播Step限制翻页方向
+    if (target && target.closest && target.closest('#page08 .glass-card')) {
+      const step = typeof window._pkgStep === 'function' ? window._pkgStep() : 2;
+      if (dx < 0 && step < 2) return;  // 左滑，还没到Step3，不翻页
+      if (dx > 0 && step > 0) return;  // 右滑，不在Step1，不翻页
+    }
+
+    if (absDx > absDy && absDx >= this.threshold) {
       this._fire(dx > 0 ? 'swipeRight' : 'swipeLeft');
     } else if (absDy > absDx && absDy >= this.threshold) {
       this._fire(dy > 0 ? 'swipeDown' : 'swipeUp');

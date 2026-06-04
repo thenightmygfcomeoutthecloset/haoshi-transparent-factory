@@ -265,6 +265,9 @@ window.init_page08 = function () {
 
   let current = 0, startX = 0;
 
+  // 暴露给 gesture.js 判断翻页方向
+  window._pkgStep = () => current;
+
   function goTo(idx) {
     if (idx < 0 || idx > 2) return;
     current = idx;
@@ -277,21 +280,17 @@ window.init_page08 = function () {
     }
   }
 
-  // 整个主框内：滑动切轮播Step，不翻页。框外：滑动翻页。
+  // 整个框内：左右滑切轮播Step
   if (card) {
-    card.addEventListener('touchstart', e => { e.stopPropagation(); startX = e.touches[0].clientX; }, { passive: true });
-    card.addEventListener('touchmove', e => { e.stopPropagation(); }, { passive: true });
+    card.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
     card.addEventListener('touchend', e => {
-      e.stopPropagation();
       const diff = startX - e.changedTouches[0].clientX;
       if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
     });
 
     let md = false;
-    card.addEventListener('mousedown', e => { e.stopPropagation(); md = true; startX = e.clientX; });
-    card.addEventListener('mousemove', e => { e.stopPropagation(); });
+    card.addEventListener('mousedown', e => { md = true; startX = e.clientX; });
     card.addEventListener('mouseup', e => {
-      e.stopPropagation();
       if (!md) return; md = false;
       const diff = startX - e.clientX;
       if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
