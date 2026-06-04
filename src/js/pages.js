@@ -347,7 +347,7 @@ window.init_page09 = function () {
         else { grade = 'B'; gradeText = '🍞 实习厂长，下次手速再快点'; gradeTitle = '实习厂长'; }
         if (result) { result.innerHTML = gradeText; gsapPop(result); }
         const quizHint = document.getElementById('quizHint');
-        if (quizHint) quizHint.textContent = '✓ 查质检已完成，👈 左滑进入下一站';
+        if (quizHint) quizHint.textContent = '✓ 查质检已完成';
         if (retryBtn) retryBtn.style.display = 'none';
         window._quizScore = { found, timeUsed, mistakes, grade, gradeTitle };
         audio.play('fanfare');
