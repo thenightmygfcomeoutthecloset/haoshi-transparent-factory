@@ -16,23 +16,24 @@
 
 /* ═══ 静音按钮 ═══ */
 .mute-btn {
-  position: absolute;
+  position: fixed;
   top: 14px; right: 14px;
-  z-index: 100;
-  width: 40px; height: 40px;
+  z-index: 9999;
+  width: 48px; height: 48px;
   border-radius: 50%;
-  background: rgba(27,58,140,0.08);
-  color: var(--brand-navy);
-  font-size: 18px;
+  background: rgba(27,58,140,0.9);
+  color: var(--brand-gold);
+  font-size: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 1.5px solid rgba(27,58,140,0.2);
+  border: 2px solid var(--brand-gold);
   transition: all var(--dur-normal);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
 }
-.mute-btn:hover { background: rgba(27,58,140,0.18); border-color: var(--brand-navy); }
-.mute-btn.muted { opacity: 0.35; }
+.mute-btn:hover { background: var(--brand-navy); border-color: var(--gold-bright); }
+.mute-btn.muted { background: rgba(0,0,0,0.5); opacity: 0.6; border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.6); }
 
 /* ═══ 统一按钮系统 ═══ */
 .btn-primary {
