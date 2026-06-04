@@ -490,7 +490,6 @@ window.init_page12 = function () {
   }
 
   document.getElementById('btnTmall')?.addEventListener('click', () => { window.open(TMALL_URL, '_blank'); });
-  document.getElementById('btnLive2')?.addEventListener('click', () => { window.open(LIVE_URL, '_blank'); });
   document.getElementById('btnShare')?.addEventListener('click', async () => {
     const btn = document.getElementById('btnShare');
     if (!btn) return;
