@@ -20,7 +20,7 @@ class AudioManager {
     if (val) { this.stopAll(); }
     else {
       this._bgmStarted = true;
-      this.loop('bgm');
+      this.loop('bgm', true); // 继续播放，不重头来
     }
   }
 
@@ -47,15 +47,15 @@ class AudioManager {
     if (p) p.catch(() => {});
   }
 
-  /** 循环播放: audio.loop('bgm') */
-  loop(name) {
+  /** 循环播放: audio.loop('bgm', resume) */
+  loop(name, resume = false) {
     if (this._muted) return;
     const s = this.sounds[name];
     if (!s) return;
-    s.load(); // 移动端必须在用户手势后 load 才能播
+    s.load();
     s.loop = true;
     s.volume = 0.3;
-    s.currentTime = 0;
+    if (!resume) s.currentTime = 0;
     const p = s.play();
     if (p) p.catch(() => {});
     this.currentBGM = name;
