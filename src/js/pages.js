@@ -259,17 +259,9 @@ window.init_page08 = function () {
   const track = document.getElementById('pkgTrack');
   const dots = document.querySelectorAll('#pkgDots .pkg-dot');
   const hint = document.getElementById('pkgHint');
-  const nextBtn = document.getElementById('pkgNextBtn');
+  const card = page && page.querySelector('.glass-card');
   if (!track || track.dataset.ready) return;
   track.dataset.ready = '1';
-
-  // 整个主框内所有滑动都只操作轮播，不翻页
-  const card = page && page.querySelector('.glass-card');
-  if (card) {
-    card.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
-    card.addEventListener('touchmove', e => e.stopPropagation(), { passive: true });
-    card.addEventListener('touchend', e => e.stopPropagation());
-  }
 
   let current = 0, startX = 0;
 
@@ -285,24 +277,26 @@ window.init_page08 = function () {
     }
   }
 
-  // 整个轮播区域始终阻止翻页手势，只能在框外滑动翻页
-  track.addEventListener('touchstart', e => { e.stopPropagation(); startX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchmove', e => { e.stopPropagation(); }, { passive: true });
-  track.addEventListener('touchend', e => {
-    e.stopPropagation();
-    const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
-  });
+  // 整个主框内：滑动切轮播Step，不翻页。框外：滑动翻页。
+  if (card) {
+    card.addEventListener('touchstart', e => { e.stopPropagation(); startX = e.touches[0].clientX; }, { passive: true });
+    card.addEventListener('touchmove', e => { e.stopPropagation(); }, { passive: true });
+    card.addEventListener('touchend', e => {
+      e.stopPropagation();
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
 
-  let md = false;
-  track.addEventListener('mousedown', e => { e.stopPropagation(); md = true; startX = e.clientX; });
-  track.addEventListener('mousemove', e => { e.stopPropagation(); });
-  track.addEventListener('mouseup', e => {
-    e.stopPropagation();
-    if (!md) return; md = false;
-    const diff = startX - e.clientX;
-    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
-  });
+    let md = false;
+    card.addEventListener('mousedown', e => { e.stopPropagation(); md = true; startX = e.clientX; });
+    card.addEventListener('mousemove', e => { e.stopPropagation(); });
+    card.addEventListener('mouseup', e => {
+      e.stopPropagation();
+      if (!md) return; md = false;
+      const diff = startX - e.clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
+  }
 
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
