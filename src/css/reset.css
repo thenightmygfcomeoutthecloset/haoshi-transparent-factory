@@ -1,5 +1,8 @@
 /* === CSS Reset + 全局 Typography V3 === */
+/* 全部OFL免费商用字体 */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap');
+/* 霞鹜文楷 — OFL，手作温度感，用于正文/票券/任务书 */
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css');
 
 *,
 *::before,
