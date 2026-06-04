@@ -7,20 +7,17 @@ class AudioManager {
     this._muted = true; // 默认静音，用户点喇叭手动开启
     this._bgmStarted = false;
 
-    // 从 localStorage 恢复静音状态
-    try {
-      this._muted = localStorage.getItem('haoshi_muted') === 'true';
-    } catch (e) { /* 无 localStorage 则忽略 */ }
+    // 每次都默认静音，用户手动开启
+    this._muted = true;
   }
 
   get muted() { return this._muted; }
   set muted(val) {
     this._muted = val;
-    try { localStorage.setItem('haoshi_muted', String(val)); } catch (e) {}
     if (val) { this.stopAll(); }
     else {
       this._bgmStarted = true;
-      this.loop('bgm', true); // 继续播放，不重头来
+      this.loop('bgm', true);
     }
   }
 
