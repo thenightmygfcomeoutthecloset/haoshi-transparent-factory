@@ -276,19 +276,20 @@ window.init_page08 = function () {
     }
   }
 
-  track.addEventListener('touchstart', e => { if (current < 2) e.stopPropagation(); startX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchmove', e => { if (current < 2) e.stopPropagation(); }, { passive: true });
+  // 整个轮播区域始终阻止翻页手势，只能在框外滑动翻页
+  track.addEventListener('touchstart', e => { e.stopPropagation(); startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchmove', e => { e.stopPropagation(); }, { passive: true });
   track.addEventListener('touchend', e => {
-    if (current < 2) e.stopPropagation();
+    e.stopPropagation();
     const diff = startX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
   });
 
   let md = false;
-  track.addEventListener('mousedown', e => { if (current < 2) e.stopPropagation(); md = true; startX = e.clientX; });
-  track.addEventListener('mousemove', e => { if (current < 2) e.stopPropagation(); });
+  track.addEventListener('mousedown', e => { e.stopPropagation(); md = true; startX = e.clientX; });
+  track.addEventListener('mousemove', e => { e.stopPropagation(); });
   track.addEventListener('mouseup', e => {
-    if (current < 2) e.stopPropagation();
+    e.stopPropagation();
     if (!md) return; md = false;
     const diff = startX - e.clientX;
     if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
