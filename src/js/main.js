@@ -159,8 +159,8 @@ class App {
   _updateProgressBar() {
     const cfg = PAGE_LABELS[this.current];
     if (!cfg || !cfg.show) { hideProgress(); return; }
-    const idx = this.current + 1;
-    const name = `第${idx}/${this.total}页 · ${cfg.label}`;
+    const idx = parseInt(this.pages[this.current].dataset.page);
+    const name = `第${idx}/12页 · ${cfg.label}`;
     const pct = Math.round(((this.current) / (this.total - 1)) * 100);
     updateProgress(this.current, name, pct);
   }
