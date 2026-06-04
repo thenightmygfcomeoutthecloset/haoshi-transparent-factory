@@ -65,11 +65,11 @@ class Gesture {
     if (!this._active) return;
     this._active = false;
 
-    // 不拦截滑块、传送带等控件
+    // 不拦截滑块控件本身和P8轮播区
     const target = e.target || (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].target);
     if (target) {
       const el = target.closest ? target : target.parentElement;
-      if (el && el.closest && (el.closest('input[type=range]') || el.closest('#pkgTrack') || el.closest('.slider-container'))) {
+      if (el && el.closest && (el.closest('input[type=range]') || el.closest('#pkgTrack'))) {
         return;
       }
     }
