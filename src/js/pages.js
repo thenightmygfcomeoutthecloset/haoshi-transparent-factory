@@ -266,6 +266,7 @@ window.init_page08 = function () {
   function goTo(idx) {
     if (idx < 0 || idx > 2) return;
     current = idx;
+    window._pkgMoved = true; // 标记本轮滑动已切轮播，阻止同次滑动翻页
     track.style.transform = `translateX(${-current * (100 / 3)}%)`;
     dots.forEach((d, i) => d.classList.toggle('active', i === current));
     if (current === 2) {

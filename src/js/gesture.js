@@ -87,12 +87,16 @@ class Gesture {
       return;
     }
 
-    // P7 包装页：根据轮播 step 限制翻页
+    // P7 包装页：全页滑动优先切轮播，边界+同向再次滑动才翻页
     if (target && target.closest && target.closest('#page08')) {
       const step = typeof window._pkgStep === 'function' ? window._pkgStep() : 2;
-      // 左滑：step1/2 → 只切轮播不翻页；step3 → 翻下一页
+      const moved = window._pkgMoved;
+      window._pkgMoved = false;
+      // 本轮滑动已切轮播 → 不翻页
+      if (moved) return;
+      // 左滑：step1/2 还能切 → 不翻页；step3 边界 → 翻页
       if (dx < 0 && step < 2) return;
-      // 右滑：step1 → 翻上一页；step2/3 → 只切轮播不翻页
+      // 右滑：step2/3 还能切 → 不翻页；step1 边界 → 翻页
       if (dx > 0 && step > 0) return;
     }
 
