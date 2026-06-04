@@ -41,8 +41,10 @@ class AudioManager {
     if (this._muted) return;
     const s = this.sounds[name];
     if (!s) return;
+    s.load();
     s.currentTime = 0;
-    s.play().catch(() => {}); // 忽略自动播放限制
+    const p = s.play();
+    if (p) p.catch(() => {});
   }
 
   /** 循环播放: audio.loop('bgm') */
@@ -50,10 +52,12 @@ class AudioManager {
     if (this._muted) return;
     const s = this.sounds[name];
     if (!s) return;
+    s.load(); // 移动端必须在用户手势后 load 才能播
     s.loop = true;
     s.volume = 0.3;
     s.currentTime = 0;
-    s.play().catch(() => {});
+    const p = s.play();
+    if (p) p.catch(() => {});
     this.currentBGM = name;
   }
 

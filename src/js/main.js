@@ -38,22 +38,9 @@ window.showToast = showToast;
 window.updateProgress = updateProgress;
 window.hideProgress = hideProgress;
 
-/** 手势提示组件 */
+/** 手势提示组件 — 已禁用 */
 export function mountGestureHint(el, type, label) {
-  if (!el || !el.id) return;
-  const key = `hint-${el.id}`;
-  if (sessionStorage.getItem(key)) return;
-  const hint = document.createElement('div');
-  hint.className = `gesture-hint gesture-hint--${type}`;
-  hint.innerHTML = `<div class="gesture-icon"></div><span class="gesture-label">${label}</span>`;
-  el.appendChild(hint);
-  const dismiss = () => {
-    hint.classList.add('dismissing');
-    hint.addEventListener('animationend', () => hint.remove(), { once: true });
-    sessionStorage.setItem(key, '1');
-  };
-  el.addEventListener('touchstart', dismiss, { once: true, passive: true });
-  el.addEventListener('mousedown', dismiss, { once: true });
+  // 不再显示黑白指引条
 }
 window.mountGestureHint = mountGestureHint;
 

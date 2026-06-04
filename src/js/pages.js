@@ -36,7 +36,6 @@ window.init_page01 = function () {
     audio.play('tear');
     window.app && window.app.next();
   });
-  mountGestureHint(document.getElementById('page01'), 'tap', '点击撕下参观券');
 };
 
 // ============================================================
