@@ -255,12 +255,21 @@ window.init_page07 = function () {
 // P8 切片包装 — 单卡轮播
 // ============================================================
 window.init_page08 = function () {
+  const page = document.getElementById('page08');
   const track = document.getElementById('pkgTrack');
   const dots = document.querySelectorAll('#pkgDots .pkg-dot');
   const hint = document.getElementById('pkgHint');
   const nextBtn = document.getElementById('pkgNextBtn');
   if (!track || track.dataset.ready) return;
   track.dataset.ready = '1';
+
+  // 整个主框内所有滑动都只操作轮播，不翻页
+  const card = page && page.querySelector('.glass-card');
+  if (card) {
+    card.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
+    card.addEventListener('touchmove', e => e.stopPropagation(), { passive: true });
+    card.addEventListener('touchend', e => e.stopPropagation());
+  }
 
   let current = 0, startX = 0;
 
