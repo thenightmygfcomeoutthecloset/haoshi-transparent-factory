@@ -316,19 +316,20 @@ window.init_page09 = function () {
   const timerEl = document.getElementById('quizTimer');
   const result = document.getElementById('quizResult');
   const retryBtn = document.getElementById('quizRetry');
-  let quiz, retryCount = 0, svgCircle;
+  let quiz, retryCount = 0, svgCircle, svgText;
 
   if (timerEl) {
     timerEl.innerHTML = '';
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('viewBox', '0 0 80 80');
-    svg.setAttribute('width', '64');
-    svg.setAttribute('height', '64');
+    svg.setAttribute('width', '80');
+    svg.setAttribute('height', '80');
     svg.classList.add('quiz-timer-svg');
     const r = 34, cx = 40, cy = 40, circ = 2 * Math.PI * r;
-    svg.innerHTML = `<circle class="quiz-timer-bg" cx="${cx}" cy="${cy}" r="${r}"/><circle class="quiz-timer-fg" id="quizCircle" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="0" transform="rotate(-90 ${cx} ${cy})"/>`;
+    svg.innerHTML = `<circle class="quiz-timer-bg" cx="${cx}" cy="${cy}" r="${r}"/><circle class="quiz-timer-fg" id="quizCircle" cx="${cx}" cy="${cy}" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="0" transform="rotate(-90 ${cx} ${cy})"/><text id="quizText" x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="var(--brand-navy)" font-family="var(--font-english-display)" font-size="28" font-weight="700">10</text>`;
     timerEl.appendChild(svg);
     svgCircle = svg.getElementById('quizCircle');
+    svgText = svg.getElementById('quizText');
   }
 
   const startQuiz = () => {
@@ -336,6 +337,7 @@ window.init_page09 = function () {
     if (result) { result.textContent = ''; result.style.color = ''; }
     if (retryBtn) retryBtn.style.display = 'none';
     if (svgCircle) { svgCircle.style.strokeDashoffset = '0'; svgCircle.classList.remove('urgent'); }
+    if (svgText) { svgText.textContent = '10'; svgText.setAttribute('fill', 'var(--brand-navy)'); }
 
     quiz = new QuizGame({
       breads, badIndices: [2, 4], timeLimit: 10, maxMistakes: 3,
@@ -373,6 +375,7 @@ window.init_page09 = function () {
           svgCircle.style.strokeDashoffset = circ * (1 - timeLeft / 10);
           if (timeLeft <= 3) svgCircle.classList.add('urgent');
         }
+        if (svgText) { svgText.textContent = timeLeft; if (timeLeft <= 3) svgText.setAttribute('fill', '#C0392B'); }
         const remaining = 3 - (mistakes || 0);
         if (result && mistakes > 0) { result.textContent = `还剩 ${remaining} 次容错机会`; result.style.color = '#F5B84B'; }
       },
