@@ -293,12 +293,6 @@ window.init_page08 = function () {
     });
   }
 
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      audio.play('click');
-      window.app && window.app.next();
-    });
-  }
 };
 
 // ============================================================
