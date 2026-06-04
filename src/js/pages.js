@@ -351,7 +351,6 @@ window.init_page09 = function () {
         if (retryBtn) retryBtn.style.display = 'none';
         window._quizScore = { found, timeUsed, mistakes, grade, gradeTitle };
         audio.play('fanfare');
-        setTimeout(() => window.app && window.app.next(), 2000);
       },
       onFail: ({ found, mistakes }) => {
         const missed = 2 - found;
@@ -359,7 +358,6 @@ window.init_page09 = function () {
         if (retryCount >= 3) {
           if (result) { result.innerHTML = '🍞 即使有漏网之鱼，质检团队也会补上这一关'; gsapPop(result); }
           window._quizScore = { found, timeUsed: 10, mistakes, grade: 'B', gradeTitle: '实习厂长' };
-          setTimeout(() => window.app && window.app.next(), 2000);
         } else {
           if (result) { result.textContent = `正确答案是第3和第5片！再试一次 (${retryCount}/3)`; gsapPop(result); }
           if (retryBtn) {
