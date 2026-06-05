@@ -324,6 +324,7 @@ window.init_page09 = function () {
   }
 
   const startQuiz = () => {
+    retryCount = 0;
     if (quiz) quiz.reset();
     breads.forEach(b => { b.classList.remove('found', 'wrong'); b.style.pointerEvents = 'auto'; });
     if (result) { result.textContent = ''; result.style.color = ''; }
@@ -491,7 +492,7 @@ window.init_page12 = function () {
       btn.style.background = '#2D7D4F';
       btn.style.borderColor = '#2D7D4F';
       btn.style.color = '#FFFFFF';
-      showToast('✓ 已复制到剪贴板，快去分享吧！', 2000);
+      window.showToast('✓ 已复制到剪贴板，快去分享吧！', 2000);
       if (typeof gsap !== 'undefined') gsap.fromTo(btn, { scale: 1 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' });
       setTimeout(() => { btn.textContent = orig; btn.style.background = 'transparent'; btn.style.borderColor = '#C6A84B'; btn.style.color = '#C6A84B'; }, 2500);
     } catch {
