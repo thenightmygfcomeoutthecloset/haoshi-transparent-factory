@@ -4,7 +4,7 @@ export default defineConfig({
   root: 'src',
   base: './',
   build: {
-    outDir: '../docs',
+    outDir: '../dist',
   },
   server: {
     port: 3000,
