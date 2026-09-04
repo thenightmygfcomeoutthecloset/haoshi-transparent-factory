@@ -46,6 +46,20 @@ class App {
     this.isTransitioning = false;
     // 手势 — P1/P2 禁止滑动翻页，必须点按钮
     this.gesture = new Gesture(document.querySelector('.app'), { threshold: 80 });
+
+    // P7 包装页：全页滑动优先切轮播，边界+同向再次滑动才翻页
+    this.gesture.addFilter(({ target, dx }) => {
+      if (target && target.closest && target.closest('#page08')) {
+        const step = typeof window._pkgStep === 'function' ? window._pkgStep() : 2;
+        const moved = window._pkgMoved;
+        window._pkgMoved = false;
+        if (moved) return false;
+        if (dx < 0 && step < 2) return false;
+        if (dx > 0 && step > 0) return false;
+      }
+      return true;
+    });
+
     this.gesture.onSwipeLeft(() => {
       if (this.current <= 1) return; // P1/P2 禁止滑动（需点按钮）
       this.next();

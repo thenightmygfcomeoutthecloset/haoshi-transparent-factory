@@ -11,6 +11,7 @@ class Gesture {
       swipeDown: [],
       tap: [],
     };
+    this.filters = [];
 
     this._startX = 0;
     this._startY = 0;
@@ -36,6 +37,7 @@ class Gesture {
   onSwipeUp(fn) { this.handlers.swipeUp.push(fn); }
   onSwipeDown(fn) { this.handlers.swipeDown.push(fn); }
   onTap(fn) { this.handlers.tap.push(fn); }
+  addFilter(fn) { this.filters.push(fn); }
 
   _getPos(e) {
     if (e.touches && e.touches.length) {
@@ -87,17 +89,11 @@ class Gesture {
       return;
     }
 
-    // P7 包装页：全页滑动优先切轮播，边界+同向再次滑动才翻页
-    if (target && target.closest && target.closest('#page08')) {
-      const step = typeof window._pkgStep === 'function' ? window._pkgStep() : 2;
-      const moved = window._pkgMoved;
-      window._pkgMoved = false;
-      // 本轮滑动已切轮播 → 不翻页
-      if (moved) return;
-      // 左滑：step1/2 还能切 → 不翻页；step3 边界 → 翻页
-      if (dx < 0 && step < 2) return;
-      // 右滑：step2/3 还能切 → 不翻页；step1 边界 → 翻页
-      if (dx > 0 && step > 0) return;
+    // 执行外部注册的拦截过滤器
+    for (const filter of this.filters) {
+      if (filter({ target, dx, dy, absDx, absDy }) === false) {
+        return;
+      }
     }
 
     if (absDx > absDy && absDx >= this.threshold) {

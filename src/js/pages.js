@@ -1,8 +1,9 @@
-﻿/* === pages.js — GSAP 增强 12页交互 === */
+/* === pages.js — GSAP 增强 12页交互 === */
 
 import audio from './audio.js';
 import QuizGame from './quiz.js';
 import { LIVE_URL, TMALL_URL } from './config.js';
+import confetti from 'canvas-confetti';
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -345,6 +346,14 @@ window.init_page09 = function () {
         if (retryBtn) retryBtn.style.display = 'none';
         window._quizScore = { found, timeUsed, mistakes, grade, gradeTitle };
         audio.play('fanfare');
+        if (grade === 'S' || grade === 'A') {
+          confetti({
+            particleCount: grade === 'S' ? 40 : 25,
+            spread: 55,
+            origin: { y: 0.7 },
+            colors: ['#C5A028', '#D4B83C', '#1B3A8C', '#FFFFFF']
+          });
+        }
       },
       onFail: ({ found, mistakes }) => {
         const missed = 2 - found;
@@ -404,6 +413,16 @@ window.init_page10 = function () {
   if (typeof gsap !== 'undefined') {
     gsap.fromTo(badge, { scale: 0.5, opacity: 0, rotation: -10 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.8, ease: 'elastic.out(1,0.5)' });
   }
+
+  // 金色与品牌蓝色粒子礼花
+  setTimeout(() => {
+    confetti({
+      particleCount: 50,
+      spread: 65,
+      origin: { y: 0.55 },
+      colors: ['#C5A028', '#D4B83C', '#1B3A8C', '#FAF8F2']
+    });
+  }, 350);
 
   // 生成认证编号
   if (certNum) certNum.textContent = String(Math.floor(Math.random() * 9000) + 1000);

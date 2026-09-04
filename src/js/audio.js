@@ -4,11 +4,22 @@ class AudioManager {
   constructor() {
     this.sounds = {};     // { name: Audio }
     this.currentBGM = null;
-    this._muted = true; // 默认静音，用户点喇叭手动开启
+    this._muted = true;   // 默认静音，用户点喇叭手动开启
     this._bgmStarted = false;
+    this._initWeChatUnlock();
+  }
 
-    // 每次都默认静音，用户手动开启
-    this._muted = true;
+  _initWeChatUnlock() {
+    const unlock = () => {
+      if (typeof window.WeixinJSBridge !== 'undefined') {
+        window.WeixinJSBridge.invoke('getNetworkType', {}, () => {});
+      }
+    };
+    if (typeof window.WeixinJSBridge !== 'undefined') {
+      unlock();
+    } else {
+      document.addEventListener('WeixinJSBridgeReady', unlock, { once: true });
+    }
   }
 
   get muted() { return this._muted; }
@@ -38,8 +49,9 @@ class AudioManager {
     if (this._muted) return;
     const s = this.sounds[name];
     if (!s) return;
-    s.load();
-    s.currentTime = 0;
+    try {
+      s.currentTime = 0;
+    } catch (_) {}
     const p = s.play();
     if (p) p.catch(() => {});
   }
@@ -49,10 +61,13 @@ class AudioManager {
     if (this._muted) return;
     const s = this.sounds[name];
     if (!s) return;
-    s.load();
     s.loop = true;
     s.volume = 0.3;
-    if (!resume) s.currentTime = 0;
+    if (!resume) {
+      try {
+        s.currentTime = 0;
+      } catch (_) {}
+    }
     const p = s.play();
     if (p) p.catch(() => {});
     this.currentBGM = name;

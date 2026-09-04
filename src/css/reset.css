@@ -27,6 +27,8 @@ html, body {
   background-blend-mode: multiply;
   color: var(--ink);
   -webkit-text-size-adjust: 100%;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 img {
@@ -38,18 +40,21 @@ img {
 a {
   text-decoration: none;
   color: inherit;
+  touch-action: manipulation;
 }
 
-button {
+button, [role="button"], .btn {
   border: none;
   background: none;
   cursor: pointer;
   font: inherit;
+  touch-action: manipulation;
 }
 
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
+  touch-action: none;
 }
 
 /* ── 全局标题样式 ── */

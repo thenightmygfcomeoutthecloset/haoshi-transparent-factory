@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>豪士透明工厂查岗日 — 这届年轻人，连面包都要亲自查岗</title>
@@ -823,6 +823,7 @@
     }
 
     /* ===== P12 转化页 V3 ===== */
+    .action-btn {
       padding: 16px 48px; border-radius: var(--radius-sm);
       font-size: var(--text-md); font-weight: 700; color: #fff; cursor: pointer;
       transition: all 0.2s; min-height: 50px; letter-spacing: 0.04em;
@@ -966,8 +967,8 @@
     .video-title-text { color: white; font-size: 13px; font-weight: 600; }
     .video-views      { color: rgba(255,255,255,0.75); font-size: 11px; }
   </style>
-  <script src="./assets/index-B7y00PxX.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DjZyF1JN.css">
+  <script src="./assets/index-Cl3VpEtc.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BUtR3YMc.css">
 </head>
 <body>
 
@@ -1292,8 +1293,11 @@
         <div class="action-buttons" style="display:flex;flex-direction:column;align-items:center;margin:0 0 4px; gap:8px;">
           <div style="width:min(240px,65%); margin:0 auto 8px; overflow:hidden;
                       filter:drop-shadow(0 8px 20px rgba(0,0,0,0.25));">
-            <img src="./assets/product-bread-Cn9XlbcX.png" alt="豪士藜麦吐司"
-              style="width:100%; display:block; transform:scale(1.1);">
+            <picture>
+              <source srcset="./assets/product-bread-BGm3bhso.webp" type="image/webp">
+              <img src="./assets/product-bread-Cn9XlbcX.png" alt="豪士藜麦吐司"
+                style="width:100%; display:block; transform:scale(1.1);" loading="lazy" decoding="async">
+            </picture>
           </div>
           <button class="action-btn" id="btnTmall" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;background:#003087;color:#FFFFFF;border:none;border-radius:var(--radius-sm);">🛒 去官方旗舰店</button>
           <button class="action-btn" id="btnShare" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;background:transparent;border:2px solid #C6A84B;color:#C6A84B;border-radius:var(--radius-sm);">📋 复制话题，让朋友也来查岗</button>
