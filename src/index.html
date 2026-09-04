@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -7,1310 +7,367 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>豪士透明工厂查岗日 — 这届年轻人，连面包都要亲自查岗</title>
 
+  <!-- 全局样式体系 -->
   <link rel="stylesheet" href="./css/reset.css" />
   <link rel="stylesheet" href="./css/variables.css" />
   <link rel="stylesheet" href="./css/layout.css" />
   <link rel="stylesheet" href="./css/animations.css" />
-  <!-- GSAP -->
+  <link rel="stylesheet" href="./css/acts.css" />
+
+  <!-- GSAP 动画引擎 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
-  <style>
-    /* ===== 全局响应式 ===== */
-    * { box-sizing: border-box; }
-    html, body {
-      width: 100%; overflow-x: hidden;
-      font-size: var(--font-base);
-      -webkit-text-size-adjust: 100%;
-    }
-    img { max-width: 100%; height: auto; display: block; }
-    button, .btn, [role="button"] {
-      min-height: var(--touch-min); min-width: var(--touch-min);
-      cursor: pointer; -webkit-tap-highlight-color: transparent;
-    }
-
-    /* ===== 页面通用 ===== */
-    .page {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 0;
-      text-align: center;
-      color: var(--text-secondary);
-      background: var(--cream-white);
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.45s var(--ease-out-expo), transform 0.45s var(--ease-out-expo);
-      transform: scale(0.97);
-    }
-    .page.active { opacity: 1; pointer-events: auto; z-index: 1; transform: scale(1); }
-
-    .page-bg {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; z-index: 0; pointer-events: none;
-      filter: brightness(0.8) saturate(0.85);
-    }
-    .overlay-gradient {
-      position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    }
-    .overlay-gradient.warm {
-      background: linear-gradient(180deg, rgba(26,26,30,0.2) 0%, transparent 40%, transparent 60%, rgba(26,26,30,0.15) 100%);
-    }
-    .overlay-gradient.soft {
-      background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.45) 100%);
-    }
-
-    /* 玻璃拟态卡片 */
-    .glass-card {
-      background: rgba(255,255,255,0.65);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.5);
-      border-radius: var(--radius-lg); padding: 28px 24px;
-      box-shadow: var(--shadow-soft);
-      position: relative; z-index: 2; max-width: 520px;
-      color: var(--text-primary);
-    }
-    .glass-card.red { background: rgba(255,255,255,0.65); border-color: rgba(201,33,43,0.15); }
-
-    .page-title {
-      font-family: var(--font-title); font-size: var(--text-xl); font-weight: 900;
-      color: var(--text-primary); margin-bottom: 12px;
-      line-height: 1.3; letter-spacing: -0.02em; position: relative; z-index: 2;
-    }
-    .page-title.blue { color: var(--haoshi-blue); }
-    .page-title.red { color: var(--haoshi-red); }
-    .page-title.dark { color: var(--text-primary); }
-
-    .page-subtitle {
-      font-family: var(--font-body); font-size: var(--text-md); font-weight: 400;
-      color: var(--text-secondary); margin-bottom: 24px; line-height: 1.65;
-      max-width: 440px; position: relative; z-index: 2;
-    }
-
-    .task-brief-desc {
-      font-size: 18px; color: #333333; opacity: 1;
-      text-align: center; line-height: 1.8; margin: 6px 0 20px;
-      position: relative; z-index: 2;
-      font-family: var(--font-wenkai);
-    }
-
-    /* 查岗任务书清单 */
-    .checklist {
-      display: flex; flex-direction: column; gap: 0;
-      width: 92%; max-width: 480px; position: relative; z-index: 2;
-      background: var(--paper-warm);
-      border-radius: var(--radius-md);
-      box-shadow: 0 4px 16px rgba(27,58,140,0.1);
-      padding: 4px 0 8px;
-    }
-    .checklist-item {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 20px; text-align: left;
-      border-bottom: 1px dashed var(--divider);
-      background: transparent; border-radius: 0; box-shadow: none;
-    }
-    .checklist-item:last-child { border-bottom: none; }
-    .check-num {
-      font-size: 30px; font-weight: 700; color: var(--brand-gold);
-      opacity: 0.5; min-width: 40px; text-align: center;
-      font-family: var(--font-english-display);
-    }
-    .checklist-item.completed .check-num { opacity: 1; color: var(--brand-navy); }
-    .check-info { flex: 1; }
-    .check-name {
-      font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 4px;
-      font-family: var(--font-chinese-serif); letter-spacing: 0.03em;
-    }
-    .check-desc {
-      font-size: 15px; color: var(--ink-secondary); line-height: 1.5;
-    }
-
-    .gate-hint {
-      position: absolute; bottom: 24px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      z-index: 10;
-    }
-    .gate-hint-text {
-      font-size: var(--font-sm); color: rgba(255,255,255,0.9);
-      background: rgba(0,0,0,0.35); padding: 6px 16px;
-      border-radius: 20px; white-space: nowrap;
-    }
-    .gate-arrow-anim {
-      font-size: 24px; color: #fff;
-      animation: gateArrowPulse 1.2s ease-in-out infinite;
-    }
-    @keyframes gateArrowPulse {
-      0%, 100% { transform: translateX(0); opacity: 0.5; }
-      50% { transform: translateX(8px); opacity: 1; }
-    }
-
-    .page-hint {
-      position: absolute; bottom: 80px;
-      font-size: 20px; font-weight: 700;
-      color: rgba(0,48,135,0.8);
-      background: rgba(255,255,255,0.85); backdrop-filter: blur(6px);
-      padding: 10px 24px; border-radius: 50px;
-      letter-spacing: 0.04em;
-      animation: hintBreathe 2s ease-in-out infinite; z-index: 10;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      pointer-events: none;
-    }
-
-    /* 粒子 */
-    .particles { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-    .particle {
-      position: absolute; border-radius: 50%;
-      background: var(--bread-light);
-      animation: particleDrift 8s linear infinite; opacity: 0;
-    }
-
-    /* 装饰 */
-    .divider-ornament {
-      width: 48px; height: 3px; background: var(--bread-yellow);
-      border-radius: 2px; margin: 0 auto 14px; position: relative; z-index: 2;
-    }
-    .divider-ornament::before, .divider-ornament::after {
-      content: ''; position: absolute; top: 50%;
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--bread-yellow); transform: translateY(-50%);
-    }
-    .divider-ornament::before { left: -18px; }
-    .divider-ornament::after { right: -18px; }
-
-    /* Slogan pill */
-    .slogan-pill {
-      display: inline-block; padding: 6px 18px; border-radius: 50px;
-      font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.05em;
-      background: rgba(201,33,43,0.1); color: var(--brand-red);
-    }
-
-    /* 按钮系统 */
-    .btn-primary {
-      display: inline-block; padding: 14px 44px;
-      background: linear-gradient(135deg, var(--haoshi-blue), #2F6EC0);
-      color: #fff; border: none; border-radius: var(--radius-pill);
-      font-family: var(--font-body); font-size: var(--text-md); font-weight: 700;
-      letter-spacing: 0.04em; cursor: pointer;
-      position: relative; z-index: 2; min-height: 48px;
-      box-shadow: var(--shadow-button);
-      transition: all var(--dur-fast);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-elevated); }
-    .btn-primary:active { transform: scale(0.96); }
-
-
-    .btn-outline {
-      display: inline-block; padding: 12px 36px;
-      background: transparent; color: var(--haoshi-blue);
-      border: 2px solid var(--haoshi-blue); border-radius: var(--radius-pill);
-      font-family: var(--font-body); font-size: var(--text-md); font-weight: 700;
-      letter-spacing: 0.04em; cursor: pointer;
-      position: relative; z-index: 2; min-height: 48px;
-      transition: all var(--dur-fast);
-    }
-    .btn-outline:hover { background: var(--haoshi-blue-soft); }
-    .btn-outline:active { transform: scale(0.96); }
-
-    .btn-red {
-      display: inline-block; padding: 14px 44px;
-      background: linear-gradient(135deg, var(--haoshi-red), #E8445A);
-      color: #fff; border: none; border-radius: var(--radius-pill);
-      font-family: var(--font-body); font-size: var(--text-md); font-weight: 700;
-      letter-spacing: 0.04em; cursor: pointer;
-      position: relative; z-index: 2; min-height: 48px;
-      box-shadow: 0 4px 16px rgba(201,33,43,0.2);
-      transition: all var(--dur-fast);
-    }
-    .btn-red:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,33,43,0.35); }
-    .btn-red:active { transform: scale(0.96); }
-
-    /* pill 标签 */
-    .tag-pill {
-      display: inline-block; padding: 6px 16px; border-radius: 50px;
-      font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.03em;
-      background: var(--haoshi-blue-soft); color: var(--haoshi-blue);
-    }
-    .tag-green { background: rgba(127,163,107,0.15); color: var(--safe-green); }
-    .tag-gold { background: rgba(245,184,75,0.15); color: var(--toast-brown); }
-    .tag-red { background: rgba(201,33,43,0.1); color: var(--brand-red); }
-
-    .transparency-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 6px 16px; border-radius: 50px;
-      background: rgba(127,163,107,0.12); color: var(--safe-green);
-      font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.04em;
-    }
-
-    /* ===== P1 首屏 — 复古绅士参观券 V3 ===== */
-    #page01 {
-      background: linear-gradient(180deg, var(--navy-dark) 0%, var(--brand-navy) 50%, #152D6E 100%);
-      overflow: hidden;
-    }
-    .p1-golden-glow {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 320px; height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(197,160,40,0.1) 0%, rgba(197,160,40,0.04) 45%, transparent 70%);
-      z-index: 0; pointer-events: none;
-      animation: goldGlow 3s ease-in-out infinite;
-    }
-    /* 参观券 — 纸质票券风格 */
-    .golden-ticket {
-      position: relative; z-index: 2;
-      width: 300px;
-      filter: drop-shadow(0 8px 28px rgba(16,32,96,0.4));
-      animation: float 4s ease-in-out infinite;
-    }
-    .ticket-body {
-      background: var(--paper-warm);
-      padding: 28px 20px; text-align: center;
-      position: relative;
-      border: 1px solid var(--gold-dark);
-      border-left: none; border-right: none;
-    }
-    .ticket-body::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 6px;
-      background: repeating-linear-gradient(to bottom, var(--brand-navy) 0px, var(--brand-navy) 6px, var(--brand-gold) 6px, var(--brand-gold) 12px);
-    }
-    /* 四角装饰 */
-    .ticket-corner {
-      position: absolute; width: 20px; height: 20px;
-      border-color: var(--brand-gold); border-style: solid; border-width: 0;
-      z-index: 3;
-    }
-    .ticket-corner.tl { top: 10px; left: 16px; border-top-width: 2px; border-left-width: 2px; }
-    .ticket-corner.tr { top: 10px; right: 10px; border-top-width: 2px; border-right-width: 2px; }
-    .ticket-corner.bl { bottom: 10px; left: 16px; border-bottom-width: 2px; border-left-width: 2px; }
-    .ticket-corner.br { bottom: 10px; right: 10px; border-bottom-width: 2px; border-right-width: 2px; }
-    /* 撕票虚线 */
-    .ticket-tear-line {
-      position: relative; height: 1px;
-      border-top: 2px dashed var(--divider);
-      margin: 0 -4px;
-    }
-    .ticket-edge { height: 14px; position: relative; }
-    .ticket-edge-top {
-      background: var(--brand-navy);
-      border-radius: 2px 2px 0 0;
-      border: 1px solid var(--gold-dark); border-bottom: none;
-    }
-    .ticket-edge-bottom {
-      background: var(--brand-navy);
-      border-radius: 0 0 2px 2px;
-      border: 1px solid var(--gold-dark); border-top: none;
-    }
-    .ticket-logo {
-      font-family: var(--font-chinese-serif); font-size: 18px; font-weight: 700;
-      color: var(--brand-navy); letter-spacing: 0.08em;
-    }
-    .ticket-title {
-      font-family: var(--font-chinese-serif); font-size: 34px; font-weight: 700;
-      color: var(--brand-navy); line-height: 1.2; letter-spacing: 0.06em; margin: 8px 0;
-    }
-    .ticket-title em { font-style: normal; color: var(--brand-gold); font-weight: 700; }
-    .ticket-divider {
-      width: 40px; height: 1px; background: var(--brand-gold);
-      margin: 10px auto;
-    }
-    .ticket-no {
-      font-size: 11px; color: var(--ink-secondary); letter-spacing: 0.15em;
-      font-family: var(--font-mono);
-    }
-    .p1-hook-text {
-      font-family: var(--font-wenkai); font-size: 26px; font-weight: 700;
-      color: rgba(255,255,255,0.9); text-align: center;
-      line-height: 1.5; letter-spacing: 0.04em;
-      margin-top: 18px; z-index: 2; position: relative;
-    }
-    .p1-hook-text em { font-style: normal; color: var(--brand-gold); }
-    .p1-hook-sub {
-      font-size: 14px; color: rgba(255,255,255,0.65);
-      letter-spacing: 0.04em; z-index: 2; position: relative;
-      font-family: var(--font-wenkai);
-      text-align: center; line-height: 1.7;
-    }
-
-    /* ===== P2 厂长任命 — 委任状风格 V3 ===== */
-    #page02 { background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 100%); }
-    .appointment-card {
-      width: 290px; padding: 36px 28px;
-      background: var(--paper-warm);
-      border: 1px solid var(--gold-dark);
-      border-radius: var(--radius-md);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: var(--shadow-elevated);
-      position: relative; z-index: 2; overflow: visible;
-      animation: float 3s ease-in-out infinite;
-      text-align: center;
-    }
-    .appointment-card::after {
-      content: ''; position: absolute; inset: 6px;
-      border: 1px solid var(--brand-gold); pointer-events: none;
-      border-radius: 2px;
-    }
-    /* 任命徽章 — 无框，纯logo */
-    .appointment-seal {
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 12px; position: relative; z-index: 1;
-    }
-    .appointment-seal-inner {
-      font-family: var(--font-english-display); font-size: 36px;
-      font-weight: 700; color: var(--brand-navy); line-height: 1;
-    }
-    .appointment-role {
-      font-family: var(--font-chinese-serif); font-size: 28px; font-weight: 700;
-      color: var(--brand-navy); letter-spacing: 0.1em;
-      border-bottom: 3px solid var(--brand-gold); display: inline-block;
-      padding-bottom: 4px; margin: 8px 0; position: relative; z-index: 1;
-    }
-    .appointment-hint {
-      font-size: 12px; color: var(--ink-secondary); margin-top: 16px;
-      letter-spacing: 0.06em; font-family: var(--font-wenkai); position: relative; z-index: 1;
-    }
-
-
-
-    /* ===== P4 世界地图 ===== */
-    .world-map {
-      position: relative; width: 320px; height: 160px;
-      margin: 72px auto 80px; z-index: 2;
-      transform: scale(1.8) translateX(12px); transform-origin: center center;
-      overflow: visible;
-    }
-    /* 像素地图底层 */
-    .map-dots-layer {
-      width: 6px; height: 6px;
-      background: rgba(0,59,122,0.1);
-      border-radius: 0;
-      position: absolute; top: 0; left: 0;
-      pointer-events: none;
-      box-shadow:
-        30px 10px, 40px 10px, 50px 10px, 60px 10px, 70px 10px, 80px 10px,
-        120px 10px, 130px 10px, 140px 10px, 150px 10px, 160px 10px,
-        190px 10px, 200px 10px, 210px 10px, 220px 10px,
-        20px 20px, 30px 20px, 40px 20px, 50px 20px, 60px 20px, 70px 20px, 80px 20px, 90px 20px,
-        110px 20px, 120px 20px, 130px 20px, 140px 20px, 150px 20px, 160px 20px, 170px 20px,
-        190px 20px, 200px 20px, 210px 20px, 220px 20px, 230px 20px, 240px 20px,
-        10px 30px, 20px 30px, 30px 30px, 40px 30px, 50px 30px, 60px 30px, 70px 30px, 80px 30px, 90px 30px,
-        110px 30px, 120px 30px, 130px 30px, 140px 30px, 150px 30px, 160px 30px, 170px 30px,
-        180px 30px, 190px 30px, 200px 30px, 210px 30px, 220px 30px, 230px 30px, 260px 30px,
-        20px 40px, 30px 40px, 40px 40px, 50px 40px, 60px 40px, 70px 40px, 80px 40px,
-        120px 40px, 130px 40px, 140px 40px, 150px 40px, 160px 40px, 170px 40px,
-        180px 40px, 190px 40px, 200px 40px, 210px 40px, 220px 40px, 230px 40px,
-        30px 50px, 40px 50px, 50px 50px, 60px 50px, 70px 50px,
-        130px 50px, 140px 50px, 150px 50px, 160px 50px, 170px 50px, 190px 50px, 200px 50px, 210px 50px, 220px 50px,
-        40px 60px, 50px 60px, 60px 60px, 70px 60px,
-        130px 60px, 140px 60px, 150px 60px, 160px 60px, 170px 60px, 180px 60px, 200px 60px, 210px 60px,
-        40px 70px, 50px 70px, 60px 70px, 70px 70px,
-        130px 70px, 140px 70px, 150px 70px, 160px 70px, 170px 70px, 180px 70px, 200px 70px, 210px 70px,
-        40px 80px, 50px 80px, 60px 80px, 70px 80px, 80px 80px,
-        130px 80px, 140px 80px, 150px 80px, 160px 80px, 170px 80px, 180px 80px, 190px 80px, 200px 80px, 210px 80px, 220px 80px,
-        30px 90px, 40px 90px, 50px 90px, 60px 90px, 70px 90px,
-        130px 90px, 140px 90px, 150px 90px, 160px 90px, 170px 90px, 180px 90px, 190px 90px, 200px 90px, 210px 90px,
-        30px 100px, 40px 100px, 50px 100px, 60px 100px,
-        140px 100px, 150px 100px, 160px 100px, 180px 100px, 190px 100px, 200px 100px, 210px 100px,
-        130px 110px, 140px 110px, 150px 110px, 180px 110px, 190px 110px, 200px 110px,
-        60px 120px, 70px 120px, 80px 120px, 100px 120px, 110px 120px, 120px 120px, 130px 120px, 140px 120px, 150px 120px, 160px 120px, 170px 120px, 180px 120px;
-    }
-    /* 地图标记点 */
-    .map-pin {
-      position: absolute; width: 8px; height: 8px;
-      background: var(--bread-yellow); border-radius: 50%;
-      cursor: pointer; z-index: 5;
-      animation: gentlePulse 2s ease-in-out infinite;
-      box-shadow: 0 0 6px rgba(184,137,46,0.5);
-      transform: translate(-50%, -50%);
-    }
-    .map-pin::after {
-      content: ''; position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 3px; height: 3px; border-radius: 50%;
-      background: #fff; opacity: 0.8;
-    }
-    .map-pin.zhangzhou {
-      background: var(--haoshi-red);
-      width: 12px; height: 12px;
-      box-shadow: 0 0 8px rgba(201,33,43,0.7);
-    }
-    .map-pin.highlight {
-      width: 12px; height: 12px;
-      box-shadow: 0 0 8px rgba(184,137,46,0.7);
-      background: var(--pantone-873c);
-    }
-    .map-pin-label {
-      position: absolute; top: -26px; left: 50%;
-      transform: translateX(-50%);
-      font-size: 11px; color: var(--haoshi-blue); font-weight: 700;
-      white-space: nowrap; pointer-events: none;
-      opacity: 0; background: rgba(255,255,255,0.92); padding: 2px 7px;
-      border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    }
-    /* 轨迹线 */
-    .map-trail {
-      position: absolute; height: 2px;
-      background: var(--bread-yellow);
-      z-index: 4; opacity: 0; pointer-events: none;
-      transform-origin: left center;
-      border-radius: 1px;
-    }
-    .map-trail.animate {
-      animation: trailDraw 0.8s ease-out forwards;
-    }
-    @keyframes trailDraw {
-      from { opacity: 0; width: 0; }
-      to   { opacity: 0.7; }
-    }
-
-    /* ===== P4 原料查验卡片 ===== */
-    .ingredient-cards { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 14px 0; position: relative; z-index: 2; }
-    .ingredient-card {
-      width: 96px; height: 108px; border-radius: var(--radius-md);
-      background: var(--paper-warm); border: 1px solid rgba(143,114,24,0.2);
-      cursor: pointer; transition: all 0.3s;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 4px; box-shadow: 0 2px 8px rgba(27,58,140,0.08);
-      position: relative; overflow: hidden;
-    }
-    .ingredient-card::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 3px; background: var(--brand-gold);
-    }
-    .ingredient-card:active { transform: scale(0.95); }
-    .ingredient-card.revealed { background: var(--navy-light); border-color: var(--brand-navy); }
-    .ingredient-card .card-icon { font-size: 28px; margin-bottom: 4px; line-height: 44px; height: 44px; }
-    .ingredient-card .card-icon-img { width: 44px; height: 44px; object-fit: contain; margin-bottom: 4px; }
-    .ingredient-card .card-name { font-size: 12px; font-weight: 700; color: var(--brand-navy); font-family: var(--font-chinese-serif); }
-    .ingredient-card .card-detail { font-size: 10px; color: var(--ink-secondary); margin-top: 4px; opacity: 0; transition: opacity 0.3s; text-align: center; line-height: 1.4; }
-    .ingredient-card.revealed .card-detail { opacity: 0.8; }
-
-    /* ===== P5 卖点标签 ===== */
-    .slider-container input[type="range"] {
-      width: 100%; height: 8px; border-radius: 4px;
-      background: linear-gradient(90deg, var(--paper-warm), var(--brand-gold), var(--navy-dark));
-      outline: none; -webkit-appearance: none; appearance: none;
-    }
-    .slider-container input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none; width: 32px; height: 32px;
-      border-radius: 50%; background: var(--brand-navy);
-      border: 3px solid var(--brand-gold);
-      cursor: pointer; box-shadow: 0 2px 8px rgba(27,58,140,0.3);
-    }
-    .slider-feedback {
-      margin-top: 10px; font-size: var(--text-lg); font-weight: 700; min-height: 28px;
-      position: relative; z-index: 2;
-      font-family: var(--font-chinese-serif);
-    }
-    .slider-state-label {
-      font-size: 15px; font-weight: 600;
-      color: var(--brand-navy); text-align: center;
-      min-height: 24px; transition: all 0.2s;
-      margin-top: 6px; position: relative; z-index: 2;
-      font-family: var(--font-mono); letter-spacing: 0.05em;
-    }
-
-    /* ===== 单框页面全局放大 ===== */
-    /* P5第一站 / P6第二站 / P7第三站 / P9第五站 — glass-card */
-    #page05, #page06, #page07, #page09, #page12 {
-      padding: 0;
-      justify-content: center;
-    }
-    #page05 .glass-card,
-    #page06 .glass-card,
-    #page07 .glass-card,
-    #page09 .glass-card,
-    #page12 .glass-card {
-      max-width: 420px;
-      width: 90%;
-      padding: 28px 20px;
-      border-radius: 24px;
-    }
-    #page05 .page-title,
-    #page06 .page-title,
-    #page07 .page-title,
-    #page09 .page-title,
-    #page12 .page-title {
-      font-size: var(--text-lg) !important;
-      margin-bottom: 14px;
-      line-height: 1.3;
-    }
-    #page05 .page-subtitle,
-    #page06 .page-subtitle,
-    #page07 .page-subtitle,
-    #page09 .page-subtitle,
-    #page12 .page-subtitle {
-      font-size: var(--text-sm);
-      margin-bottom: 16px;
-      line-height: 1.6;
-    }
-    #page05 .transparency-badge,
-    #page06 .transparency-badge,
-    #page07 .transparency-badge,
-    #page09 .transparency-badge,
-    #page12 .transparency-badge {
-      font-size: var(--text-xs);
-      padding: 6px 18px;
-      margin-bottom: 10px;
-    }
-    #page05 .divider-ornament,
-    #page06 .divider-ornament,
-    #page07 .divider-ornament,
-    #page09 .divider-ornament,
-    #page12 .divider-ornament {
-      margin-bottom: 18px;
-      width: 56px;
-    }
-    #page05 .slogan-pill,
-    #page06 .slogan-pill,
-    #page07 .slogan-pill,
-    #page09 .slogan-pill,
-    #page12 .slogan-pill {
-      font-size: var(--text-sm);
-      padding: 8px 20px;
-    }
-    #page05 .page-hint,
-    #page06 .page-hint,
-    #page07 .page-hint,
-    #page08 .page-hint,
-    #page09 .page-hint,
-    #page12 .page-hint {
-      font-size: 22px;
-      bottom: 80px;
-      padding: 12px 28px;
-    }
-
-    /* P6/P7 滑块加大 */
-    #page06 .slider-container, #page07 .slider-container { width: 94%; margin: 30px auto; }
-    #page06 .slider-container input[type="range"],
-    #page07 .slider-container input[type="range"] { height: 10px; border-radius: 5px; }
-    #page06 .slider-container input[type="range"]::-webkit-slider-thumb,
-    #page07 .slider-container input[type="range"]::-webkit-slider-thumb {
-      width: 56px; height: 56px;
-      border-width: 4px;
-      box-shadow: 0 4px 20px rgba(27,58,140,0.4);
-    }
-    #page06 .slider-feedback, #page07 .slider-feedback { font-size: var(--text-display); margin-top: 20px; min-height: 48px; }
-    #page06 .slider-container > div, #page07 .slider-container > div { font-size: var(--text-md); }
-
-    /* ===== P4 原料卡片加大 ===== */
-    #page05 .ingredient-card { width: 130px; height: 150px; }
-    #page05 .ingredient-card .card-icon { font-size: 34px; height: 64px; line-height: 64px; }
-    #page05 .ingredient-card .card-icon-img { width: 64px; height: 64px; }
-    #page05 .ingredient-card .card-name { font-size: var(--text-sm); }
-    /* P4 世界地图加大 */
-    #page05 .world-map {
-      transform: scale(2) translateX(14px);
-      margin-bottom: 80px;
-    }
-
-    /* ===== P9 质检加大 ===== */
-    #page09 .quiz-timer { font-size: 64px; }
-    #page09 .quiz-breads { gap: 14px; margin: 20px auto; }
-    #page09 #quizResult { font-size: var(--text-lg); font-family: var(--font-chinese-serif); }
-    #page09 .btn-outline { font-size: var(--text-md); padding: 14px 40px; }
-
-    /* ===== P1 参观券加大 ===== */
-    #page01 { padding: 0; }
-    #page01 .golden-ticket { width: 380px; }
-    #page01 .ticket-body { padding: 36px 28px; }
-    #page01 .ticket-title { font-size: 44px; }
-    #page01 .ticket-logo img { height: 56px !important; }
-    #page01 .p1-hook-text { font-size: 34px; margin-top: 24px; }
-    #page01 .p1-hook-sub { font-size: 18px; margin-bottom: 16px; }
-    #page01 .slogan-pill { font-size: var(--text-sm); padding: 8px 20px; }
-    #page01 .btn-gold { font-size: 22px; padding: 18px 56px; }
-
-    /* ===== P2 任命页加大 ===== */
-    #page02 { padding: 0; }
-    #page02 .appointment-card { width: 340px; padding: 44px 32px; }
-    #page02 .appointment-seal img { height: 110px !important; }
-    #page02 .appointment-role { font-size: 34px; }
-    #page02 .page-title { font-size: 32px !important; }
-    #page02 .page-subtitle { font-size: 20px; }
-    #page02 .transparency-badge { font-size: 16px; padding: 10px 24px; }
-    #page02 .slogan-pill { font-size: var(--text-sm); padding: 8px 20px; }
-
-    /* ===== P5 卖点标签加大 ===== */
-    #page04 { padding: 0; }
-    #page04 .slogan-pill { font-size: var(--text-sm); padding: 8px 20px; }
-
-    /* ===== P10 认证卡加大 ===== */
-    #page10 { padding: 0; }
-    #page10 .certificate-card { width: min(360px, 90%); padding: 36px 20px; }
-    #page10 .certificate-card .cert-initial { font-size: 56px; }
-    #page10 .certificate-card .cert-title-text { font-size: 26px; }
-    #page10 .slogan-pill { font-size: var(--text-sm); padding: 8px 20px; }
-    #page10 .page-hint { font-size: var(--text-sm); }
-
-    /* ===== P11 直播屏加大 ===== */
-    #page11 { padding: 0; }
-    #page11 .live-mock { width: 420px; height: 500px; }
-    #page11 .live-mock .live-header { padding: 16px 20px; }
-    #page11 .live-mock .live-title-bar { font-size: var(--text-sm); }
-    #page11 .live-mock .live-viewers { font-size: 12px; }
-    #page11 .danmaku-msg { font-size: var(--text-sm); }
-    #page11 .btn-gold { font-size: var(--text-md); padding: 16px 48px; }
-    #page11 .live-mock .live-badge { font-size: 12px; padding: 6px 16px; }
-    @keyframes danmakuScroll {
-      from { transform: translateX(440px); }
-      to { transform: translateX(-100%); }
-    }
-
-    /* ===== P8 包装页加大 ===== */
-    #page08 .glass-card { max-width: 540px; width: 90%; padding: 28px 20px; }
-    #page08 .pkg-dots { margin-top: 18px; }
-    #page08 .pkg-dot { width: 10px; height: 10px; }
-    #page08 .pkg-dot.active { width: 28px; }
-
-    /* ===== P12 转化页加大 ===== */
-    #page12 .glass-card { max-width: 420px; padding: 28px 24px 20px; }
-    #page12 .action-btn { font-size: var(--text-md); padding: 18px 48px; min-height: 54px; }
-
-    /* ===== P8 切片包装 ===== */
-    .conveyor-wrap {
-      width: 100%; height: 55%; overflow-x: auto; overflow-y: hidden;
-      white-space: nowrap; scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch; position: relative; z-index: 2;
-    }
-    .conveyor-section {
-      display: inline-block; width: 100%; height: 100%;
-      scroll-snap-align: center; flex-shrink: 0;
-    }
-
-    /* ===== P9 质检 ===== */
-    .quiz-breads { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; max-width: 360px; margin-left: auto; margin-right: auto; }
-    .quiz-bread {
-      width: 100%; aspect-ratio: 1.2 / 1; border-radius: var(--radius-md); cursor: pointer;
-      transition: all 0.2s; position: relative;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      background: linear-gradient(180deg, #F0D68A, #E0B860);
-      border: 2px solid transparent;
-    }
-    .quiz-bread:active { transform: scale(0.95); }
-    .quiz-bread.found {
-      background: linear-gradient(180deg, var(--success), #5C8A4A);
-      box-shadow: 0 0 24px rgba(45,125,79,0.5);
-      border-color: var(--success);
-    }
-    .quiz-bread.wrong {
-      background: linear-gradient(180deg, #e88, var(--brand-red));
-      animation: shakeStrong 0.5s;
-      border-color: var(--brand-red);
-    }
-    /* 瑕疵面包：烤色不均 + 边角塌陷 */
-    .quiz-bread.flawed {
-      background: linear-gradient(180deg, #D8B870 0%, #C09848 50%, #A88030 100%);
-    }
-    .quiz-bread.flawed::before {
-      content: ''; position: absolute; top: 20%; left: 25%;
-      width: 50%; height: 35%;
-      background: radial-gradient(ellipse, rgba(180,120,40,0.35), transparent);
-      border-radius: 50%;
-    }
-    .quiz-bread.flawed::after {
-      content: ''; position: absolute; bottom: 5px; right: 5px;
-      width: 0; height: 0;
-      border-left: 10px solid transparent; border-right: 10px solid transparent;
-      border-bottom: 8px solid rgba(160,100,40,0.25);
-    }
-    .quiz-timer {
-      font-size: 48px; color: var(--brand-navy); font-weight: 700;
-      font-family: var(--font-english-display);
-    }
-    .quiz-timer.urgent { color: #C0392B; animation: pulseUrgent 0.5s ease infinite; }
-
-    /* ===== P10 厂长认证卡 V3 — 深蓝底金框证书 ===== */
-    #page10 { background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 100%); }
-    .certificate-card {
-      width: min(340px, 88%); padding: 32px 20px;
-      background: var(--brand-navy);
-      border: 2px solid var(--brand-gold);
-      border-radius: var(--radius-md);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: 0 8px 32px rgba(27,58,140,0.3);
-      position: relative; z-index: 2; overflow: hidden;
-      animation: float 3s ease-in-out infinite;
-      text-align: center; color: var(--paper);
-    }
-    .certificate-card::before {
-      content: ''; position: absolute; inset: 8px;
-      border: 1px solid rgba(197,160,40,0.3); pointer-events: none;
-      border-radius: 2px; z-index: 1;
-    }
-    .certificate-card .cert-id {
-      font-family: var(--font-mono); font-size: 10px;
-      letter-spacing: 0.2em; color: rgba(197,160,40,0.5);
-      margin-bottom: 16px; position: relative; z-index: 2;
-    }
-    .certificate-card .cert-seal {
-      width: 90px; height: 90px; border-radius: 50%;
-      border: 3px solid var(--brand-gold); background: rgba(197,160,40,0.08);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 14px; position: relative; z-index: 2;
-      animation: badgeAppear 0.6s var(--ease-bounce) both;
-    }
-    .certificate-card .cert-initial {
-      font-family: var(--font-english-display); font-size: 48px;
-      font-weight: 700; color: var(--brand-gold); line-height: 1;
-    }
-    .certificate-card .cert-title-text {
-      font-family: var(--font-chinese-serif); font-size: 22px; font-weight: 700;
-      color: var(--paper); letter-spacing: 0.1em;
-      position: relative; z-index: 2; margin: 4px 0;
-    }
-    .certificate-card .cert-subtitle-text {
-      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.25em;
-      color: var(--brand-gold); text-transform: uppercase;
-      position: relative; z-index: 2;
-    }
-    .certificate-card .cert-stamp-line {
-      margin-top: 18px; padding-top: 14px;
-      border-top: 1px solid rgba(197,160,40,0.2);
-      font-family: var(--font-mono); font-size: 9px;
-      color: rgba(197,160,40,0.4); letter-spacing: 0.15em;
-      position: relative; z-index: 2;
-    }
-    .certificate-card .shine-overlay {
-      position: absolute; inset: 0; z-index: 3; pointer-events: none;
-    }
-
-    /* ===== P11 直播模拟屏 V3 ===== */
-    .live-mock {
-      width: 300px; height: 420px; background: var(--navy-dark); border-radius: var(--radius-md);
-      overflow: hidden; position: relative; z-index: 2;
-      box-shadow: var(--shadow-elevated);
-      border: 2px solid rgba(197,160,40,0.25);
-    }
-    .live-mock .live-header {
-      padding: 12px 16px; display: flex; align-items: center; gap: 8px;
-      background: rgba(0,0,0,0.4);
-    }
-    .live-mock .live-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: #FF4444;
-      animation: pulseUrgent 1.5s ease-in-out infinite;
-    }
-    .live-mock .live-title-bar {
-      font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 700;
-      font-family: var(--font-mono); letter-spacing: 0.05em;
-    }
-    .live-mock .live-viewers {
-      margin-left: auto; font-size: 10px; color: rgba(255,255,255,0.4);
-      font-family: var(--font-mono);
-    }
-    .live-mock .live-content {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
-    .live-mock .live-content img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; opacity: 0.7;
-    }
-    .live-mock .live-danmaku {
-      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
-    }
-    .danmaku-msg {
-      position: absolute; white-space: nowrap; font-size: 12px;
-      color: rgba(255,255,255,0.8); padding: 4px 12px;
-      border-radius: 50px; background: rgba(0,0,0,0.4);
-      animation: danmakuScroll 8s linear infinite;
-    }
-    @keyframes danmakuScroll {
-      from { transform: translateX(320px); }
-      to { transform: translateX(-100%); }
-    }
-    .live-mock .live-badge {
-      position: absolute; top: 12px; left: 12px;
-      padding: 4px 12px; border-radius: var(--radius-sm);
-      background: var(--brand-gold); color: var(--navy-dark);
-      font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
-      font-family: var(--font-mono);
-    }
-
-    /* ===== P12 转化页 V3 ===== */
-    .action-btn {
-      padding: 16px 48px; border-radius: var(--radius-sm);
-      font-size: var(--text-md); font-weight: 700; color: #fff; cursor: pointer;
-      transition: all 0.2s; min-height: 50px; letter-spacing: 0.04em;
-      font-family: var(--font-chinese-serif);
-    }
-    .action-btn:active { transform: scale(0.95); }
-    .action-btn.red { background: var(--brand-red); border: none; box-shadow: 0 4px 16px rgba(201,33,43,0.2); }
-    .action-btn.blue { background: var(--brand-navy); border: 1px solid var(--brand-gold); box-shadow: 0 4px 16px rgba(27,58,140,0.25); }
-    .action-btn.gold { background: var(--brand-gold); color: var(--navy-dark); border: none; box-shadow: 0 4px 16px rgba(197,160,40,0.3); }
-
-    /* Slogan 节奏动效 */
-    .slogan-beat {
-      position: fixed; top: 50%; left: 50%;
-      transform: translate(-50%,-50%) scale(0);
-      font-family: var(--font-title); font-size: 42px; font-weight: 900;
-      color: var(--bread-yellow); z-index: 100; pointer-events: none;
-      opacity: 0; text-shadow: 0 0 40px rgba(245,184,75,0.5);
-    }
-    .slogan-beat.pop { animation: sloganPop 0.8s var(--ease-bounce) forwards; }
-    @keyframes sloganPop {
-      0%   { transform: translate(-50%,-50%) scale(0); opacity:0; }
-      15%  { transform: translate(-50%,-50%) scale(1.3); opacity:1; }
-      30%  { transform: translate(-50%,-50%) scale(0.9); opacity:1; }
-      50%  { transform: translate(-50%,-50%) scale(1.05); opacity:1; }
-      100% { transform: translate(-50%,-50%) scale(1.2); opacity:0; }
-    }
-
-    /* ===== P9 认证页 — Slogan 揭示 ===== */
-    .slogan-reveal {
-      font-size: clamp(22px, 6vw, 32px);
-      font-weight: 900;
-      color: var(--brand-color, #E8380D);
-      letter-spacing: 0.08em;
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin: 14px 0;
-    }
-    /* ===== P9 认证页 — 评级徽章 ===== */
-    .rating-row {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    .rating-badge {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      background: rgba(232,56,13,0.07);
-      border: 1.5px solid var(--brand-color, #E8380D);
-      border-radius: 12px;
-      padding: 14px 18px;
-      min-width: 88px;
-    }
-    .rating-s {
-      font-size: clamp(38px, 11vw, 56px);
-      font-weight: 900;
-      color: var(--brand-color, #E8380D);
-      line-height: 1;
-    }
-    .rating-label {
-      font-size: 11px;
-      color: #888;
-      white-space: nowrap;
-    }
-    /* ===== P9 认证页 — 解锁按钮 ===== */
-    .btn-unlock {
-      background: var(--brand-color, #E8380D);
-      color: white;
-      border: none;
-      border-radius: 24px;
-      padding: 14px 28px;
-      font-size: var(--font-base, 16px);
-      font-weight: 600;
-      margin-top: 16px;
-      animation: pulse-btn 2s ease-in-out infinite;
-      cursor: pointer;
-    }
-    @keyframes pulse-btn {
-      0%,100% { box-shadow: 0 0 0 0 rgba(232,56,13,0.4); }
-      50%     { box-shadow: 0 0 0 10px rgba(232,56,13,0); }
-    }
-    /* ===== P10 视频封面升级 ===== */
-    .video-card {
-      width: min(500px, 96%);
-      border-radius: 14px;
-      overflow: hidden;
-      cursor: pointer;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.18);
-      position: relative; z-index: 2;
-    }
-    .video-thumb-wrap {
-      position: relative;
-      aspect-ratio: 16/9;
-      width: 100%;
-    }
-    .video-thumb-img {
-      width: 100%; height: 100%; object-fit: cover;
-    }
-    .video-play-mask {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,0.22);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .play-circle {
-      width: 62px; height: 62px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.92);
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.2s;
-    }
-    .video-card:active .play-circle { transform: scale(0.9); }
-    .video-comment-bubbles {
-      position: absolute;
-      top: 10px; left: 10px;
-      display: flex; flex-direction: column; gap: 6px;
-    }
-    .bubble {
-      background: rgba(0,0,0,0.55);
-      color: white;
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 12px;
-      backdrop-filter: blur(4px);
-      animation: bubble-float 3s ease-in-out infinite;
-    }
-    .bubble.b2 { animation-delay: 1.2s; }
-    @keyframes bubble-float {
-      0%,100% { transform: translateY(0); }
-      50%     { transform: translateY(-3px); }
-    }
-    .video-meta-bar {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 10px 12px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.6));
-      display: flex; justify-content: space-between; align-items: flex-end;
-    }
-    .video-title-text { color: white; font-size: 13px; font-weight: 600; }
-    .video-views      { color: rgba(255,255,255,0.75); font-size: 11px; }
-  </style>
 </head>
 <body>
 
-<div id="progress-bar" class="progress-bar">
-  <span id="progress-label">豪士透明工厂</span>
-  <div class="progress-track"><div id="progress-fill"></div></div>
-</div>
-
-<button class="mute-btn" title="开关音效">🔇</button>
+<!-- ══════════════════════════════════════════════════
+     EDITORIAL HUD 顶部导航与状态条
+     ══════════════════════════════════════════════════ -->
+<header class="hud-header">
+  <span class="hud-log-tag" id="hudLogTag">LOG 01/07 · TICKET</span>
+  <div class="hud-dots" id="hudDots">
+    <div class="hud-dot active" data-act="0" title="参观券"></div>
+    <div class="hud-dot" data-act="1" title="厂长任命"></div>
+    <div class="hud-dot" data-act="2" title="查原料"></div>
+    <div class="hud-dot" data-act="3" title="查工艺"></div>
+    <div class="hud-dot" data-act="4" title="查火候"></div>
+    <div class="hud-dot" data-act="5" title="查质检"></div>
+    <div class="hud-dot" data-act="6" title="厂长档案"></div>
+  </div>
+  <button class="mute-btn" id="muteBtn" title="开关声音" style="position:static;width:34px;height:34px;">🔊</button>
+</header>
 
 <div class="app">
   <div class="viewport">
 
-    <!-- ===== P1 首屏 — 金色参观券 ===== -->
-    <div class="page active" id="page01" data-page="1">
+    <!-- ══════════════════════════════════════════════════
+         第 1 幕 · 序章入厂 · 金色实体参观券
+         ══════════════════════════════════════════════════ -->
+    <div class="page active" id="act01" data-page="0" style="background:var(--paper);">
       <div class="particles"></div>
-      <!-- 金色光芒背景 -->
-      <div class="p1-golden-glow"></div>
-      <!-- 复古绅士参观券 -->
-      <div class="p1-hook-sub" style="margin-bottom:12px;">恭喜你，抽中了豪士的透明工厂参观券<br>获得了一日厂长资格</div>
-      <div class="golden-ticket" id="goldenTicket">
-        <div class="ticket-edge ticket-edge-top"></div>
-        <div class="ticket-body">
-          <div class="ticket-corner tl"></div>
-          <div class="ticket-corner tr"></div>
-          <div class="ticket-corner bl"></div>
-          <div class="ticket-corner br"></div>
-          <div class="ticket-logo" style="text-align:center;"><img src="./assets/images/1豪士logo.png" alt="豪士" style="height:44px;display:inline-block;vertical-align:middle;" /></div>
-          <div class="ticket-title">透明工厂<br>参观券</div>
-          <div class="ticket-divider"></div>
-          <div class="ticket-no" id="ticketNo">NO. 0001</div>
-          <div class="ticket-tear-line" style="margin-top:10px;"></div>
+      <div class="act1-ticket-wrap" id="act1Ticket">
+        <div class="ticket-card-front">
+          <div class="ticket-seal-gold"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <img src="./assets/images/1豪士logo.png" alt="豪士面包" style="height:36px;" />
+            <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brand-gold);" id="ticketNoText">NO. 0001</span>
+          </div>
+
+          <div class="act-title" style="text-align:left;font-size:30px;line-height:1.25;margin:12px 0 6px;">
+            豪士透明工厂<br><span style="color:var(--brand-gold);">特邀参观券</span>
+          </div>
+          <p class="act-sub" style="text-align:left;margin-bottom:20px;">
+            全国大学生广告艺术大赛 · 互动体验特别呈现<br>
+            这届年轻人，连面包都要<em>亲自查岗</em>
+          </p>
+
+          <!-- 划动撕票交互条 -->
+          <div class="tear-strip-container" id="tearTrack">
+            <div class="tear-strip-handle" id="tearHandle">➔</div>
+            <span class="tear-strip-track-text">向右划动撕开入场</span>
+          </div>
         </div>
-        <div class="ticket-edge ticket-edge-bottom"></div>
       </div>
-      <div class="p1-hook-text">这届年轻人<br>连面包都要<em>亲自查岗</em></div>
-      <button class="btn-gold" id="btnEnter" style="margin-top:14px;">使用参观券，进入工厂</button>
+
+      <div class="thumb-zone-bar">
+        <button class="thumb-action-btn" id="btnEnterDirect">
+          <span>🎫 直接撕票进入工厂</span>
+        </button>
+        <span class="thumb-hint">
+          <span class="hint-arrow">👉</span> 划动撕开参观券，化身一日厂长
+        </span>
+      </div>
     </div>
 
-    <!-- ===== P2 厂长任命 — 委任状 ===== -->
-    <div class="page" id="page02" data-page="2">
-      <div class="transparency-badge" id="verifyBadge" style="margin-bottom:20px;">
-        <span class="loading-spinner" id="verifySpinner"></span> 身份验证中
-      </div>
-      <div class="page-title" id="verifyTitle" style="display:none;">兹任命</div>
-      <div class="appointment-card" id="badgeCard" style="display:none;">
-        <div class="appointment-seal">
-          <img src="./assets/images/1豪士logo.png" alt="豪士" style="height:72px;object-fit:contain;" />
-        </div>
-        <div class="appointment-role">一日透明厂长</div>
-        <div style="font-size:14px;color:var(--ink-secondary);z-index:1;position:relative;margin-top:4px;">HORSH FACTORY INSPECTOR</div>
-        <div class="appointment-hint" id="badgeHint">点击接任 →</div>
-      </div>
-      <p class="page-subtitle" id="verifySubtitle" style="margin-top:16px;">
-        今天你是厂长<br>原料、工艺、质检——全都得过你这关
-      </p>
-    </div>
-
-    <!-- ===== P4 查岗任务书 ===== -->
-    <div class="page" id="page04" data-page="3" style="background:linear-gradient(180deg,#F4F8FD,#FFF8EA);">
+    <!-- ══════════════════════════════════════════════════
+         第 2 幕 · 厂长任命 · 掌纹按压激活
+         ══════════════════════════════════════════════════ -->
+    <div class="page" id="act02" data-page="1">
       <img class="page-bg" src="./assets/images/豪士福建工厂.jpg" alt="豪士福建工厂" />
       <div class="overlay-gradient soft"></div>
-      <div class="transparency-badge" style="margin-bottom:6px;">📋 查岗任务书</div>
-      <div class="page-title" style="font-size:var(--text-xl);">今天，查什么</div>
-      <p class="task-brief-desc" style="margin-bottom:12px;">以下五关，一站一站过</p>
 
-      <div class="checklist">
-        <div class="checklist-item">
-          <span class="check-num">01</span>
-          <div class="check-info">
-            <div class="check-name">查原料 · 第一站</div>
-            <div class="check-desc">玻利维亚红藜麦 · 加拿大高筋小麦 · 法国乐斯福酵母</div>
-          </div>
+      <div class="act-glass-card" style="text-align:center;">
+        <div class="act-badge">APPOINTMENT · 身份任命</div>
+        <div class="act-title">今日透明厂长</div>
+        <p class="act-sub">请将手指放在下方感应区，录入掌纹激活车间督造权限</p>
+
+        <!-- 掌纹交互区域 -->
+        <div class="fingerprint-scanner-box" id="fingerprintScanner">
+          <div class="scanner-wave"></div>
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#D4B83C" stroke-width="1.6">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+            <path d="M12 6c-3.31 0-6 2.69-6 6 0 1.66.67 3.16 1.76 4.24l1.42-1.42C8.45 14.1 8 13.1 8 12c0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.1-.45 2.1-1.18 2.82l1.42 1.42C17.33 15.16 18 13.66 18 12c0-3.31-2.69-6-6-6z"/>
+          </svg>
+          <img src="./assets/images/1豪士logo.png" alt="印章" class="stamp-seal-anim" id="stampSeal" style="height:68px;" />
         </div>
-        <div class="checklist-item">
-          <span class="check-num">02</span>
-          <div class="check-info">
-            <div class="check-name">查工艺 · 第二站</div>
-            <div class="check-desc">36米压面机模拟手工 · 4年研发黄金筋度</div>
-          </div>
-        </div>
-        <div class="checklist-item">
-          <span class="check-num">03</span>
-          <div class="check-info">
-            <div class="check-name">查火候 · 第三站</div>
-            <div class="check-desc">智能精准控温 · 表皮微脆内心柔软</div>
-          </div>
-        </div>
-        <div class="checklist-item">
-          <span class="check-num">04</span>
-          <div class="check-info">
-            <div class="check-name">查包装 · 第四站</div>
-            <div class="check-desc">没有吐司边 · 每片独立包装</div>
-          </div>
-        </div>
-        <div class="checklist-item">
-          <span class="check-num">05</span>
-          <div class="check-info">
-            <div class="check-name">查质检 · 第五站</div>
-            <div class="check-desc">6片吐司找瑕疵 · 厂长亲自把关</div>
-          </div>
-        </div>
+
+        <p id="act2Status" style="font-family:var(--font-wenkai);font-size:14px;color:var(--brand-navy);font-weight:700;margin-top:10px;">
+          👆 长按录入指纹印记
+        </p>
       </div>
 
-      <button class="btn-primary" id="btnStartCheck" style="margin-top:16px;flex-shrink:0;position:relative;z-index:10;font-size:22px;padding:18px 56px;">进入第一站 →</button>
+      <div class="thumb-zone-bar">
+        <button class="thumb-action-btn" id="btnAct2Next" style="display:none;">
+          <span>接任厂长 · 进入第一站 →</span>
+        </button>
+      </div>
     </div>
 
-    <!-- ===== P5 第一站 · 查原料（原P4后移） ===== -->
-    <div class="page" id="page05" data-page="4" style="background:linear-gradient(180deg,#F4F8FD,#FFF8EA);">
-      <div class="transparency-badge" style="margin-bottom:8px;">第一站 · 查原料</div>
-      <div class="page-title" style="font-size:var(--text-lg);">原料从地球另一端来</div>
-      <p class="page-subtitle" style="margin-bottom:16px;">真材实料，不藏着掖着</p>
+    <!-- ══════════════════════════════════════════════════
+         第 3 幕 · 第一站 · 查原料 (地球溯源罗盘)
+         ══════════════════════════════════════════════════ -->
+    <div class="page" id="act03" data-page="2">
+      <div class="act-glass-card">
+        <div class="act-badge">STAGE 01 · 查原料</div>
+        <div class="act-title">全球精选 · 真材实料</div>
+        <p class="act-sub">旋转罗盘指针，检视三大陆地黄金原料的真实溯源</p>
 
-      <!-- 像素世界地图 -->
-      <div class="world-map" id="worldMap">
-        <div class="map-dots-layer"></div>
-        <div class="map-pin" style="left:135px;top:30px;" data-pin="france">
-          <span class="map-pin-label" style="top:-30px">法国</span>
+        <!-- 拟物罗盘 -->
+        <div class="compass-dial-container" id="compassDial">
+          <div class="compass-needle" id="compassNeedle" style="transform:rotate(-45deg);"></div>
+          <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--navy-dark);position:absolute;top:8px;">N · 50°</div>
+          <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--navy-dark);position:absolute;bottom:8px;">S · 16°</div>
         </div>
-        <div class="map-pin" style="left:72px;top:72px;" data-pin="bolivia">
-          <span class="map-pin-label" style="top:-30px">玻利维亚</span>
+
+        <!-- 3大微距原料切换卡片 -->
+        <div class="ingredient-macro-grid">
+          <div class="macro-card selected" data-id="0">
+            <img src="./assets/images/红藜麦.jpg" alt="玻利维亚红藜麦" />
+            <div style="font-family:var(--font-chinese-serif);font-size:12px;font-weight:700;">红藜麦</div>
+            <div style="font-size:10px;color:#888;">玻利维亚</div>
+          </div>
+          <div class="macro-card" data-id="1">
+            <img src="./assets/images/lesaffre-logo.png" alt="法国乐斯福酵母" />
+            <div style="font-family:var(--font-chinese-serif);font-size:12px;font-weight:700;">乐斯福</div>
+            <div style="font-size:10px;color:#888;">法国百年</div>
+          </div>
+          <div class="macro-card" data-id="2">
+            <div style="width:52px;height:52px;border-radius:50%;background:#FFF0D0;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 6px;border:1.5px solid var(--brand-gold);">🌾</div>
+            <div style="font-family:var(--font-chinese-serif);font-size:12px;font-weight:700;">春小麦</div>
+            <div style="font-size:10px;color:#888;">加拿大</div>
+          </div>
         </div>
-        <div class="map-pin" style="left:40px;top:32px;" data-pin="canada">
-          <span class="map-pin-label" style="top:-30px">加拿大</span>
+
+        <!-- 溯源详情信息 -->
+        <div style="margin-top:14px;padding:12px;background:rgba(27,58,140,0.05);border-radius:8px;">
+          <div id="originDetailTitle" style="font-family:var(--font-chinese-serif);font-weight:700;font-size:14px;color:var(--brand-navy);margin-bottom:4px;">玻利维亚 · 安第斯红藜麦</div>
+          <div id="originDetailDesc" style="font-size:12px;color:var(--ink-secondary);line-height:1.4;">海拔 4000m 原生高原谷物，晶莹胚芽圈清晰可见，高蛋白低热量营养之王。</div>
         </div>
-        <div class="map-pin zhangzhou" style="left:208px;top:60px;" data-pin="zhangzhou">
-          <span class="map-pin-label" style="top:-30px">漳州</span>
-        </div>
-        <div class="map-trail" data-trail="0" style="left:139px;top:33px;width:81.5px;transform:rotate(23.1deg);"></div>
-        <div class="map-trail" data-trail="1" style="left:76px;top:75px;width:138.4px;transform:rotate(-4.1deg);"></div>
-        <div class="map-trail" data-trail="2" style="left:44px;top:35px;width:172.6px;transform:rotate(10.0deg);"></div>
       </div>
 
-      <!-- 原料卡片 -->
-      <div class="ingredient-cards" id="ingredientCards" style="margin-top:12px;">
-        <div class="ingredient-card" data-ingredient="0">
-          <img src="./assets/images/红藜麦.jpg" alt="红藜麦" class="card-icon-img" />
-          <div class="card-name">玻利维亚红藜麦</div>
-          <div class="card-detail">海拔4000米黄金谷物<br>高蛋白、高营养</div>
-        </div>
-        <div class="ingredient-card" data-ingredient="1">
-          <div class="card-icon">🌾</div>
-          <div class="card-name">加拿大高筋小麦</div>
-          <div class="card-detail">13.5%高蛋白质<br>麦香纯正浓郁</div>
-        </div>
-        <div class="ingredient-card" data-ingredient="2">
-          <img src="./assets/images/lesaffre-logo.png" alt="乐斯福" class="card-icon-img" />
-          <div class="card-name">法国乐斯福酵母</div>
-          <div class="card-detail">源自法国百年酵母企业<br>活性高，风味足</div>
-        </div>
+      <div class="thumb-zone-bar">
+        <button class="thumb-action-btn" id="btnAct3Next">
+          <span>原料已核验 · 查工艺 →</span>
+        </button>
       </div>
-      <div class="page-hint">👆 点击卡片查看原料来源</div>
     </div>
 
-    <!-- ===== P6 和面工艺互动 ===== -->
-    <div class="page" id="page06" data-page="5">
+    <!-- ══════════════════════════════════════════════════
+         第 4 幕 · 第二站 · 查工艺 (揉出透明手套膜)
+         ══════════════════════════════════════════════════ -->
+    <div class="page" id="act04" data-page="3">
       <img class="page-bg" src="./assets/images/车间.jpg" alt="和面车间" />
       <div class="overlay-gradient warm"></div>
-      <div class="particles"></div>
-      <div class="glass-card" id="doughState" style="background:rgba(255,255,255,0.65);">
-        <div class="transparency-badge" style="margin-bottom:10px;">第二站 · 查工艺</div>
-        <div class="divider-ornament"></div>
-        <div class="page-title" style="font-size:var(--text-xl);">手感刚刚好<br>口感才刚刚好</div>
-        <div class="slider-container">
-          <input type="range" id="doughSlider" min="0" max="100" value="50" />
-          <div style="display:flex;justify-content:space-between;font-size:16px;color:var(--brown);opacity:0.6;margin-top:8px;">
-            <span>太软</span><span>太硬</span>
+
+      <div class="act-glass-card">
+        <div class="act-badge">STAGE 02 · 查工艺</div>
+        <div class="act-title">黄金筋度 · 手套膜</div>
+        <p class="act-sub">36米压面机模拟手工大师和面，拖动滑块寻找透光手套膜</p>
+
+        <!-- 面团形变交互区 -->
+        <div class="dough-canvas-wrap">
+          <div class="dough-ball-visual" id="doughBallVisual"></div>
+          <div class="glove-membrane-badge" id="membraneBadge">✓ 黄金手套膜达成</div>
+        </div>
+
+        <div style="padding:0 12px;">
+          <input type="range" id="doughSliderNew" min="0" max="100" value="25" style="width:100%;height:8px;border-radius:4px;outline:none;" />
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--brown);margin-top:6px;">
+            <span>太软</span>
+            <span style="color:var(--brand-gold);font-weight:700;">42-58% 黄金区间</span>
+            <span>太硬</span>
           </div>
         </div>
-        <div class="slider-feedback" id="doughFeedback"></div>
-        <p class="slider-state-label" id="dough-state-label"></p>
-        <div class="pkg-complete" id="doughDone" style="display:none;position:relative;z-index:2;">
-          <div class="pkg-complete-icon">✓</div>
-          <p class="pkg-complete-text" style="color:var(--text-primary);">查工艺完成</p>
-          <p class="pkg-complete-sub">黄金比例，就是这里</p>
+
+        <div id="doughFeedbackNew" style="font-family:var(--font-wenkai);font-size:14px;font-weight:700;color:#B07820;text-align:center;margin-top:10px;">
+          面团偏软 · 筋膜未充分醒发
         </div>
       </div>
-      <div class="page-hint" id="doughHint">👈👉 拖动滑块，找到最佳筋度</div>
+
+      <div class="thumb-zone-bar">
+        <button class="thumb-action-btn" id="btnAct4Next" style="display:none;">
+          <span>筋度合格 · 下一站 →</span>
+        </button>
+        <span class="thumb-hint">
+          <span class="hint-arrow">👉</span> 拖动滑块揉出透光手套膜
+        </span>
+      </div>
     </div>
 
-    <!-- ===== P7 烘烤火候互动 ===== -->
-    <div class="page" id="page07" data-page="6">
+    <!-- ══════════════════════════════════════════════════
+         第 5 幕 · 第三站 · 查火候 (360°烤箱旋钮与美拉德反应)
+         ══════════════════════════════════════════════════ -->
+    <div class="page" id="act05" data-page="4">
       <img class="page-bg" src="./assets/images/车间面包塔.jpg" alt="面包塔" />
       <div class="overlay-gradient warm"></div>
-      <div class="particles"></div>
-      <div class="glass-card" id="bakeToast" style="background:rgba(255,255,255,0.65);">
-        <div class="transparency-badge" style="margin-bottom:10px;">第三站 · 查火候</div>
-        <div class="divider-ornament"></div>
-        <div class="page-title" style="font-size:var(--text-xl);">火候这关<br>也得你点头</div>
-        <div class="slider-container">
-          <input type="range" id="bakeSlider" min="0" max="100" value="50" />
-          <div style="display:flex;justify-content:space-between;font-size:16px;color:var(--brown);opacity:0.6;margin-top:8px;">
-            <span>火小了</span><span>火大了</span>
-          </div>
+
+      <div class="act-glass-card">
+        <div class="act-badge">STAGE 03 · 查火候</div>
+        <div class="act-title">美拉德反应 · 精准控温</div>
+        <p class="act-sub">拧动温控旋钮，亲眼观察吐司表皮焦化过程</p>
+
+        <!-- 烤箱视窗与吐司 -->
+        <div class="oven-viewport">
+          <div class="oven-glow-heat" id="ovenGlowHeat"></div>
+          <div class="oven-toast-slice" id="ovenToastSlice"></div>
         </div>
-        <div class="slider-feedback" id="bakeFeedback"></div>
-        <p class="slider-state-label" id="heat-state-label"></p>
-        <div class="pkg-complete" id="bakeDone" style="display:none;position:relative;z-index:2;">
-          <div class="pkg-complete-icon">✓</div>
-          <p class="pkg-complete-text" style="color:var(--text-primary);">查火候完成</p>
-          <p class="pkg-complete-sub">智能精准控温，表皮微脆内心柔软</p>
+
+        <!-- 当前温控读数 -->
+        <div style="text-align:center;margin-bottom:10px;">
+          <span id="ovenTempDisplay" style="font-family:var(--font-english-display);font-size:32px;font-weight:700;color:var(--brand-navy);">180.0°C</span>
+        </div>
+
+        <!-- 旋转式仪表旋钮 -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:18px;">
+          <button id="btnTempDec" style="width:36px;height:36px;border-radius:50%;background:#EBF0FB;color:var(--brand-navy);font-weight:700;font-size:18px;">-</button>
+          <div class="oven-rotary-knob" id="ovenKnob">
+            <div class="knob-pointer-line"></div>
+          </div>
+          <button id="btnTempInc" style="width:36px;height:36px;border-radius:50%;background:#EBF0FB;color:var(--brand-navy);font-weight:700;font-size:18px;">+</button>
+        </div>
+
+        <div id="bakeFeedbackNew" style="font-family:var(--font-wenkai);font-size:14px;font-weight:700;color:#B07820;text-align:center;margin-top:12px;">
+          火候不足 · 表皮苍白未熟
         </div>
       </div>
-      <div class="page-hint" id="bakeHint">👈👉 拖动滑块，找到最佳火候</div>
+
+      <div class="thumb-zone-bar">
+        <button class="thumb-action-btn" id="btnAct5Next" style="display:none;">
+          <span>火候锁定 · 查质检 →</span>
+        </button>
+        <span class="thumb-hint">
+          <span class="hint-arrow">👉</span> 旋转旋钮调节至 218°C 黄金温度
+        </span>
+      </div>
     </div>
 
-    <!-- ===== P8 切片包装 ===== -->
-    <div class="page" id="page08" data-page="7">
-      <img class="page-bg" src="./assets/images/车间机械手.jpg" alt="切片包装机械手" />
+    <!-- ══════════════════════════════════════════════════
+         第 6 幕 · 第四站 · 查质检 (传送带 10 秒眼力挑战)
+         ══════════════════════════════════════════════════ -->
+    <div class="page" id="act06" data-page="5">
+      <img class="page-bg" src="./assets/images/工厂3.jpg" alt="质检流水线" />
       <div class="overlay-gradient warm"></div>
-      <div class="particles"></div>
-      <div class="glass-card" style="background:rgba(255,255,255,0.65);width:92%;max-width:500px;">
-        <div class="transparency-badge" style="margin-bottom:8px;">第四站 · 查包装</div>
-        <div class="page-title" style="font-size:var(--text-lg);margin-bottom:8px;">没有吐司边 · 每一口都是芯</div>
-        <div class="pkg-carousel-wrapper" style="background:transparent;backdrop-filter:none;border-radius:0;padding:8px 0;">
-          <div class="pkg-carousel-track" id="pkgTrack">
-            <div class="pkg-card" data-index="0">
-  
-              <div class="pkg-card-step">Step 1 / 3</div>
-              <div class="pkg-card-title">整条吐司</div>
-              <div class="pkg-card-desc">四周都有吐司边<br>切掉浪费，吃掉将就</div>
+
+      <div class="act-glass-card">
+        <div class="act-badge" style="color:var(--brand-red);">STAGE 04 · 查质检</div>
+        <div class="act-title">10秒排查 · 厂长把关</div>
+        <p class="act-sub">传送带经过的6片吐司中有2片存在外观瑕疵，迅速找出！</p>
+
+        <!-- 圆形倒计时 -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;">
+          <svg width="60" height="60" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="26" stroke="rgba(27,58,140,0.15)" stroke-width="4" fill="none" />
+            <circle id="inspectTimerCircle" cx="30" cy="30" r="26" stroke="#C9212B" stroke-width="4" fill="none"
+                    stroke-dasharray="163.36" stroke-dashoffset="0" stroke-linecap="round" style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 0.8s linear;" />
+          </svg>
+          <span id="inspectTimerSec" style="font-family:var(--font-english-display);font-size:28px;font-weight:700;color:var(--brand-red);">10</span>
+          <span style="font-size:12px;color:var(--ink-secondary);">秒倒计时</span>
+        </div>
+
+        <!-- 传送带 6 片吐司 (第3片焦斑瑕疵、第5片凹坑瑕疵) -->
+        <div class="conveyor-track">
+          <div class="conveyor-bread-grid">
+            <div class="inspect-bread-item" data-bad="false" data-idx="0"></div>
+            <div class="inspect-bread-item" data-bad="false" data-idx="1"></div>
+            <div class="inspect-bread-item" data-bad="true" data-idx="2">
+              <div class="defect-burnt-mark"></div>
             </div>
-            <div class="pkg-card" data-index="1">
-              <div class="pkg-card-step">Step 2 / 3</div>
-              <div class="pkg-card-title">精准切边</div>
-              <div class="pkg-card-desc">自动化流水线<br>四边精准去除，只留软芯</div>
+            <div class="inspect-bread-item" data-bad="false" data-idx="3"></div>
+            <div class="inspect-bread-item" data-bad="true" data-idx="4">
+              <div class="defect-dent-mark"></div>
             </div>
-            <div class="pkg-card" data-index="2">
-              <div class="pkg-card-step">Step 3 / 3</div>
-              <div class="pkg-card-title">无边入袋</div>
-              <div class="pkg-card-desc">每一片都是纯芯<br>打开即食，不用再撕边</div>
-            </div>
+            <div class="inspect-bread-item" data-bad="false" data-idx="5"></div>
           </div>
         </div>
-        <div class="pkg-dots" id="pkgDots">
-          <span class="pkg-dot active"></span><span class="pkg-dot"></span><span class="pkg-dot"></span>
-        </div>
-        <div class="pkg-complete" id="pkgComplete" style="display:none;">
-          <p class="pkg-complete-text" style="color:var(--text-primary);">查包装完成</p>
+
+        <div id="inspectResultMsg" style="font-family:var(--font-wenkai);font-size:13px;font-weight:700;text-align:center;min-height:22px;color:var(--brand-navy);">
+          👆 点击挑出 2 片不完美瑕疵吐司
         </div>
       </div>
-      <div class="page-hint" id="pkgHint">👈 左右滑动查看切片流程</div>
+
+      <div class="thumb-zone-bar">
+        <button class="thumb-action-btn" id="btnAct6Next" style="display:none;">
+          <span>质检通过 · 生成厂长档案 →</span>
+        </button>
+      </div>
     </div>
 
-    <!-- ===== P9 质检挑战 ===== -->
-    <div class="page" id="page09" data-page="8">
-      <img class="page-bg" src="./assets/images/工厂3.jpg" alt="工厂质检线" />
-      <div class="overlay-gradient warm"></div>
-      <div class="particles"></div>
-      <div class="glass-card" style="background:rgba(255,255,255,0.65);">
-        <div class="transparency-badge" style="margin-bottom:10px;">第五站 · 查质检</div>
-        <div class="page-title" style="font-size:var(--text-lg);color:var(--brand-red);">厂长，有两片需要复检</div>
-        <p class="page-subtitle" style="color:var(--brown);">6片吐司中，有2片不够完美<br>10秒内，找出它们</p>
-        <div class="quiz-timer" id="quizTimer">10</div>
-        <div class="quiz-breads" id="quizBreads">
-          <div class="quiz-bread" data-idx="0"></div>
-          <div class="quiz-bread" data-idx="1"></div>
-          <div class="quiz-bread flawed" data-idx="2" data-bad="true"></div>
-          <div class="quiz-bread" data-idx="3"></div>
-          <div class="quiz-bread flawed" data-idx="4" data-bad="true"></div>
-          <div class="quiz-bread" data-idx="5"></div>
-        </div>
-        <div id="quizResult" style="font-size:var(--text-md);font-weight:700;min-height:28px;"></div>
-        <button id="quizRetry" class="btn-outline" style="display:none;margin-top:10px;">再查一次</button>
-      </div>
-      <p style="font-size:11px;color:#999;text-align:center;margin-top:6px;padding:0 12px;position:relative;z-index:2;">*本环节为趣味互动体验，豪士实际采用智能视觉识别系统+人工复检的全流程品控体系</p>
-      <div class="page-hint" id="quizHint">👆 点击找出2片瑕疵面包</div>
-    </div>
-
-    <!-- ===== P10 厂长认证卡 V3 ===== -->
-    <div class="page" id="page10" data-page="9">
-      <div class="transparency-badge" style="margin-bottom:8px;">CERTIFIED · 认证通过</div>
-      <div class="page-title" style="font-size:var(--text-lg);">你的透明厂长认证<br>已生成</div>
-      <div class="certificate-card" id="badgeResult">
-        <div class="cert-id">CERTIFICATE NO. HS-2026-<span id="certNumber">0001</span></div>
-        <div class="cert-seal">
-          <span class="cert-initial" id="badgeGrade">S</span>
-        </div>
-        <div class="cert-title-text" id="badgeTitleText">天生厂长</div>
-        <div class="cert-subtitle-text">HORSH · FACTORY INSPECTOR</div>
-        <div class="cert-stamp-line">ISSUED BY HORSH TRANSPARENT FACTORY</div>
-        <div class="shine-overlay"></div>
-      </div>
-      <p id="badgePersonal" style="font-size:14px;color:var(--ink-secondary);margin-top:8px;opacity:0.8;"></p>
-      <div class="slogan-reveal" style="position:relative;z-index:2;">
-        <span>豪士豪士</span>
-        <span>好吃好吃</span>
-      </div>
-      <button class="btn-unlock" onclick="window.app&&window.app.next()">🎬 探秘视频已解锁，点击查看</button>
-    </div>
-
-    <!-- ===== P11 工厂探秘视频 ===== -->
-    <div class="page" id="page11" data-page="10" style="background:linear-gradient(180deg,#1A1A2E,#16213E);">
-      <div class="page-title" style="font-size:var(--font-lg);color:#fff;">查岗完成！解锁隐藏福利<br>工厂探秘视频，仅限今日厂长</div>
-      <div class="video-card" id="videoCard">
-        <div class="video-thumb-wrap">
-          <img src="./assets/images/视频封面.jpg" alt="豪士透明工厂探秘" class="video-thumb-img" />
-          <div class="video-play-mask">
-            <div class="play-circle">
-              <svg viewBox="0 0 24 24" width="30" height="30" fill="white"><polygon points="6,3 20,12 6,21"/></svg>
-            </div>
-          </div>
-          <div class="video-comment-bubbles">
-            <span class="bubble b1">这车间也太亮了 👀</span>
-            <span class="bubble b2">原来吐司是这样出来的！</span>
-          </div>
-          <div class="video-meta-bar">
-            <span class="video-title-text">豪士透明工厂探秘</span>
-          </div>
-        </div>
-      </div>
-      <button class="btn-gold" id="btnWatchLive" style="margin-top:16px;">去看工厂探秘视频</button>
-      <div class="page-hint" style="color:var(--brand-gold);background:rgba(27,58,140,0.85);border-color:rgba(197,160,40,0.3);font-weight:700;">左滑继续</div>
-    </div>
-
-    <!-- ===== P12 转化页 ===== -->
-    <div class="page" id="page12" data-page="11">
+    <!-- ══════════════════════════════════════════════════
+         第 7 幕 · 终章授勋 · 厂长档案与专享尝鲜
+         ══════════════════════════════════════════════════ -->
+    <div class="page" id="act07" data-page="6">
       <img class="page-bg" src="./assets/images/漳州工厂3.jpg" alt="豪士工厂全景" />
-      <div class="particles"></div>
-      <div class="glass-card" style="background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 20px 16px;color:#FFFFFF;">
-        <div style="max-width:280px;margin:0 auto;text-align:center;font-family:var(--font-chinese-serif);font-size:var(--text-md);font-weight:700;line-height:1.5;margin-bottom:8px;color:#FFFFFF;">查过原料，盯过工艺，亲自品控<br>这片面包，配得上你的认可</div>
-        <div class="action-buttons" style="display:flex;flex-direction:column;align-items:center;margin:0 0 4px; gap:8px;">
-          <div style="width:min(240px,65%); margin:0 auto 8px; overflow:hidden;
-                      filter:drop-shadow(0 8px 20px rgba(0,0,0,0.25));">
-            <picture>
-              <source srcset="./assets/images/product-bread.webp" type="image/webp">
-              <img src="./assets/images/product-bread.png" alt="豪士藜麦吐司"
-                style="width:100%; display:block; transform:scale(1.1);" loading="lazy" decoding="async">
-            </picture>
-          </div>
-          <button class="action-btn" id="btnTmall" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;background:#003087;color:#FFFFFF;border:none;border-radius:var(--radius-sm);">🛒 去官方旗舰店</button>
-          <button class="action-btn" id="btnShare" style="padding:12px 36px;font-size:var(--text-sm);min-height:44px;background:transparent;border:2px solid #C6A84B;color:#C6A84B;border-radius:var(--radius-sm);">📋 复制话题，让朋友也来查岗</button>
-          <p id="sharePreview" style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:12px;line-height:1.4;">#豪士透明工厂查岗日# 我今天当了一天透明厂长，原来面包是这样做出来的</p>
+      <div class="overlay-gradient soft"></div>
+
+      <div class="dossier-card-wrap">
+        <div class="dossier-medal-big" id="finalGradeLetter">S</div>
+        <div class="act-title" style="color:#FFF;margin-bottom:2px;" id="finalGradeTitle">特级督造官</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:#D4B83C;letter-spacing:0.1em;">
+          CERTIFICATE NO. HS-2026-<span id="finalCertNo">9527</span>
         </div>
-        <p style="font-size:13px;color:rgba(255,255,255,0.7);margin-top:12px;text-align:center;">先查岗，再开吃 · 豪士豪士，好吃好吃</p>
+
+        <div class="dossier-stats-row">
+          <div>
+            <div class="stat-item-val" id="finalStatTime">3s</div>
+            <div class="stat-item-lbl">排查用时</div>
+          </div>
+          <div>
+            <div class="stat-item-val" id="finalStatTemp">218°C</div>
+            <div class="stat-item-lbl">锁定火候</div>
+          </div>
+          <div>
+            <div class="stat-item-val">100%</div>
+            <div class="stat-item-lbl">出厂合格率</div>
+          </div>
+        </div>
+
+        <p id="finalPersonalMsg" style="font-family:var(--font-wenkai);font-size:13px;color:#EBF0FB;margin-bottom:14px;line-height:1.4;">
+          零失误通关，豪士正式向你发放全职厂长邀请 🎖️
+        </p>
+
+        <!-- 产品预览 -->
+        <div style="width:160px;margin:0 auto 12px;">
+          <picture>
+            <source srcset="./assets/images/product-bread.webp" type="image/webp">
+            <img src="./assets/images/product-bread.png" alt="豪士藜麦吐司" style="width:100%;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.4));" />
+          </picture>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="thumb-action-btn" id="btnSavePoster" style="width:100%;height:46px;font-size:15px;">
+            <span>📸 保存专属厂长结业档案 (海报)</span>
+          </button>
+          <button class="thumb-action-btn" id="btnToTmall" style="width:100%;height:46px;font-size:15px;background:transparent;border-color:#D4B83C;color:#D4B83C;">
+            <span>🛒 凭工号领内测尝鲜装 (天猫旗舰店)</span>
+          </button>
+        </div>
       </div>
     </div>
 
   </div><!-- /viewport -->
 </div><!-- /app -->
+
+<!-- ══════════════════════════════════════════════════
+     海报展示弹窗 (长按保存至相册)
+     ══════════════════════════════════════════════════ -->
+<div class="poster-modal-overlay" id="posterModal">
+  <img id="posterImgPreview" class="poster-img-preview" alt="厂长荣誉档案" />
+  <div style="font-family:var(--font-wenkai);color:#FAF8F2;font-size:14px;margin-top:12px;letter-spacing:0.05em;">
+    👆 长按图片保存至手机相册 · 分享朋友圈
+  </div>
+  <button id="posterModalClose" style="margin-top:16px;padding:8px 24px;border-radius:20px;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);">
+    关闭预览
+  </button>
+</div>
 
 <script type="module" src="./js/main.js"></script>
 </body>
