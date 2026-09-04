@@ -298,66 +298,147 @@
 }
 
 /* ══════════════════════════════════════════════════
-   5. ACT 3 — 原料溯源罗盘与3大微距卡片
+   5. ACT 3 — 原版经典像素世界地图与原料卡片
    ══════════════════════════════════════════════════ */
-.compass-dial-container {
-  width: 180px; height: 180px;
-  margin: 0 auto 16px;
+.world-map {
   position: relative;
-  border-radius: 50%;
-  background: radial-gradient(circle, #FAF8F2 60%, #EBF0FB 100%);
-  border: 3px solid var(--brand-gold);
-  box-shadow: 0 8px 24px rgba(27, 58, 140, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: grab;
+  width: 300px;
+  height: 150px;
+  margin: 12px auto;
+  z-index: 2;
+  overflow: visible;
 }
-.compass-needle {
-  width: 6px; height: 130px;
-  position: absolute;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transform-origin: 50% 50%;
+/* 像素地图底层 */
+.map-dots-layer {
+  width: 5px; height: 5px;
+  background: rgba(0, 59, 122, 0.12);
+  border-radius: 0;
+  position: absolute; top: 0; left: 0;
+  pointer-events: none;
+  box-shadow:
+    30px 10px, 40px 10px, 50px 10px, 60px 10px, 70px 10px, 80px 10px,
+    120px 10px, 130px 10px, 140px 10px, 150px 10px, 160px 10px,
+    190px 10px, 200px 10px, 210px 10px, 220px 10px,
+    20px 20px, 30px 20px, 40px 20px, 50px 20px, 60px 20px, 70px 20px, 80px 20px, 90px 20px,
+    110px 20px, 120px 20px, 130px 20px, 140px 20px, 150px 20px, 160px 20px, 170px 20px,
+    190px 20px, 200px 20px, 210px 20px, 220px 20px, 230px 20px, 240px 20px,
+    10px 30px, 20px 30px, 30px 30px, 40px 30px, 50px 30px, 60px 30px, 70px 30px, 80px 30px, 90px 30px,
+    110px 30px, 120px 30px, 130px 30px, 140px 30px, 150px 30px, 160px 30px, 170px 30px,
+    180px 30px, 190px 30px, 200px 30px, 210px 30px, 220px 30px, 230px 30px, 260px 30px,
+    20px 40px, 30px 40px, 40px 40px, 50px 40px, 60px 40px, 70px 40px, 80px 40px,
+    120px 40px, 130px 40px, 140px 40px, 150px 40px, 160px 40px, 170px 40px,
+    180px 40px, 190px 40px, 200px 40px, 210px 40px, 220px 40px, 230px 40px,
+    30px 50px, 40px 50px, 50px 50px, 60px 50px, 70px 50px,
+    130px 50px, 140px 50px, 150px 50px, 160px 50px, 170px 50px, 190px 50px, 200px 50px, 210px 50px, 220px 50px,
+    40px 60px, 50px 60px, 60px 60px, 70px 60px,
+    130px 60px, 140px 60px, 150px 60px, 160px 60px, 170px 60px, 180px 60px, 200px 60px, 210px 60px,
+    40px 70px, 50px 70px, 60px 70px, 70px 70px,
+    130px 70px, 140px 70px, 150px 70px, 160px 70px, 170px 70px, 180px 70px, 200px 70px, 210px 70px,
+    40px 80px, 50px 80px, 60px 80px, 70px 80px, 80px 80px,
+    130px 80px, 140px 80px, 150px 80px, 160px 80px, 170px 80px, 180px 80px, 190px 80px, 200px 80px, 210px 80px, 220px 80px,
+    30px 90px, 40px 90px, 50px 90px, 60px 90px, 70px 90px,
+    130px 90px, 140px 90px, 150px 90px, 160px 90px, 170px 90px, 180px 90px, 190px 90px, 200px 90px, 210px 90px,
+    30px 100px, 40px 100px, 50px 100px, 60px 100px,
+    140px 100px, 150px 100px, 160px 100px, 180px 100px, 190px 100px, 200px 100px, 210px 100px,
+    130px 110px, 140px 110px, 150px 110px, 180px 110px, 190px 110px, 200px 110px,
+    60px 120px, 70px 120px, 80px 120px, 100px 120px, 110px 120px, 120px 120px, 130px 120px, 140px 120px, 150px 120px, 160px 120px, 170px 120px, 180px 120px;
 }
-.compass-needle::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 65px;
+/* 地图标记点 */
+.map-pin {
+  position: absolute; width: 8px; height: 8px;
+  background: var(--brand-gold); border-radius: 50%;
+  cursor: pointer; z-index: 5;
+  box-shadow: 0 0 6px rgba(184, 137, 46, 0.5);
+  transform: translate(-50%, -50%);
+}
+.map-pin::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3px; height: 3px; border-radius: 50%;
+  background: #fff; opacity: 0.8;
+}
+.map-pin.zhangzhou {
   background: var(--brand-red);
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  width: 12px; height: 12px;
+  box-shadow: 0 0 8px rgba(201, 33, 43, 0.7);
 }
-.compass-needle::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 65px;
-  background: var(--brand-navy);
-  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+.map-pin.highlight {
+  width: 12px; height: 12px;
+  box-shadow: 0 0 8px rgba(184, 137, 46, 0.7);
+  background: #FFD700;
+}
+.map-pin-label {
+  position: absolute; top: -24px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px; color: var(--brand-navy); font-weight: 700;
+  white-space: nowrap; pointer-events: none;
+  opacity: 0; background: rgba(255, 255, 255, 0.92); padding: 2px 7px;
+  border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  transition: opacity 0.3s;
+}
+.map-pin.show-label .map-pin-label {
+  opacity: 1;
 }
 
-.ingredient-macro-grid {
+/* 轨迹线 */
+.map-trail {
+  position: absolute; height: 2px;
+  background: linear-gradient(90deg, var(--brand-gold), var(--brand-red));
+  z-index: 4; opacity: 0; pointer-events: none;
+  transform-origin: left center;
+  border-radius: 1px;
+}
+.map-trail.animate {
+  opacity: 0.75;
+}
+
+/* 原料卡片三列 */
+.ingredient-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+  margin: 14px 0 6px;
+  position: relative;
+  z-index: 2;
 }
-.macro-card {
-  background: #FFFFFF;
-  border: 1.5px solid rgba(27, 58, 140, 0.12);
+.ingredient-card {
   border-radius: 10px;
-  padding: 10px 6px;
-  text-align: center;
+  background: var(--paper-warm);
+  border: 1px solid rgba(143, 114, 24, 0.2);
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.25s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 4px;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(27, 58, 140, 0.08);
+  position: relative;
+  overflow: hidden;
 }
-.macro-card.selected {
-  border-color: var(--brand-gold);
-  background: #FFFDF7;
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(197, 160, 40, 0.25);
+.ingredient-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--brand-gold);
 }
-.macro-card img {
-  width: 52px; height: 52px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin: 0 auto 6px;
-  border: 1.5px solid var(--brand-gold);
+.ingredient-card:active { transform: scale(0.96); }
+.ingredient-card.revealed, .ingredient-card.selected {
+  background: var(--navy-light);
+  border-color: var(--brand-navy);
+  box-shadow: 0 4px 14px rgba(27, 58, 140, 0.18);
+}
+.ingredient-card .card-name {
+  font-family: var(--font-chinese-serif);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-navy);
+  white-space: nowrap;
+}
+.ingredient-card .card-detail {
+  font-size: 10px;
+  color: var(--ink-secondary);
+  line-height: 1.3;
+  text-align: center;
 }
 
 /* ══════════════════════════════════════════════════
@@ -460,6 +541,25 @@
 /* ══════════════════════════════════════════════════
    8. ACT 6 — 传送带真实可见瑕疵吐司
    ══════════════════════════════════════════════════ */
+.quiz-timer {
+  font-family: var(--font-english-display);
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--brand-red);
+  text-align: center;
+  line-height: 1;
+  margin: 6px auto;
+  letter-spacing: -0.02em;
+}
+.quiz-timer.urgent {
+  color: #C0392B;
+  animation: pulseUrgent 0.5s ease infinite;
+}
+@keyframes pulseUrgent {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+
 .conveyor-track {
   width: 100%;
   padding: 12px 6px;

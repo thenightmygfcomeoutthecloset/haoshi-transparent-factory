@@ -113,44 +113,51 @@
     </div>
 
     <!-- ══════════════════════════════════════════════════
-         第 3 幕 · 第一站 · 查原料 (地球溯源罗盘)
+         第 3 幕 · 第一站 · 查原料 (原版经典像素世界地图 + 原料汇聚)
          ══════════════════════════════════════════════════ -->
     <div class="page" id="act03" data-page="2">
       <div class="act-glass-card">
         <div class="act-badge">STAGE 01 · 查原料</div>
-        <div class="act-title">全球精选 · 真材实料</div>
-        <p class="act-sub">旋转罗盘指针，检视三大陆地黄金原料的真实溯源</p>
+        <div class="act-title">原料从地球另一端来</div>
+        <p class="act-sub">真材实料，不藏着掖着 · 检视全球黄金产地</p>
 
-        <!-- 拟物罗盘 -->
-        <div class="compass-dial-container" id="compassDial">
-          <div class="compass-needle" id="compassNeedle" style="transform:rotate(-45deg);"></div>
-          <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--navy-dark);position:absolute;top:8px;">N · 50°</div>
-          <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--navy-dark);position:absolute;bottom:8px;">S · 16°</div>
+        <!-- 原版经典像素世界地图 -->
+        <div class="world-map" id="worldMap">
+          <div class="map-dots-layer"></div>
+          <div class="map-pin" style="left:135px;top:30px;" data-pin="france">
+            <span class="map-pin-label" style="top:-24px">法国</span>
+          </div>
+          <div class="map-pin" style="left:72px;top:72px;" data-pin="bolivia">
+            <span class="map-pin-label" style="top:-24px">玻利维亚</span>
+          </div>
+          <div class="map-pin" style="left:40px;top:32px;" data-pin="canada">
+            <span class="map-pin-label" style="top:-24px">加拿大</span>
+          </div>
+          <div class="map-pin zhangzhou" style="left:208px;top:60px;" data-pin="zhangzhou">
+            <span class="map-pin-label" style="top:-24px">漳州</span>
+          </div>
+          <div class="map-trail" data-trail="0" style="left:139px;top:33px;width:81.5px;transform:rotate(23.1deg);"></div>
+          <div class="map-trail" data-trail="1" style="left:76px;top:75px;width:138.4px;transform:rotate(-4.1deg);"></div>
+          <div class="map-trail" data-trail="2" style="left:44px;top:35px;width:172.6px;transform:rotate(10.0deg);"></div>
         </div>
 
-        <!-- 3大微距原料切换卡片 -->
-        <div class="ingredient-macro-grid">
-          <div class="macro-card selected" data-id="0">
-            <img src="./assets/images/红藜麦.jpg" alt="玻利维亚红藜麦" />
-            <div style="font-family:var(--font-chinese-serif);font-size:12px;font-weight:700;">红藜麦</div>
-            <div style="font-size:10px;color:#888;">玻利维亚</div>
+        <!-- 原料卡片 -->
+        <div class="ingredient-cards" id="ingredientCards">
+          <div class="ingredient-card revealed" data-ingredient="0">
+            <img src="./assets/images/红藜麦.jpg" alt="红藜麦" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
+            <div class="card-name">玻利维亚红藜麦</div>
+            <div class="card-detail">海拔4000米黄金谷物<br>高蛋白、高营养</div>
           </div>
-          <div class="macro-card" data-id="1">
-            <img src="./assets/images/lesaffre-logo.png" alt="法国乐斯福酵母" />
-            <div style="font-family:var(--font-chinese-serif);font-size:12px;font-weight:700;">乐斯福</div>
-            <div style="font-size:10px;color:#888;">法国百年</div>
+          <div class="ingredient-card" data-ingredient="1">
+            <div style="font-size:26px;height:40px;line-height:40px;">🌾</div>
+            <div class="card-name">加拿大高筋小麦</div>
+            <div class="card-detail">13.5%高蛋白质<br>麦香纯正浓郁</div>
           </div>
-          <div class="macro-card" data-id="2">
-            <div style="width:52px;height:52px;border-radius:50%;background:#FFF0D0;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 6px;border:1.5px solid var(--brand-gold);">🌾</div>
-            <div style="font-family:var(--font-chinese-serif);font-size:12px;font-weight:700;">春小麦</div>
-            <div style="font-size:10px;color:#888;">加拿大</div>
+          <div class="ingredient-card" data-ingredient="2">
+            <img src="./assets/images/lesaffre-logo.png" alt="乐斯福" style="width:40px;height:40px;border-radius:50%;object-fit:contain;background:#fff;" />
+            <div class="card-name">法国乐斯福酵母</div>
+            <div class="card-detail">百年法国酵母世家<br>活性高，风味足</div>
           </div>
-        </div>
-
-        <!-- 溯源详情信息 -->
-        <div style="margin-top:14px;padding:12px;background:rgba(27,58,140,0.05);border-radius:8px;">
-          <div id="originDetailTitle" style="font-family:var(--font-chinese-serif);font-weight:700;font-size:14px;color:var(--brand-navy);margin-bottom:4px;">玻利维亚 · 安第斯红藜麦</div>
-          <div id="originDetailDesc" style="font-size:12px;color:var(--ink-secondary);line-height:1.4;">海拔 4000m 原生高原谷物，晶莹胚芽圈清晰可见，高蛋白低热量营养之王。</div>
         </div>
       </div>
 
@@ -158,6 +165,9 @@
         <button class="thumb-action-btn" id="btnAct3Next">
           <span>原料已核验 · 查工艺 →</span>
         </button>
+        <span class="thumb-hint">
+          <span class="hint-arrow">👉</span> 点击原料卡片查看全球产地航线
+        </span>
       </div>
     </div>
 
@@ -262,16 +272,8 @@
         <div class="act-title">10秒排查 · 厂长把关</div>
         <p class="act-sub">传送带经过的6片吐司中有2片存在外观瑕疵，迅速找出！</p>
 
-        <!-- 圆形倒计时 -->
-        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;">
-          <svg width="60" height="60" viewBox="0 0 60 60">
-            <circle cx="30" cy="30" r="26" stroke="rgba(27,58,140,0.15)" stroke-width="4" fill="none" />
-            <circle id="inspectTimerCircle" cx="30" cy="30" r="26" stroke="#C9212B" stroke-width="4" fill="none"
-                    stroke-dasharray="163.36" stroke-dashoffset="0" stroke-linecap="round" style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 0.8s linear;" />
-          </svg>
-          <span id="inspectTimerSec" style="font-family:var(--font-english-display);font-size:28px;font-weight:700;color:var(--brand-red);">10</span>
-          <span style="font-size:12px;color:var(--ink-secondary);">秒倒计时</span>
-        </div>
+        <!-- 纯粹大号数字倒计时 -->
+        <div class="quiz-timer" id="quizTimer">10</div>
 
         <!-- 传送带 6 片吐司 (第3片焦斑瑕疵、第5片凹坑瑕疵) -->
         <div class="conveyor-track">

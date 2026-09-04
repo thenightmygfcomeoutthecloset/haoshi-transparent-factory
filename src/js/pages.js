@@ -159,35 +159,41 @@ window.init_act02 = function () {
 };
 
 // ============================================================
-// ACT 3: 第一站 · 查原料 (地球溯源罗盘)
+// ACT 3: 第一站 · 查原料 (原版经典像素世界地图 + 原料汇聚)
 // ============================================================
 window.init_act03 = function () {
-  const cards = document.querySelectorAll('.macro-card');
-  const needle = document.getElementById('compassNeedle');
-  const detailTitle = document.getElementById('originDetailTitle');
-  const detailDesc = document.getElementById('originDetailDesc');
+  const cards = document.querySelectorAll('#ingredientCards .ingredient-card');
   const btnNext = document.getElementById('btnAct3Next');
   if (cards.length === 0 || cards[0].dataset.ready) return;
   cards[0].dataset.ready = '1';
 
-  const originData = [
-    {
-      angle: -45,
-      title: '玻利维亚 · 安第斯红藜麦',
-      desc: '海拔 4000m 原生高原谷物，晶莹胚芽圈清晰可见，高蛋白低热量营养之王。'
-    },
-    {
-      angle: 40,
-      title: '法国 · 乐斯福活性酵母',
-      desc: '源自法国百年酵母世家，活性极高，自然慢发酵赋予吐司均匀细密蜂窝微气孔。'
-    },
-    {
-      angle: -85,
-      title: '加拿大 · 黄金高筋春小麦',
-      desc: '北纬 50° 阳光黑土孕育，13.5% 蛋白质含量，麦香醇厚，筋道松软回弹。'
-    }
-  ];
+  if (typeof gsap !== 'undefined') {
+    // 动画：三国原料先后出现 → 三条线同时汇聚 → 漳州登场
+    const animPin = (sel, delay) => {
+      gsap.fromTo(sel, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, delay, ease: 'back.out(1.7)' });
+      gsap.to(sel + ' .map-pin-label', { opacity: 1, duration: 0.3, delay: delay + 0.3, ease: 'power2.out' });
+    };
+    // Phase 1: 三国依次登场
+    animPin('[data-pin="france"]',    0.2);
+    animPin('[data-pin="bolivia"]',   0.6);
+    animPin('[data-pin="canada"]',    1.0);
+    // Phase 2: 三条线同时画出，汇聚到漳州
+    const trails = document.querySelectorAll('.map-trail');
+    trails.forEach((t) => {
+      const w = parseFloat(t.style.width) || 140;
+      gsap.fromTo(t, { width: 0, opacity: 0 }, { width: w, opacity: 0.75, duration: 1.2, delay: 1.2, ease: 'power2.out' });
+    });
+    // Phase 3: 漳州在汇聚点登场
+    animPin('[data-pin="zhangzhou"]', 2.2);
+  } else {
+    document.querySelectorAll('#worldMap .map-pin').forEach((p, i) => {
+      setTimeout(() => p.classList.add('show-label'), i * 300 + 400);
+    });
+    document.querySelectorAll('.map-trail').forEach(t => t.classList.add('animate'));
+  }
 
+  // 点击原料卡片高亮对应地点
+  const pinSelectors = ['[data-pin="bolivia"]', '[data-pin="canada"]', '[data-pin="france"]'];
   cards.forEach((card, idx) => {
     card.addEventListener('click', () => {
       cards.forEach(c => c.classList.remove('selected'));
@@ -195,10 +201,15 @@ window.init_act03 = function () {
       haptic.tick();
       audio.play('flip');
 
-      const data = originData[idx];
-      if (needle) needle.style.transform = `rotate(${data.angle}deg)`;
-      if (detailTitle) detailTitle.textContent = data.title;
-      if (detailDesc) detailDesc.textContent = data.desc;
+      // 高亮对应标记
+      document.querySelectorAll('#worldMap .map-pin').forEach(p => p.classList.remove('highlight'));
+      const targetPin = document.querySelector(pinSelectors[idx]);
+      if (targetPin) {
+        targetPin.classList.add('highlight');
+        if (typeof gsap !== 'undefined') {
+          gsap.fromTo(targetPin, { scale: 1.6 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' });
+        }
+      }
     });
   });
 
@@ -380,8 +391,7 @@ window.init_act05 = function () {
 // ============================================================
 window.init_act06 = function () {
   const breads = document.querySelectorAll('.inspect-bread-item');
-  const timerEl = document.getElementById('inspectTimerSec');
-  const timerCircle = document.getElementById('inspectTimerCircle');
+  const timerEl = document.getElementById('quizTimer');
   const resultEl = document.getElementById('inspectResultMsg');
   const btnNext = document.getElementById('btnAct6Next');
   if (breads.length === 0 || breads[0].dataset.ready) return;
@@ -393,15 +403,14 @@ window.init_act06 = function () {
   let timerId = null;
   let isDone = false;
 
-  const totalLength = 2 * Math.PI * 26; // r=26
-
   timerId = setInterval(() => {
     if (isDone) { clearInterval(timerId); return; }
     timeLeft--;
-    if (timerEl) timerEl.textContent = timeLeft;
-    if (timerCircle) {
-      const offset = totalLength * (1 - timeLeft / 10);
-      timerCircle.style.strokeDashoffset = offset;
+    if (timerEl) {
+      timerEl.textContent = timeLeft;
+      if (timeLeft <= 3) {
+        timerEl.classList.add('urgent');
+      }
     }
     if (timeLeft <= 0) {
       clearInterval(timerId);
