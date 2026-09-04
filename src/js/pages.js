@@ -1,4 +1,4 @@
-﻿/* === pages.js — 7幕沉浸式工坊漫游 交互驱动逻辑 === */
+/* === pages.js — 7幕沉浸式工坊漫游 交互驱动逻辑 === */
 
 import audio from './audio.js';
 import haptic from './haptic.js';
@@ -70,18 +70,7 @@ window.init_act01 = function () {
   const finishAct1 = () => {
     haptic.impact();
     audio.play('tear');
-    if (typeof gsap !== 'undefined') {
-      gsap.to('#act1Ticket', {
-        scale: 1.05,
-        opacity: 0,
-        y: -30,
-        duration: 0.5,
-        ease: 'power2.in',
-        onComplete: () => { window.app && window.app.next(); }
-      });
-    } else {
-      window.app && window.app.next();
-    }
+    window.app && window.app.next();
   };
 
   handle.addEventListener('touchstart', onStart, { passive: true });

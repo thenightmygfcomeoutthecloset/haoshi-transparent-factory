@@ -1,4 +1,4 @@
-﻿/* === main.js — 7幕沉浸式工坊漫游 调度核心 === */
+/* === main.js — 7幕沉浸式工坊漫游 调度核心 === */
 
 import Gesture from './gesture.js';
 import audio from './audio.js';
@@ -89,25 +89,44 @@ class App {
     const newPage = this.pages[index];
 
     this._leavePage(this.current);
-    newPage.classList.add('active');
     this.current = index;
-    this._initPage(index);
     this._updateHUD();
 
     if (typeof gsap !== 'undefined') {
-      gsap.to(oldPage, {
-        opacity: 0,
-        scale: 0.96,
-        duration: 0.35,
-        ease: 'power2.in',
-        onComplete: () => oldPage.classList.remove('active')
-      });
+      if (oldPage) gsap.killTweensOf(oldPage);
+      if (newPage) gsap.killTweensOf(newPage);
+
+      newPage.classList.add('active');
+      this._initPage(index);
+
+      if (oldPage) {
+        gsap.to(oldPage, {
+          opacity: 0,
+          duration: 0.3,
+          ease: 'power2.in',
+          onComplete: () => {
+            oldPage.classList.remove('active');
+            gsap.set(oldPage, { clearProps: 'opacity,transform' });
+          }
+        });
+      }
+
       gsap.fromTo(newPage,
-        { opacity: 0, scale: 0.96 },
-        { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out', onComplete: () => { this.isTransitioning = false; } }
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.35,
+          ease: 'power2.out',
+          onComplete: () => {
+            this.isTransitioning = false;
+            gsap.set(newPage, { clearProps: 'opacity,transform' });
+          }
+        }
       );
     } else {
-      oldPage && oldPage.classList.remove('active');
+      if (oldPage) oldPage.classList.remove('active');
+      if (newPage) newPage.classList.add('active');
+      this._initPage(index);
       this.isTransitioning = false;
     }
   }
