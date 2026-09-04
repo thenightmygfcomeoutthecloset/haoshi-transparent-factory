@@ -171,20 +171,13 @@ class App {
   _resize() {
     const vp = document.querySelector('.viewport');
     if (!vp) return;
-    const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent) || window.innerWidth < 768;
-    let scale;
-    if (isMobile) {
-      scale = Math.max(window.innerWidth / 640, window.innerHeight / 1008);
-    } else {
-      scale = Math.min(0.85, Math.min(window.innerWidth / 640, window.innerHeight / 1008));
-    }
-    vp.style.width = '640px';
-    vp.style.height = '1008px';
-    vp.style.position = 'absolute';
-    vp.style.left = `${(window.innerWidth - 640 * scale) / 2}px`;
-    vp.style.top = `${(window.innerHeight - 1008 * scale) / 2}px`;
-    vp.style.transform = `scale(${scale})`;
-    vp.style.transformOrigin = 'top left';
+    vp.style.width = '100%';
+    vp.style.height = '100%';
+    vp.style.maxWidth = '480px';
+    vp.style.position = 'relative';
+    vp.style.left = '';
+    vp.style.top = '';
+    vp.style.transform = '';
   }
 }
 
